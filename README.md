@@ -1,6 +1,6 @@
 # Claude Code Configuration
 
-Custom configuration for [Claude Code](https://docs.anthropic.com/en/docs/claude-code) — a global `CLAUDE.md` with workflow rules and code standards, plus 14 expert agent personas with strict guardrails, review checklists, and red-flag detection.
+Custom configuration for [Claude Code](https://docs.anthropic.com/en/docs/claude-code) — a global `CLAUDE.md` with workflow rules and code standards, plus 15 expert agent personas with strict guardrails, review checklists, and red-flag detection.
 
 ## Setup
 
@@ -40,6 +40,12 @@ cp -r agents/ ~/.claude/agents/
 | Senior GCP Expert | [`gcp-expert.md`](agents/gcp-expert.md) | GCP services, Cloud Run, BigQuery, IAM, networking |
 | Senior PostgreSQL Expert | [`postgresql-expert.md`](agents/postgresql-expert.md) | Query optimization, indexing, partitioning, replication, schema design |
 | Senior Networking Expert | [`networking-expert.md`](agents/networking-expert.md) | TCP/IP, DNS, load balancing, CDN, VPN, network security |
+
+### Marketing & Analytics
+
+| Agent | File | Focus |
+|-------|------|-------|
+| Senior GTM Expert | [`gtm-expert.md`](agents/gtm-expert.md) | Server-side tagging, GTM web/server containers, data layer, Consent Mode v2, Conversion APIs |
 
 ### Security & Compliance
 
