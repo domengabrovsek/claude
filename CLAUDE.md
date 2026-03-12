@@ -78,7 +78,7 @@ Before starting any non-trivial task, determine which expert agents are relevant
 ### Agent Routing
 
 | Domain trigger | Agent file | Load when the task involves... |
-|----------------|-----------|-------------------------------|
+| --- | --- | --- |
 | System design, architecture, DDD, module boundaries | `staff-engineer.md` | Code architecture, design patterns, system-level decisions |
 | React, components, CSS, browser, frontend, UI rendering | `frontend-staff-engineer.md` | Frontend code, components, styling, client-side performance |
 | API, database, backend, queues, caching, Node.js server | `backend-staff-engineer.md` | Backend code, APIs, database queries, server-side logic |
