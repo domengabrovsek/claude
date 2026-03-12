@@ -7,26 +7,26 @@ These rules apply to every project. Project-level CLAUDE.md files override where
 ### Phase 1: Research
 
 - Read every relevant file before forming opinions  - no guessing
-- Produce a `research.md` artifact summarizing findings, open questions, and constraints
+- Produce a research artifact summarizing findings, open questions, and constraints
 - Do NOT propose solutions yet
 
 ### Phase 2: Plan
 
-- Produce a `plan.md` with: goal, approach, file-by-file changes (with code snippets), task checklist
+- Produce a plan with: goal, approach, file-by-file changes (with code snippets), task checklist
 - Include exact file paths and line ranges for every change
 - Flag risks, trade-offs, and alternatives
 - Wait for approval before proceeding  - say **"don't implement yet"** if tempted
 
 ### Phase 3: Annotation Cycle
 
-- User annotates `plan.md` with notes, questions, or corrections
+- User annotates the plan with notes, questions, or corrections
 - Address every annotation, update the plan, and re-present
 - Repeat until user explicitly approves  - do NOT skip ahead to implementation
 - This phase may take multiple rounds; that is expected
 
 ### Phase 4: Implement
 
-- Execute the approved plan task by task, marking each done in `plan.md`
+- Execute the approved plan task by task, marking each done in the plan file
 - Do not stop mid-implementation to ask questions already answered in the plan
 - Run typecheck continuously as you go (`npx tsc --noEmit` or project equivalent)
 - After all tasks: build + lint + test must pass before declaring done
@@ -34,6 +34,10 @@ These rules apply to every project. Project-level CLAUDE.md files override where
 ### Skipping Phases
 
 For trivial changes (typos, one-liner fixes, config tweaks): skip straight to implementation. If in doubt, ask.
+
+### File Naming
+
+Research and plan files must use dashes for multi-word names and include a timestamp: `YYYY-MM-DD-descriptive-name.md`. Examples: `2026-03-12-research-auth-refactor.md`, `2026-03-12-plan-sqs-buffering.md`.
 
 ## Security
 
