@@ -66,7 +66,8 @@ Research and plan files must use dashes for multi-word names and include a times
 - **Cost**: warn before any change that increases costs (new cloud resources, paid services, upgraded tiers)
 - **Git**: never auto-commit or push  - wait for explicit instructions
 - **Commits**: always use conventional commits format (`feat:`, `fix:`, `refactor:`, `docs:`, `chore:`, `test:`, `ci:`, etc.). Scope is optional, e.g. `feat(auth): add token refresh`. Never add Co-Authored-By or any AI attribution to commits
-- **PR descriptions**: always use bullet points in the summary section, not prose paragraphs
+- **Versioning**: follow semantic versioning (semver) - MAJOR for breaking changes, MINOR for new features, PATCH for fixes
+- **PR descriptions**: always use bullet points in the summary section, not prose paragraphs. If the repo has a PR template (`.github/pull_request_template.md`), use it. If not, use the default template at `~/.claude/pull_request_template.md`
 - **Verification**: build + typecheck + lint + tests must all pass before considering work done
 - **Conciseness**: be direct and terse during implementation  - save explanations for when asked
 - **Existing patterns**: follow the conventions already in the codebase  - consistency over personal preference
