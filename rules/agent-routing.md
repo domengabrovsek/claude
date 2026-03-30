@@ -20,6 +20,12 @@ Before starting any non-trivial task, determine which expert agents are relevant
 | GTM, tags, server-side tagging, data layer, GA4, CAPI | `gtm-expert.md` | Tag management, analytics, tracking, consent mode |
 | Product, user story, prioritization, roadmap, metrics | `product-manager.md` | Feature planning, requirements, success criteria |
 | UX, usability, accessibility, WCAG, design, interaction | `ux-expert.md` | UI/UX design, accessibility, user experience |
+| Error handling, resilience, circuit breaker, retry, timeout | `backend-staff-engineer.md` | Designing failure modes, degradation patterns |
+| API design, REST, GraphQL, schema, contracts | `backend-staff-engineer.md` | Designing APIs, versioning, breaking changes |
+| Data model, schema design, normalization, ERD | `postgresql-expert.md` | Designing database structure from scratch |
+| Test strategy, test architecture, test pyramid, coverage | `qa-expert.md` | Planning test approach before implementation |
+| Performance, profiling, latency, p99, load testing | `backend-staff-engineer.md` + `frontend-staff-engineer.md` | Performance work (load both for full-stack) |
+| PR review, code review | `pr-reviewer.md` | Reviewing pull requests or code changes |
 
 ## Rules
 

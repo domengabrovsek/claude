@@ -1,4 +1,9 @@
-Summarize the current session's work. Format as a brief status update:
+Summarize the current session's work and save it to `.claude/state/sessions/YYYY-MM-DD-<topic>.md` (use today's date and a brief topic slug).
+
+Format the file as:
+
+```markdown
+# Session: <date> - <topic>
 
 ## What was done
 
@@ -16,4 +21,9 @@ Summarize the current session's work. Format as a brief status update:
 
 - Unresolved decisions or blockers
 
-Keep it concise - suitable for a standup update or handoff to another session.
+## Key decisions
+
+- Important choices made during this session and why
+```
+
+Also output the summary to the conversation. Keep it concise - suitable for a standup update or handoff to another session.

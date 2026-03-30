@@ -4,10 +4,11 @@ These rules apply to every project. Project-level CLAUDE.md files override where
 
 ## Workflow: Research - Plan - Implement
 
-1. **Research**: read every relevant file, produce a research artifact with findings and open questions. No solutions yet.
-2. **Plan**: produce a plan with goal, approach, file-by-file changes (with code snippets), task checklist. Include exact paths and line ranges. Flag risks. Wait for approval.
+1. **Research**: read every relevant file, produce a research artifact. Save to `.claude/state/research/`. No solutions yet.
+2. **Plan**: produce a plan with goal, approach, file-by-file changes, task checklist. Save to `.claude/state/plans/`. Wait for approval.
 3. **Annotate**: user annotates the plan. Address every annotation, re-present. Repeat until explicit approval.
 4. **Implement**: execute the approved plan task by task. Run typecheck continuously. Build + lint + test must pass before done.
+5. **Summarize**: save a session diary entry to `.claude/state/sessions/` when work is complete.
 
 For trivial changes (typos, one-liner fixes, config tweaks): skip straight to implementation. If in doubt, ask.
 
@@ -24,12 +25,9 @@ For trivial changes (typos, one-liner fixes, config tweaks): skip straight to im
 
 ## Code Standards
 
-- TypeScript: no `any` or `unknown` - use proper types. 2-space indent, single quotes
 - Use the project's formatter/linter (Biome, ESLint, Prettier - whatever is configured)
-- Zod schemas for runtime validation at system boundaries
-- Database: soft delete only, explicit migrations only - never auto-sync schemas
-- Tests: Vitest preferred, mock external deps, manual class instantiation over DI in tests
 - Complete code only - no TODOs, no placeholders, no incomplete implementations
+- Detailed standards are in rules/ (typescript, tests, database, infrastructure, security)
 
 ## Behavioral Rules
 
