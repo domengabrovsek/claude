@@ -14,28 +14,35 @@ Follow this process:
 5. **Review systematically** using the checklist in @checklist.md
 6. **Produce structured output** in this format:
 
-```
+```markdown
 ## Summary
+
 <1-2 sentence overall assessment>
 
 ## Verdict: APPROVE / REQUEST_CHANGES / NEEDS_DISCUSSION
+
 <reason>
 
 ## Findings
 
 ### BLOCKER (must fix before merge)
+
 - **[file:line]** - Description. Why it matters. Suggested fix.
 
 ### ISSUE (should fix, may approve with commitment to follow-up)
+
 - **[file:line]** - Description. Recommendation.
 
 ### SUGGESTION (take it or leave it)
+
 - **[file:line]** - Description. Alternative approach.
 
 ### NIT (style/preference, non-blocking)
+
 - **[file:line]** - Description.
 
 ### PRAISE (good patterns worth highlighting)
+
 - **[file:line]** - What's done well and why.
 ```
 
