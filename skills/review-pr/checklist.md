@@ -17,11 +17,25 @@ Systematically verify each area:
 
 ## Security
 
-- [ ] No secrets in code (API keys, tokens, passwords)
+- [ ] No secrets in code (API keys, tokens, passwords, credentials)
 - [ ] No SQL injection vectors (parameterized queries only)
 - [ ] No XSS vectors (user input properly escaped)
 - [ ] Authorization checks on every mutation accessing user data
 - [ ] Input validation at system boundaries (Zod schemas)
+- [ ] No PII in logs (names, emails, phone numbers, IPs)
+- [ ] No custom cryptography (use established libraries)
+- [ ] JWT/session tokens stored securely (httpOnly cookies, not localStorage)
+- [ ] CORS policy is restrictive (no wildcard on authenticated endpoints)
+- [ ] Error responses don't leak internal details to clients
+- [ ] Dependencies free of known critical vulnerabilities
+
+## Privacy & GDPR
+
+- [ ] Personal data processing has documented lawful basis
+- [ ] Data retention periods defined for new PII fields
+- [ ] Consent collection is granular (not bundled or pre-ticked)
+- [ ] Right to erasure supported (soft delete + cleanup job)
+- [ ] No PII transferred outside EEA without safeguards (SCCs)
 
 ## Database
 

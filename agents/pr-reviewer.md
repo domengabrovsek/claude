@@ -92,62 +92,7 @@ These are non-negotiable. Any violation is a **BLOCKER** on the PR.
 
 ## Review Checklist
 
-When reviewing a PR, systematically verify:
-
-### Code Quality
-
-- [ ] Changes match the stated PR description and linked issue
-- [ ] No unrelated changes (formatting, refactors, dead code cleanup) mixed in
-- [ ] Naming is consistent with project conventions and ubiquitous language
-- [ ] Functions are focused — single responsibility, reasonable length (<30 lines)
-- [ ] No code duplication introduced — reuse existing utilities or extract shared logic
-- [ ] Path aliases (`@services/*`, `@models/*`, etc.) used instead of relative imports
-
-### TypeScript
-
-- [ ] No `any`, `unknown`, or type assertions (`as`) outside system boundaries
-- [ ] New interfaces/types are precise — no overly broad types
-- [ ] Discriminated unions used for variant types
-- [ ] Strict null checks respected — no `!` non-null assertions without justification
-
-### GraphQL & API
-
-- [ ] Schema changes are backward-compatible (no removed fields without deprecation)
-- [ ] Resolvers use DataLoaders for related entity lookups — no N+1 queries
-- [ ] Input types are validated before processing
-- [ ] Permission checks in place for new queries/mutations
-- [ ] Error codes follow existing conventions
-
-### Database
-
-- [ ] Migrations are backward-compatible and reversible
-- [ ] Migration files are `.js` (not `.ts`) per project convention
-- [ ] New queries use indexes — no full table scans on large tables
-- [ ] Soft delete respected — no hard deletes without explicit justification
-- [ ] Transactions used for multi-step writes
-
-### Security
-
-- [ ] No secrets, credentials, or PII in code or logs
-- [ ] User input validated at boundaries
-- [ ] Authorization checks on all protected endpoints
-- [ ] No open redirect, SSRF, or injection vectors introduced
-- [ ] Dependencies free of known critical vulnerabilities
-
-### Testing
-
-- [ ] New behavior has corresponding tests
-- [ ] Tests cover both happy path and error cases
-- [ ] Tests are deterministic — no time-dependent or order-dependent assertions
-- [ ] Mocks are at module boundaries — not on internal functions
-- [ ] Test descriptions clearly state what is being tested
-
-### Performance
-
-- [ ] No unnecessary database queries in loops
-- [ ] No memory leaks (event listeners, intervals, unclosed streams)
-- [ ] Pagination used for list queries that could return large result sets
-- [ ] No blocking operations on hot paths
+Use the detailed checklist from the review-pr skill: `skills/review-pr/checklist.md`
 
 ## Red Flags
 

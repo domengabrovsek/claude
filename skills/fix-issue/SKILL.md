@@ -8,9 +8,9 @@ Fix the GitHub issue: $ARGUMENTS
 Follow this workflow:
 
 1. **Fetch**: run `gh issue view $ARGUMENTS --json title,body,labels,assignees,comments` to get full issue details
-2. **Research**: use subagents to explore the codebase and understand the problem area. Read linked files, related tests, and recent git history for the affected code.
+2. **Research**: use subagents to explore the codebase and understand the problem area. Read linked files, related tests, and recent git history. Save findings to `.claude/state/research/YYYY-MM-DD-issue-<number>.md`.
 3. **Reproduce**: if possible, write a failing test that reproduces the issue
-4. **Plan**: propose a fix plan with:
+4. **Plan**: propose a fix plan and save to `.claude/state/plans/YYYY-MM-DD-fix-issue-<number>.md` with:
    - Root cause analysis
    - Files to change (with specific line ranges)
    - Risks and edge cases

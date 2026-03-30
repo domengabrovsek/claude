@@ -1,6 +1,6 @@
 # Expert Agents
 
-15 expert agent personas with strict guardrails, review checklists, and red-flag detection. Each agent is loaded automatically by Claude Code when a task matches its domain.
+15 expert agent personas with strict guardrails, review checklists, and red-flag detection. Each agent is loaded automatically by Claude Code when a task matches its domain via the routing table in [`rules/agent-routing.md`](../rules/agent-routing.md).
 
 ## Engineering
 
@@ -41,6 +41,12 @@
 | Senior Product Manager | [`product-manager.md`](../agents/product-manager.md) | Product strategy, user stories, prioritization, roadmapping, metrics |
 | Senior UX Expert | [`ux-expert.md`](../agents/ux-expert.md) | Interaction design, usability, accessibility, design systems, information architecture |
 
+## Code Review
+
+| Agent | File | Focus |
+| --- | --- | --- |
+| Senior PR Reviewer | [`pr-reviewer.md`](../agents/pr-reviewer.md) | Structured severity-based code reviews, TypeScript/Node.js, GraphQL, database, security |
+
 ## Agent Structure
 
 Every agent follows the same 9-section structure:
@@ -54,3 +60,9 @@ Every agent follows the same 9-section structure:
 7. **Red Flags** - patterns that trigger immediate investigation (12-15 per agent)
 8. **Tools & Frameworks** - recommended tooling
 9. **Integration with Workflow** - how the agent works within the research/plan/implement phases
+
+## Routing
+
+The routing table in [`rules/agent-routing.md`](../rules/agent-routing.md) maps domain triggers to agent files. Claude loads matching agents automatically before starting work. Multiple agents load simultaneously when a task crosses domains (e.g., a new API endpoint loads backend + security + QA).
+
+Additional routing triggers added for: error handling/resilience, API design, data modeling, test strategy/architecture, performance optimization, and PR review.
