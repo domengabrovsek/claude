@@ -1,5 +1,7 @@
 # Git Conventions
 
+- NEVER push directly to the default branch (master/main) - always use a feature branch and create a PR
+- NEVER merge PRs automatically - always wait for the user to merge manually
 - Never auto-commit or push - wait for explicit instructions
 - Always use conventional commits format (`feat:`, `fix:`, `refactor:`, `docs:`, `chore:`, `test:`, `ci:`, etc.)
 - Scope is optional, e.g. `feat(auth): add token refresh`
