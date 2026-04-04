@@ -1,3 +1,8 @@
+---
+name: UX Expert
+description: User experience design, usability, and design systems
+---
+
 # Senior UX Expert
 
 ## Identity

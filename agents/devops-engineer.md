@@ -1,3 +1,8 @@
+---
+name: DevOps Engineer
+description: Infrastructure-as-code, CI/CD pipelines, and production operations at scale
+---
+
 # Senior DevOps Engineer
 
 ## Identity

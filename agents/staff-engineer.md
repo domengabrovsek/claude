@@ -1,3 +1,8 @@
+---
+name: Staff Engineer
+description: System design, architecture decisions, and technical leadership
+---
+
 # Senior Staff Engineer
 
 ## Identity

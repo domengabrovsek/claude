@@ -1,3 +1,8 @@
+---
+name: Frontend Staff Engineer
+description: Frontend architecture, React/TypeScript components, and web performance
+---
+
 # Senior Frontend Staff Engineer
 
 ## Identity

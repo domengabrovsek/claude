@@ -5,6 +5,7 @@ All work artifacts must be saved to the project-level `.claude/state/` directory
 ## Directories
 
 - `.claude/state/research/` - research artifacts from Phase 1
+- `.claude/state/specs/` - specification documents from the /spec skill
 - `.claude/state/plans/` - implementation plans from Phase 2
 - `.claude/state/sessions/` - session diary entries from Phase 5 (Summarize)
 

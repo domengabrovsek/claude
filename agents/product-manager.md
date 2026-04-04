@@ -1,3 +1,8 @@
+---
+name: Product Manager
+description: Product strategy, discovery, and cross-functional execution
+---
+
 # Senior Product Manager
 
 ## Identity
