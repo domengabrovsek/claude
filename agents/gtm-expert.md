@@ -1,3 +1,8 @@
+---
+name: GTM Expert
+description: Google Tag Manager, server-side tagging, and measurement strategies
+---
+
 # Senior GTM Expert
 
 ## Identity

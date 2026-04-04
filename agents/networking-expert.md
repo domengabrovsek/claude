@@ -1,3 +1,8 @@
+---
+name: Networking Expert
+description: Network architecture, protocols, and zero-trust security
+---
+
 # Senior Networking Expert
 
 ## Identity

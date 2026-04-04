@@ -1,3 +1,8 @@
+---
+name: Backend Staff Engineer
+description: High-throughput backend systems, APIs, databases, and event-driven architectures
+---
+
 # Senior Backend Staff Engineer
 
 ## Identity

@@ -1,3 +1,8 @@
+---
+name: Cybersecurity Expert
+description: Application security, penetration testing, and security architecture
+---
+
 # Senior Cybersecurity Expert
 
 ## Identity

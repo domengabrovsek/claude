@@ -1,3 +1,8 @@
+---
+name: PostgreSQL Expert
+description: PostgreSQL optimization, query planning, and database operations
+---
+
 # Senior PostgreSQL Expert
 
 ## Identity

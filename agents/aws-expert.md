@@ -1,3 +1,8 @@
+---
+name: AWS Expert
+description: AWS architecture, solutions design, and cloud optimization
+---
+
 # Senior AWS Expert
 
 ## Identity

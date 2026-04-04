@@ -1,0 +1,78 @@
+# Security Checklist
+
+Reusable security checklist mapped to OWASP Top 10. Referenced by the review-pr skill and cybersecurity agent.
+
+## Input Validation (OWASP A03: Injection)
+
+- [ ] All external input validated at system boundaries (API requests, webhooks, URL params, env vars)
+- [ ] Validation uses schema library (Zod) - not manual checks
+- [ ] SQL queries use parameterized statements or ORM methods - never string concatenation
+- [ ] GraphQL queries have depth/complexity limits
+- [ ] File uploads validated: type, size, extension, content-type header match
+- [ ] Path traversal prevented: no user input in file paths without sanitization
+
+## Output Encoding (OWASP A03: Injection, A07: XSS)
+
+- [ ] User-generated content escaped before rendering in HTML
+- [ ] Content-Security-Policy header set (no `unsafe-inline` or `unsafe-eval` without justification)
+- [ ] No `dangerouslySetInnerHTML` or `eval()` with user data
+- [ ] API responses do not leak stack traces, internal paths, or server info
+- [ ] Error messages are generic for users, detailed in logs
+
+## Authentication & Sessions (OWASP A01: Broken Access Control, A07: Identification Failures)
+
+- [ ] Passwords hashed with bcrypt, scrypt, or argon2 - never MD5/SHA
+- [ ] Session tokens are httpOnly, secure, sameSite=strict/lax
+- [ ] JWT tokens have reasonable expiry and are validated server-side
+- [ ] No auth tokens stored in localStorage - use httpOnly cookies
+- [ ] Multi-factor authentication available for sensitive operations
+- [ ] Rate limiting on login/signup/password-reset endpoints
+- [ ] Account lockout or progressive delays after failed attempts
+
+## Authorization (OWASP A01: Broken Access Control)
+
+- [ ] Every mutation/query accessing user data verifies permissions
+- [ ] No reliance on client-side checks only - server enforces all access control
+- [ ] CORS configured with explicit origins - no wildcard `*` for authenticated endpoints
+- [ ] Admin endpoints require elevated privileges and are audited
+- [ ] Principle of least privilege applied to all service accounts and IAM roles
+
+## Transport & Headers (OWASP A02: Cryptographic Failures, A05: Misconfiguration)
+
+- [ ] HTTPS only - no mixed content, HSTS header set
+- [ ] Security headers configured: X-Frame-Options, X-Content-Type-Options, Referrer-Policy
+- [ ] TLS 1.2+ required - no fallback to older protocols
+- [ ] Cookies marked secure (only sent over HTTPS)
+
+## Secrets Management (OWASP A02: Cryptographic Failures)
+
+- [ ] No secrets in source code, commit history, or CI logs
+- [ ] Secrets loaded from environment variables or secret manager (not config files)
+- [ ] `.env*`, `*.pem`, `*.key`, `credentials.json` in `.gitignore`
+- [ ] API keys scoped to minimum required permissions
+- [ ] Secrets rotated on a schedule and after any suspected exposure
+
+## Dependencies (OWASP A06: Vulnerable Components)
+
+- [ ] `npm audit` (or equivalent) runs in CI with zero critical/high vulnerabilities
+- [ ] Dependencies pinned to specific versions (lockfile committed)
+- [ ] No dependencies with known CVEs in production
+- [ ] New dependencies justified: bundle size, maintenance status, license, security posture
+- [ ] Unused dependencies removed
+
+## Database Security (OWASP A03: Injection, A04: Insecure Design)
+
+- [ ] Database credentials not hardcoded - loaded from environment/secret manager
+- [ ] Database ports not exposed to public internet
+- [ ] Migrations are backward-compatible and reversible
+- [ ] Sensitive data (PII, financial) encrypted at rest
+- [ ] Database backups encrypted and access-controlled
+- [ ] Connection pooling configured with appropriate limits
+
+## Logging & Monitoring (OWASP A09: Logging Failures)
+
+- [ ] Security events logged: auth failures, permission denials, input validation failures
+- [ ] No sensitive data in logs (passwords, tokens, PII, credit cards)
+- [ ] Structured logging with correlation IDs for traceability
+- [ ] Alerts configured for anomalous patterns (spike in auth failures, unusual access patterns)
+- [ ] No `console.log` with sensitive data in production code
