@@ -12,7 +12,7 @@ All work artifacts must be saved to the project-level `.claude/state/` directory
 ## Rules
 
 - Create `.claude/state/` directories if they don't exist before writing
-- Use naming convention: `YYYY-MM-DD-descriptive-name.md`
+- Use naming convention: `YYYY-MM-DD-descriptive-name.md` (e.g., `2026-03-12-research-auth-refactor.md`)
 - Every non-trivial session should end with a summary saved to `.claude/state/sessions/`
 - Plans and research are per-project, not global
 - Check `.claude/state/` for relevant past work before starting new research

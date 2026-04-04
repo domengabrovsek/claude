@@ -35,11 +35,12 @@ For trivial changes (typos, one-liner fixes, config tweaks): skip straight to im
 - **Decisions**: ask before making architectural choices - never silently pick a pattern, library, or approach
 - **Cost**: warn before any change that increases costs (new cloud resources, paid services, upgraded tiers)
 - **Testing**: always write tests when implementing a new feature or fixing a bug - no exceptions
-- **Verification**: build + typecheck + lint + tests must all pass before considering work done
 - **Conciseness**: be direct and terse during implementation - save explanations for when asked
 - **Existing patterns**: follow the conventions already in the codebase - consistency over personal preference
-- **Commits**: never add `Co-Authored-By` lines - all commits should be authored solely by the user
-- **PRs**: always rebase onto the target branch (`git fetch origin main && git rebase origin/main`) before creating a PR
+- **Context first**: before choosing an approach, check how similar problems are already solved in the codebase - grep for existing patterns, read neighboring files, and follow established conventions rather than guessing
+- **Verification**: always run `/user:verify-done` before pushing - never push without all checks passing
+
+Detailed git, testing, and exploration rules are in `rules/` (git-conventions, engineering-principles).
 
 ## Learning from Mistakes
 

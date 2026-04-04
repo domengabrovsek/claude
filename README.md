@@ -55,8 +55,8 @@ Modular instruction files. **Always-loaded** rules have no frontmatter. **Path-s
 | --- | --- | --- |
 | `agent-routing.md` | Always | Every session (agent selection table) |
 | `git-conventions.md` | Always | Every session (commits, PRs, semver) |
-| `file-naming.md` | Always | Every session (timestamp convention) |
-| `state-persistence.md` | Always | Every session (artifact saving) |
+| `engineering-principles.md` | Always | Every session (sizing, slicing, exploration) |
+| `state-persistence.md` | Always | Every session (artifact saving, naming) |
 | `typescript.md` | `**/*.ts,**/*.tsx` | Editing TypeScript files |
 | `tests.md` | `**/*.test.ts,**/*.spec.ts` | Editing test files |
 | `database.md` | `**/migrations/**,**/*.sql` | Editing database/migration files |
@@ -74,6 +74,10 @@ Reusable workflows invoked on-demand. Cost ~200 tokens when idle (metadata only)
 
 | Skill | Trigger | Purpose |
 | --- | --- | --- |
+| `spec` | `/spec <topic>` | Define requirements before planning |
+| `build` | `/build` | Implement approved plan incrementally with quality gates |
+| `test` | `/test <target>` | Write tests using TDD (RED-GREEN-REFACTOR) or prove-it pattern |
+| `ship` | `/ship` | Pre-launch validation and release workflow |
 | `fix-issue` | `/fix-issue 1234` | Full issue resolution: fetch, research, plan, implement, test, PR |
 | `review-pr` | `/review-pr 567` | Structured PR review with BLOCKER/ISSUE/SUGGESTION/NIT/PRAISE severity |
 
@@ -87,8 +91,7 @@ Slash commands for frequent workflows. Available as `/user:<name>`.
 | `plan` | `/user:plan` | Phase 2: create implementation plan, save to `.claude/state/plans/` |
 | `summarize` | `/user:summarize` | Save session diary to `.claude/state/sessions/` |
 | `typecheck` | `/user:typecheck` | Run tsc and fix all type errors |
-| `ci-check` | `/user:ci-check` | Run local CI checks (lint + typecheck + test + build) |
-| `verify-done` | `/user:verify-done` | Full quality gate before declaring work done |
+| `verify-done` | `/user:verify-done` | Full quality gate before declaring work done (lint + typecheck + test + build + git status) |
 
 ### Hooks (`hooks/`)
 
@@ -108,6 +111,7 @@ Session artifacts saved at the project level so they persist across sessions and
 ```text
 .claude/state/
   research/    # Research artifacts from Phase 1
+  specs/       # Specification documents from /spec
   plans/       # Implementation plans from Phase 2
   sessions/    # Session diary entries from Phase 5
 ```
@@ -126,4 +130,3 @@ Markdown linting runs on every push and PR via GitHub Actions.
 ## Documentation
 
 - [Agent Reference](docs/agents.md) - full agent listing and structure
-- [Configuration Guide](docs/configuration.md) - detailed walkthrough of all settings

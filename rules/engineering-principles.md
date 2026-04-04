@@ -65,3 +65,9 @@ Never accept these shortcuts, regardless of justification:
 | Leave TODOs | "I'll come back to it" | TODOs without issue links are dead code; create a ticket or fix it now |
 | Copy-paste with tweaks | "It's faster" | Duplication diverges; extract a shared function or accept the repetition consciously |
 | Skip the spec/plan | "I already know what to do" | You know what you think you need to do; the spec catches what you missed |
+
+## Exploration Guard Rails
+
+- For open-ended tasks (seed scripts, data generation, exploratory refactors): explore briefly, then start writing code - partial progress beats perfect plans
+- If you've been reading files for more than 5 minutes without producing code, stop exploring and implement with what you know - we can iterate
+- Never spend an entire session on analysis without producing a working artifact
