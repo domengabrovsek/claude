@@ -30,6 +30,11 @@ For trivial changes (typos, one-liner fixes, config tweaks): skip straight to im
 - Use Context7 MCP to pull latest docs when working with specific technologies (NestJS, PostgreSQL, Drizzle, etc.) - don't rely on potentially outdated training knowledge
 - Detailed standards are in rules/ (typescript, tests, database, infrastructure, security)
 
+## Docs Sync
+
+- When code changes affect behavior documented in `.claude/docs/`, update the relevant docs in the same PR
+- Never let docs drift from implementation - if you change it, document it
+
 ## Behavioral Rules
 
 - **Scope**: only implement what was asked - no drive-by refactors, extra features, or unsolicited improvements
