@@ -14,3 +14,4 @@ description: "TypeScript coding standards"
 - Zod schemas for runtime validation at system boundaries (API inputs, env vars, external data)
 - Prefer `const` over `let`, never use `var`
 - Use strict null checks - handle `null`/`undefined` explicitly
+- No non-null assertion operator (`!`) - use proper null checks, optional chaining, or narrowing instead
