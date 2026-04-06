@@ -77,7 +77,7 @@ Each agent's prompt MUST be self-contained. The agent cannot see the parent conv
 
 Bad prompt: "Add validation to the API"
 
-Good prompt: "Add Zod input validation to the POST /api/users endpoint in src/routes/users.ts. Follow the existing validation pattern in src/routes/projects.ts. Create the schema in src/schemas/users.ts. Add tests in src/routes/__tests__/users.test.ts. Run `npm test -- users` to verify. Work on branch parallel/users-validation."
+Good prompt: "Add Zod input validation to the POST /api/users endpoint in src/routes/users.ts. Follow the existing validation pattern in src/routes/projects.ts. Create the schema in src/schemas/users.ts. Add tests in src/routes/\_\_tests\_\_/users.test.ts. Run `npm test -- users` to verify. Work on branch parallel/users-validation."
 
 ## Limits
 
