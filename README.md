@@ -12,8 +12,9 @@ Out of the box, Claude Code is capable but generic. This configuration adds opin
 CLAUDE.md                      # Core rules (workflow, security, behavioral constraints)
 agents/                        # 15 expert agent personas
 commands/                      # Slash commands for frequent workflows
-hooks/                         # Automation scripts (formatting, PR watching)
+hooks/                         # Automation scripts (formatting, typechecking)
 rules/                         # Modular instruction files (always-loaded + path-scoped)
+scripts/                       # Utility scripts (notifications)
 skills/                        # Reusable workflows with supporting files
 docs/                          # Reference documentation
 pull_request_template.md       # Default PR template
@@ -35,6 +36,7 @@ ln -sf ~/dev/claude/rules ~/.claude/rules
 ln -sf ~/dev/claude/skills ~/.claude/skills
 ln -sf ~/dev/claude/commands ~/.claude/commands
 ln -sf ~/dev/claude/hooks ~/.claude/hooks
+ln -sf ~/dev/claude/scripts ~/.claude/scripts
 ```
 
 ## Components
@@ -80,6 +82,8 @@ Reusable workflows invoked on-demand. Cost ~200 tokens when idle (metadata only)
 | `ship` | `/ship` | Pre-launch validation and release workflow |
 | `fix-issue` | `/fix-issue 1234` | Full issue resolution: fetch, research, plan, implement, test, PR |
 | `review-pr` | `/review-pr 567` | Structured PR review with BLOCKER/ISSUE/SUGGESTION/NIT/PRAISE severity |
+| `ci` | `/ci` | Monitor CI pipeline status, analyze failures, propose fixes. Use with `/loop 2m /ci` for auto-polling |
+| `mr` | `/mr` | Create MR/PR with template, conventional commit checks, and stacked MR/PR dependency support |
 
 ### Commands (`commands/`)
 
@@ -100,9 +104,18 @@ Automation scripts triggered at lifecycle events. Configured in `~/.claude/setti
 | Hook | Event | Purpose |
 | --- | --- | --- |
 | `auto-format.sh` | PostToolUse (Write/Edit) | Auto-format files with project formatter (Biome/Prettier) |
+| `post-edit-typecheck.sh` | PostToolUse (Write/Edit) | Run typecheck and lint on .ts/.tsx files after edits |
 | `watch-pr-checks.sh` | PostToolUse (gh pr create) | Poll CI checks in background, notify on pass/fail |
 | Notification | Notification | macOS desktop notification when Claude needs input |
 | Compact reminder | SessionStart (compact) | Re-inject workflow context after compaction |
+
+### Scripts (`scripts/`)
+
+Utility scripts referenced by skills and hooks.
+
+| Script | Purpose |
+| --- | --- |
+| `notify.sh` | Send macOS desktop notification unless a terminal or IDE is in the foreground |
 
 ### State (`.claude/state/` per project)
 
