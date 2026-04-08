@@ -10,6 +10,7 @@ Out of the box, Claude Code is capable but generic. This configuration adds opin
 
 ```text
 CLAUDE.md                      # Core rules (workflow, security, behavioral constraints)
+settings.json                  # Global settings (hooks, deny list, permissions)
 agents/                        # 15 expert agent personas
 commands/                      # Slash commands for frequent workflows
 hooks/                         # Automation scripts (formatting, typechecking)
@@ -37,7 +38,10 @@ ln -sf ~/dev/claude/skills ~/.claude/skills
 ln -sf ~/dev/claude/commands ~/.claude/commands
 ln -sf ~/dev/claude/hooks ~/.claude/hooks
 ln -sf ~/dev/claude/scripts ~/.claude/scripts
+ln -sf ~/dev/claude/settings.json ~/.claude/settings.json
 ```
+
+> **Note**: Claude Code writes ephemeral state (e.g. `feedbackSurveyState`) to `settings.json` at runtime. These changes will show as uncommitted diffs - just discard them with `git checkout settings.json`.
 
 ## Components
 
@@ -99,10 +103,11 @@ Slash commands for frequent workflows. Available as `/user:<name>`.
 
 ### Hooks (`hooks/`)
 
-Automation scripts triggered at lifecycle events. Configured in `~/.claude/settings.json`.
+Automation scripts triggered at lifecycle events. Configured in `settings.json` (symlinked to `~/.claude/settings.json`).
 
 | Hook | Event | Purpose |
 | --- | --- | --- |
+| `pre-pr-test-gate.sh` | PreToolUse (gh pr create) | Block PR creation if tests fail |
 | `auto-format.sh` | PostToolUse (Write/Edit) | Auto-format files with project formatter (Biome/Prettier) |
 | `post-edit-typecheck.sh` | PostToolUse (Write/Edit) | Run typecheck and lint on .ts/.tsx files after edits |
 | `watch-pr-checks.sh` | PostToolUse (gh pr create) | Poll CI checks in background, notify on pass/fail |
@@ -131,8 +136,10 @@ Session artifacts saved at the project level so they persist across sessions and
 
 ## Security
 
-- Comprehensive deny list in `settings.json` blocking 35+ sensitive file patterns
-- Bash command restrictions blocking destructive operations (`rm -rf`, `git push --force`, `sudo`)
+- Comprehensive deny list in `settings.json` blocking 35+ sensitive file patterns (env files, SSH/GPG keys, credentials, cloud configs, shell history)
+- Bash command restrictions blocking destructive operations (`rm -rf`, `git push --force`, `sudo`, `DROP TABLE`)
+- Lock file protection prevents edits to `package-lock.json`, `yarn.lock`, `pnpm-lock.yaml`
+- PreToolUse gate blocks PR creation when tests fail
 - PostToolUse formatting hook validates files before processing
 - Agent guardrails enforce security checks across all domains
 
