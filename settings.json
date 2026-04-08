@@ -1,0 +1,168 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "deny": [
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Read(~/.ssh/**)",
+      "Read(~/.gnupg/**)",
+      "Read(~/.aws/**)",
+      "Read(~/.config/gcloud/**)",
+      "Read(~/.kube/**)",
+      "Read(~/.docker/config.json)",
+      "Read(~/.npmrc)",
+      "Read(~/.netrc)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)",
+      "Read(**/*.p12)",
+      "Read(**/*.pfx)",
+      "Read(**/*.jks)",
+      "Read(**/*-key.json)",
+      "Read(**/service-account*.json)",
+      "Read(**/credentials.json)",
+      "Read(**/.vault-token)",
+      "Read(**/.htpasswd)",
+      "Read(~/.git-credentials)",
+      "Read(~/.gitconfig)",
+      "Read(**/.terraform.tfstate*)",
+      "Read(~/.terraformrc)",
+      "Read(~/.config/terraform/**)",
+      "Read(~/.yarnrc.yml)",
+      "Read(~/.yarnrc)",
+      "Read(~/.pnpmrc)",
+      "Read(~/.config/npm/**)",
+      "Read(~/.zsh_history)",
+      "Read(~/.bash_history)",
+      "Read(~/.config/Code/User/globalStorage/**)",
+      "Read(**/*.kubeconfig)",
+      "Read(~/.config/gke-gcloud-auth-plugin/**)",
+      "Read(~/.azure/**)",
+      "Edit(**/.env)",
+      "Edit(**/.env.*)",
+      "Edit(~/.ssh/**)",
+      "Edit(~/.gnupg/**)",
+      "Edit(~/.aws/**)",
+      "Edit(~/.npmrc)",
+      "Edit(~/.netrc)",
+      "Edit(~/.docker/config.json)",
+      "Edit(~/.gitconfig)",
+      "Edit(~/.kube/**)",
+      "Edit(~/.config/gcloud/**)",
+      "Edit(~/.azure/**)",
+      "Edit(**/*.pem)",
+      "Edit(**/*.key)",
+      "Edit(**/*-key.json)",
+      "Write(**/.env)",
+      "Write(**/.env.*)",
+      "Write(~/.ssh/**)",
+      "Write(~/.gnupg/**)",
+      "Write(~/.aws/**)",
+      "Write(~/.kube/**)",
+      "Write(~/.config/gcloud/**)",
+      "Write(~/.azure/**)",
+      "Write(~/.npmrc)",
+      "Write(~/.netrc)",
+      "Write(~/.gitconfig)",
+      "Write(~/.docker/config.json)",
+      "Write(**/*.pem)",
+      "Write(**/*.key)",
+      "Bash(rm -rf *)",
+      "Bash(sudo *)",
+      "Bash(dd *)",
+      "Bash(mkfs *)",
+      "Bash(shred *)",
+      "Bash(chmod * ~/.ssh/*)",
+      "Bash(chmod * ~/.gnupg/*)",
+      "Bash(git push --force *)",
+      "Bash(git push -f *)",
+      "Bash(git reset --hard *)",
+      "Bash(git clean -fd *)",
+      "Bash(git clean -f *)",
+      "Bash(git push origin master *)",
+      "Bash(git push origin main *)",
+      "Bash(git push * master)",
+      "Bash(git push * main)",
+      "Bash(gh pr merge *)",
+      "Edit(**/package-lock.json)",
+      "Edit(**/yarn.lock)",
+      "Edit(**/pnpm-lock.yaml)",
+      "Write(**/package-lock.json)",
+      "Write(**/yarn.lock)",
+      "Write(**/pnpm-lock.yaml)",
+      "Bash(*DROP TABLE*)",
+      "Bash(*DROP DATABASE*)",
+      "Bash(*TRUNCATE TABLE*)"
+    ]
+  },
+  "effortLevel": "high",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "if": "Bash(gh pr create *)",
+            "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/pre-pr-test-gate.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/pre-pr-test-gate.sh\"; [ -x \"$HOOK\" ] && exec \"$HOOK\"",
+            "timeout": 120
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/hooks/auto-format.sh 2>/dev/null || ~/.claude/hooks/auto-format.sh 2>/dev/null || true",
+            "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/hooks/post-edit-typecheck.sh 2>/dev/null || ~/.claude/hooks/post-edit-typecheck.sh 2>/dev/null || true",
+            "timeout": 60
+          }
+        ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "if": "Bash(gh pr create *)",
+            "command": "nohup bash -c '~/.claude/hooks/watch-pr-checks.sh' >/dev/null 2>&1 &",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "permission_prompt|idle_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "osascript -e 'display notification \"Claude Code needs your attention\" with title \"Claude Code\"'",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo 'Reminder: follow the 4-phase workflow (Research - Plan - Annotate - Implement). Check loaded rules and agent routing. Run tests before declaring done.'"
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline.sh"
+  }
+}
