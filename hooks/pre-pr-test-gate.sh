@@ -34,7 +34,7 @@ fi
 
 # Run tests
 echo "Running tests before PR creation..."
-TEST_OUTPUT=$(npm test 2>&1)
+TEST_OUTPUT=$(CI=true npm test 2>&1)
 TEST_EXIT=$?
 
 if [ $TEST_EXIT -ne 0 ]; then

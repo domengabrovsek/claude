@@ -43,15 +43,26 @@
       "Edit(~/.gnupg/**)",
       "Edit(~/.aws/**)",
       "Edit(~/.npmrc)",
+      "Edit(~/.netrc)",
       "Edit(~/.docker/config.json)",
       "Edit(~/.gitconfig)",
+      "Edit(~/.kube/**)",
+      "Edit(~/.config/gcloud/**)",
+      "Edit(~/.azure/**)",
       "Edit(**/*.pem)",
       "Edit(**/*.key)",
       "Edit(**/*-key.json)",
       "Write(**/.env)",
       "Write(**/.env.*)",
       "Write(~/.ssh/**)",
+      "Write(~/.gnupg/**)",
       "Write(~/.aws/**)",
+      "Write(~/.kube/**)",
+      "Write(~/.config/gcloud/**)",
+      "Write(~/.azure/**)",
+      "Write(~/.npmrc)",
+      "Write(~/.netrc)",
+      "Write(~/.gitconfig)",
       "Write(~/.docker/config.json)",
       "Write(**/*.pem)",
       "Write(**/*.key)",
@@ -92,7 +103,7 @@
           {
             "type": "command",
             "if": "Bash(gh pr create *)",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/hooks/pre-pr-test-gate.sh 2>/dev/null || ~/.claude/hooks/pre-pr-test-gate.sh 2>/dev/null",
+            "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/pre-pr-test-gate.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/pre-pr-test-gate.sh\"; [ -x \"$HOOK\" ] && exec \"$HOOK\"",
             "timeout": 120
           }
         ]
@@ -145,16 +156,6 @@
           {
             "type": "command",
             "command": "echo 'Reminder: follow the 4-phase workflow (Research - Plan - Annotate - Implement). Check loaded rules and agent routing. Run tests before declaring done.'"
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "INPUT=$(cat); if [ \"$(echo \"$INPUT\" | jq -r '.stop_hook_active')\" = \"true\" ]; then exit 0; fi; exit 0"
           }
         ]
       }

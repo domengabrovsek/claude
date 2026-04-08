@@ -39,9 +39,13 @@ ln -sf ~/dev/claude/commands ~/.claude/commands
 ln -sf ~/dev/claude/hooks ~/.claude/hooks
 ln -sf ~/dev/claude/scripts ~/.claude/scripts
 ln -sf ~/dev/claude/settings.json ~/.claude/settings.json
+
+# Configure smudge/clean filter to strip ephemeral state from settings.json
+git config filter.strip-ephemeral-state.clean 'jq "del(.feedbackSurveyState)" 2>/dev/null || cat'
+git config filter.strip-ephemeral-state.smudge cat
 ```
 
-> **Note**: Claude Code writes ephemeral state (e.g. `feedbackSurveyState`) to `settings.json` at runtime. These changes will show as uncommitted diffs - just discard them with `git checkout settings.json`.
+> **Note**: Claude Code writes ephemeral state (e.g. `feedbackSurveyState`) to `settings.json` at runtime. The smudge/clean filter in `.gitattributes` automatically strips this before git sees it, so `git status` stays clean.
 
 ## Components
 
