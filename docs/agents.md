@@ -1,6 +1,6 @@
 # Expert Agents
 
-15 expert agent personas with strict guardrails, review checklists, and red-flag detection. Each agent is loaded automatically by Claude Code when a task matches its domain via the routing table in [`rules/agent-routing.md`](../rules/agent-routing.md).
+16 expert agent personas with strict guardrails, review checklists, and red-flag detection. Each agent is loaded automatically by Claude Code when a task matches its domain via the routing table in [`rules/agent-routing.md`](../rules/agent-routing.md).
 
 ## Engineering
 
@@ -20,6 +20,7 @@
 | Senior GCP Expert | [`gcp-expert.md`](../agents/gcp-expert.md) | GCP services, Cloud Run, BigQuery, IAM, networking |
 | Senior PostgreSQL Expert | [`postgresql-expert.md`](../agents/postgresql-expert.md) | Query optimization, indexing, partitioning, replication, schema design |
 | Senior Networking Expert | [`networking-expert.md`](../agents/networking-expert.md) | TCP/IP, DNS, load balancing, CDN, VPN, network security |
+| Senior ArgoCD Expert | [`argocd-expert.md`](../agents/argocd-expert.md) | ArgoCD, GitOps, ApplicationSet, sync strategies, Argo Rollouts, progressive delivery |
 
 ## Marketing & Analytics
 

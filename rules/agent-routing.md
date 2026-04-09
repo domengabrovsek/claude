@@ -9,10 +9,11 @@ Before starting any non-trivial task, determine which expert agents are relevant
 | System design, architecture, DDD, module boundaries | `staff-engineer.md` | Code architecture, design patterns, system-level decisions |
 | React, components, CSS, browser, frontend, UI rendering | `frontend-staff-engineer.md` | Frontend code, components, styling, client-side performance |
 | API, database, backend, queues, caching, Node.js server | `backend-staff-engineer.md` | Backend code, APIs, database queries, server-side logic |
-| CI/CD, Docker, Kubernetes, Terraform, infrastructure | `devops-engineer.md` | Deployment, pipelines, containers, infrastructure changes |
+| CI/CD, Docker, Kubernetes, Terraform, infrastructure, GitOps | `devops-engineer.md` | Deployment, pipelines, containers, infrastructure changes |
 | Tests, QA, coverage, flaky, E2E, Playwright, Vitest | `qa-expert.md` | Writing tests, test strategy, test infrastructure |
 | AWS, S3, Lambda, EC2, CloudFront, DynamoDB | `aws-expert.md` | AWS services and infrastructure |
 | GCP, Cloud Run, BigQuery, Pub/Sub, Cloud Functions | `gcp-expert.md` | GCP services and infrastructure |
+| ArgoCD, GitOps, ApplicationSet, sync policy, Argo Rollouts | `argocd-expert.md` | ArgoCD configuration, GitOps workflows, progressive delivery |
 | PostgreSQL, SQL, queries, indexes, migrations | `postgresql-expert.md` | Database schema, queries, migrations, performance |
 | Networking, DNS, TCP, load balancer, CDN, VPN | `networking-expert.md` | Network configuration, DNS, connectivity |
 | Security, auth, OWASP, XSS, injection, encryption | `cybersecurity-expert.md` | Security review, auth flows, vulnerability assessment |

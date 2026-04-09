@@ -4,14 +4,14 @@ Custom configuration for [Claude Code](https://docs.anthropic.com/en/docs/claude
 
 ## Why
 
-Out of the box, Claude Code is capable but generic. This configuration adds opinionated defaults - a mandatory research-plan-implement workflow, security boundaries, code standards, and 15 expert agents that activate automatically based on task context. The result is more consistent, reviewable, and safe output.
+Out of the box, Claude Code is capable but generic. This configuration adds opinionated defaults - a mandatory research-plan-implement workflow, security boundaries, code standards, and 16 expert agents that activate automatically based on task context. The result is more consistent, reviewable, and safe output.
 
 ## Repository Structure
 
 ```text
 CLAUDE.md                      # Core rules (workflow, security, behavioral constraints)
 settings.json                  # Global settings (hooks, deny list, permissions)
-agents/                        # 15 expert agent personas
+agents/                        # 16 expert agent personas
 commands/                      # Slash commands for frequent workflows
 hooks/                         # Automation scripts (formatting, typechecking)
 rules/                         # Modular instruction files (always-loaded + path-scoped)
@@ -74,7 +74,7 @@ Modular instruction files. **Always-loaded** rules have no frontmatter. **Path-s
 
 ### Agents (`agents/`)
 
-15 expert agent personas across 5 categories. Each follows a 9-section structure with strict guardrails, review checklists, and red-flag detection. Loaded automatically via the routing table in `rules/agent-routing.md`.
+16 expert agent personas across 5 categories. Each follows a 9-section structure with strict guardrails, review checklists, and red-flag detection. Loaded automatically via the routing table in `rules/agent-routing.md`.
 
 See [Agent Reference](docs/agents.md) for the full listing.
 
