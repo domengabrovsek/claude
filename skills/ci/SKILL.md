@@ -1,27 +1,39 @@
 # Monitor CI Pipeline
 
-Use `/loop 2m /ci` to poll CI every 2 minutes automatically.
-
 ## Workflow
 
 1. **Detect VCS platform**: `.gitlab-ci.yml` -> glab, `.github/` -> gh
-2. **Check pipeline status** (non-interactive commands only):
-   - GitLab: `glab ci status`
-   - GitHub: `gh pr checks` or `gh run list --branch <current-branch>`
-3. **If pipeline is still running**: report current status and stop (the /loop will re-invoke)
-4. **If pipeline passes**:
-   - Run `~/.claude/scripts/notify.sh "CI passed - <branch-name>"`
-   - Report success and stop
-5. **If pipeline fails**:
-   a. Fetch the job log:
-      - GitLab: `glab ci trace <job-id>`
-      - GitHub: `gh run view <run-id> --log-failed`
-   b. Do NOT pipe output through head, tail, grep, or any other command - run the commands directly
-   c. Analyze the root cause - identify the specific failure (test, lint, type check, build, coverage, etc.)
-   d. Run `~/.claude/scripts/notify.sh "CI failed - <failure-summary>"`
-   e. **Propose the fix to the user** - explain what failed and what you'd change. Do NOT push automatically
-   f. Wait for user approval before implementing the fix
-   g. After approval: fix, commit with a descriptive message, push
+2. **Start a Monitor** with the matching script:
+   - GitHub: `bash ~/.claude/skills/ci/scripts/gh-ci-monitor.sh`
+   - GitLab: `bash ~/.claude/skills/ci/scripts/glab-ci-monitor.sh`
+   - Use `persistent: false`, `timeout_ms: 3600000` (1 hour ceiling — CI pipelines can be long)
+   - Description: "CI pipeline on <branch-name>"
+3. **React to Monitor notifications**:
+   - `no-runs|<branch>`: no CI runs found for this branch — inform the user and stop
+   - `error|persistent-failure`: the monitor script hit 5 consecutive errors — report and stop
+   - Status change (e.g., `in_progress|null` → `completed|success`): acknowledge briefly
+   - **Pipeline passes** (`completed|success`):
+     - Run `~/.claude/scripts/notify.sh "CI passed - <branch-name>"`
+     - Report success
+   - **Pipeline fails** (`completed|failure` or any non-success conclusion):
+     a. Fetch the job log:
+        - GitLab: `glab ci trace <job-id>`
+        - GitHub: `gh run view <run-id> --log-failed`
+     b. Do NOT pipe output through head, tail, grep, or any other command - run the commands directly
+     c. Analyze the root cause - identify the specific failure (test, lint, type check, build, coverage, etc.)
+     d. Run `~/.claude/scripts/notify.sh "CI failed - <failure-summary>"`
+     e. **Propose the fix to the user** - explain what failed and what you'd change. Do NOT push automatically
+     f. Wait for user approval before implementing the fix
+     g. After approval: fix, commit with a descriptive message, push
+
+## How it works
+
+The monitor scripts poll CI status every 30 seconds but only emit a line when the status **changes**. This means:
+
+- Zero token cost while the pipeline is running and status hasn't changed
+- Claude reacts within ~30s of a status change (vs up to 2 min with /loop)
+- No CronDelete cleanup needed — the script exits on terminal state, ending the Monitor
+- If `gh`/`glab` fails 5 times in a row (auth expired, network down), the script exits with an error notification
 
 ## Important: Non-interactive commands only
 
@@ -35,10 +47,6 @@ Safe commands to use:
 
 - `glab ci status`, `glab ci list`, `glab ci trace <job-id>`
 - `gh pr checks`, `gh run list`, `gh run view <run-id> --log-failed`
-
-## Loop cleanup
-
-If invoked via `/loop`, call `CronDelete` to cancel the polling job once the pipeline reaches a terminal state (passed or failed). Don't leave it running.
 
 ## Guardrails
 
