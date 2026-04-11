@@ -3,11 +3,20 @@
 # ==============================================
 # Sends Telegram notifications for PR events
 # using the notify.yml reusable workflow.
+#
+# SAFETY: uses pull_request_target (not pull_request) so vars.* are
+# available for fork PRs. This is only safe because the reusable
+# workflow chain never runs `actions/checkout` and never executes any
+# code from the PR head - it only reads event payload metadata. Do NOT
+# add `actions/checkout` (or anything that fetches the PR head ref) to
+# this workflow or to the upstream notify.yml chain without re-doing
+# the security review, or this becomes the classic pull_request_target
+# pwn pattern.
 
 name: Notifications
 
 on:
-  pull_request:
+  pull_request_target:
     types: [opened, closed, synchronize, labeled, review_requested]
     branches: [master]
   issue_comment:
