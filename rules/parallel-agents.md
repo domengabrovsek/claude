@@ -81,6 +81,15 @@ Good prompt: "Add Zod input validation to the POST /api/users endpoint in src/ro
 
 ## Limits
 
-- Do not spawn more than 5 parallel agents at once - diminishing returns and resource pressure
-- If a task splits into more than 5 pieces, batch them into rounds
-- Always prefer 3 well-scoped agents over 6 narrowly-scoped ones
+- **Target: 4 parallel agents.** Most real tasks decompose cleanly into 2-4 truly independent units; beyond that you're usually inventing artificial seams.
+- **Hard ceiling: 5 parallel agents.** Only go this high when the task genuinely has 5 clean independent slices.
+- If a task splits into more than 5 pieces, batch them into rounds rather than spawning more concurrently.
+- Always prefer 3 well-scoped agents over 6 narrowly-scoped ones.
+
+Why these numbers:
+
+- **Merge conflict surface** scales as n*(n-1)/2. 4 agents = 6 pair combinations, 5 = 10, 8 = 28. The jump from 4 to 5 is acceptable; past 5 it gets painful fast.
+- **Review bandwidth**: reviewing 4 separate diffs in one sitting is the upper edge of what a human can do without quality dropping into rubber-stamping.
+- **API rate limits**: parent + 4 children = 5 concurrent token streams, which leaves headroom on standard tiers. 8+ regularly hits throttling and silently serializes the "parallel" work.
+- **Local resources**: each worktree is a full repo copy plus tool processes. 4 is comfortable on a typical Mac; 8+ starts to matter for large monorepos.
+- **Diminishing wall-clock returns**: the slowest agent dictates total time. With 4 agents you already capture ~80% of the theoretical speedup; more mostly buys coordination overhead, not speed.
