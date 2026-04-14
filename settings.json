@@ -115,12 +115,12 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/hooks/auto-format.sh 2>/dev/null || ~/.claude/hooks/auto-format.sh 2>/dev/null || true",
+            "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/auto-format.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/auto-format.sh\"; [ -x \"$HOOK\" ] && \"$HOOK\" || true",
             "timeout": 30
           },
           {
             "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/hooks/post-edit-typecheck.sh 2>/dev/null || ~/.claude/hooks/post-edit-typecheck.sh 2>/dev/null || true",
+            "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/post-edit-typecheck.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/post-edit-typecheck.sh\"; if [ -x \"$HOOK\" ]; then \"$HOOK\"; fi",
             "timeout": 60
           }
         ]
@@ -155,7 +155,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo 'Reminder: follow the 4-phase workflow (Research - Plan - Annotate - Implement). Check loaded rules and agent routing. Run tests before declaring done.'"
+            "command": "echo 'Reminder: follow the workflow (Research - Plan - Annotate - Implement - Summarize). Minimal fix first for bugs. Run /user:verify-done before commits. Current year: 2026.'"
           }
         ]
       }

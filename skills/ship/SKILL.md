@@ -9,7 +9,7 @@ Validate and ship: $ARGUMENTS
 
 Run these checks in order. Stop at the first failure.
 
-### 1. Code Quality (run /verify-done)
+### 1. Code Quality (run /user:verify-done)
 
 - [ ] `npx tsc --noEmit` passes (zero type errors)
 - [ ] Linting passes (zero errors, zero warnings)
@@ -26,7 +26,7 @@ Run these checks in order. Stop at the first failure.
 - [ ] No merge conflict markers in code
 - [ ] No sensitive files staged (`.env`, credentials, keys)
 
-### 3. Security Review (see `references/security-checklist.md`)
+### 3. Security Review (load `cybersecurity-expert` agent, see `references/security-checklist.md`)
 
 - [ ] No secrets in code or commit history
 - [ ] Dependencies clean: `npm audit` with zero critical/high

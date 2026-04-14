@@ -10,7 +10,7 @@ These rules apply to every project. Project-level CLAUDE.md files override where
 4. **Implement**: execute the approved plan task by task. Run typecheck continuously. Build + lint + test must pass before done.
 5. **Summarize**: save a session diary entry to `.claude/state/sessions/` when work is complete.
 
-For trivial changes (typos, one-liner fixes, config tweaks): skip straight to implementation. If in doubt, ask.
+For trivial changes (typos, one-liner fixes, config tweaks): skip straight to implementation. If in doubt about whether something is trivial, it is not - follow the full workflow.
 
 ## Security
 
@@ -34,10 +34,12 @@ For trivial changes (typos, one-liner fixes, config tweaks): skip straight to im
 
 - When code changes affect behavior documented in `.claude/docs/`, update the relevant docs in the same PR
 - Never let docs drift from implementation - if you change it, document it
+- Only update docs that describe behavior actually changed in this session - no forward-looking references, planned features, or speculative content
 
 ## Behavioral Rules
 
 - **Scope**: only implement what was asked - no drive-by refactors, extra features, or unsolicited improvements
+- **Minimal fix**: for bug fixes, identify the root cause and state the smallest possible change first (ideally 1-5 lines). Only expand the scope if the minimal fix is provably insufficient. Never introduce new abstractions, files, or patterns as part of a bug fix unless the user explicitly asks
 - **Decisions**: ask before making architectural choices - never silently pick a pattern, library, or approach
 - **Cost**: warn before any change that increases costs (new cloud resources, paid services, upgraded tiers)
 - **Testing**: always write tests when implementing a new feature or fixing a bug - no exceptions
@@ -59,3 +61,5 @@ Detailed git, testing, and exploration rules are in `rules/` (git-conventions, e
 - macOS, zsh, Node.js (check `.nvmrc`), npm
 - Docker for local services
 - Cloud: GCP primary, AWS secondary
+- Current year: 2026 - verify when generating dates, timestamps, or date-dependent logic
+- Access boundaries: .env files, credentials, and secrets are blocked by deny rules - do not attempt workarounds. For Sentry, staging databases, and external services requiring auth, ask the user for credentials or URLs rather than trying to authenticate
