@@ -4,7 +4,9 @@
 # Falls back to `gh run list` (all runs, not just one) when no PR exists.
 # Emits a line to stdout ONLY when status changes.
 # Exits when the pipeline reaches a terminal state.
-set -euo pipefail
+set -uo pipefail
+# Note: no -e — gh pr checks uses non-standard exit codes (8 = pending)
+# that would terminate the script under errexit
 
 branch=$(git branch --show-current)
 pr_number=$(gh pr view --json number --jq '.number' 2>/dev/null) || pr_number=""
