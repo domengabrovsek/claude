@@ -39,6 +39,7 @@ ln -sf ~/dev/claude/commands ~/.claude/commands
 ln -sf ~/dev/claude/hooks ~/.claude/hooks
 ln -sf ~/dev/claude/scripts ~/.claude/scripts
 ln -sf ~/dev/claude/settings.json ~/.claude/settings.json
+ln -sf ~/dev/claude/scripts/statusline.sh ~/.claude/statusline.sh
 
 # Configure smudge/clean filter to strip ephemeral state from settings.json
 git config filter.strip-ephemeral-state.clean 'jq "del(.feedbackSurveyState)" 2>/dev/null || cat'
@@ -125,6 +126,7 @@ Utility scripts referenced by skills and hooks.
 | Script | Purpose |
 | --- | --- |
 | `notify.sh` | Send macOS desktop notification unless a terminal or IDE is in the foreground |
+| `statusline.sh` | Status line showing model, repo, branch, and node version. Symlink to `~/.claude/statusline.sh` |
 
 ### State (`.claude/state/` per project)
 
