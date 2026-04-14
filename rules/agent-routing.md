@@ -27,6 +27,10 @@ Before starting any non-trivial task, determine which expert agents are relevant
 | Test strategy, test architecture, test pyramid, coverage | `qa-expert.md` | Planning test approach before implementation |
 | Performance, profiling, latency, p99, load testing | `backend-staff-engineer.md` + `frontend-staff-engineer.md` | Performance work (load both for full-stack) |
 | PR review, code review | `pr-reviewer.md` | Reviewing pull requests or code changes |
+| Observability, monitoring, logging, traces, metrics, alerts, OpenTelemetry | `devops-engineer.md` | Instrumentation, monitoring setup, alerting, SLO/SLI |
+| Caching, Redis, cache invalidation, CDN cache, application cache | `backend-staff-engineer.md` | Cache architecture, invalidation strategies, multi-layer caching |
+| Rate limiting, throttling, API quotas, backpressure, DDoS | `backend-staff-engineer.md` + `networking-expert.md` | Rate limiting design, throttling strategies |
+| ETL, data pipeline, stream processing, Pub/Sub, batch jobs, data flow | `backend-staff-engineer.md` | Data pipeline architecture, processing patterns |
 
 ## Rules
 

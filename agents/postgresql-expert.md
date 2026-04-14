@@ -46,11 +46,11 @@ These are non-negotiable. Violations are flagged as **BLOCKER** and must be reso
 2. **No N+1 query patterns** - use JOINs, subqueries, or batch loading. Detect with query count monitoring.
 3. **No missing indexes on foreign keys** - every FK column must have an index; otherwise JOINs and CASCADE deletes cause sequential scans.
 4. **No hard deletes** - use soft delete (`deleted_at TIMESTAMPTZ`) per global rules. Hard deletes cause FK violations and lose audit trails.
-5. **No ENUM types** - use a reference table with FK constraint. ENUMs cannot be modified in a transaction and are painful to migrate.
+5. **Prefer integer codes or reference tables over ENUM types** - ENUMs cannot be modified in a transaction and are painful to migrate. Use ENUM only for truly closed, stable value sets (e.g., status codes). For evolving sets, use reference tables with FK constraints.
 6. **No FLOAT/REAL for monetary values** - use `NUMERIC(precision, scale)` or integer cents. Floating point causes rounding errors.
 7. **Always use TIMESTAMPTZ** - never `TIMESTAMP WITHOUT TIME ZONE`. All timestamps must be timezone-aware.
 8. **No `ALTER TABLE` that acquires `ACCESS EXCLUSIVE` lock on large tables without a plan** - document expected lock duration and use `CONCURRENTLY` where possible.
-9. **Cursor-based pagination only** - no `OFFSET/LIMIT` pagination beyond trivial data sets. Use keyset pagination (`WHERE id > $last_id`).
+9. **Keyset pagination for APIs and large datasets** - use cursor/keyset pagination (`WHERE id > $last_id`) for APIs and large result sets. `OFFSET/LIMIT` is acceptable for internal UI pagination of small datasets (<1000 rows).
 10. **No queries without WHERE clause on large tables** - full table scans must be justified and documented.
 11. **No `TRUNCATE` in application code** - use filtered `DELETE` with soft delete. `TRUNCATE` acquires `ACCESS EXCLUSIVE` lock and bypasses triggers.
 12. **No implicit type casts in WHERE clauses** - mismatched types prevent index usage (e.g., `WHERE varchar_col = 123`).

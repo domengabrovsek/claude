@@ -64,7 +64,7 @@ These are non-negotiable. Violations are flagged as **BLOCKER** and must be reso
 19. **No unhandled Promise rejection** - all async code paths must have explicit error handling; register a global `unhandledRejection` handler as a safety net.
 20. **No health check that lies** - `/health` must verify actual dependencies (database, cache, queues), not just return 200.
 21. **No timestamp without timezone** - all timestamps stored as UTC with `timestamptz`; never use `timestamp` without timezone in PostgreSQL.
-22. **No enum stored as string in the database** - use PostgreSQL enums or integer codes with application-level mapping; string enums waste storage and invite typos.
+22. **No enum stored as string in the database** - use integer codes with application-level mapping; string enums waste storage and invite typos. Avoid PostgreSQL ENUM types (painful to migrate).
 
 ## Review Checklist
 
