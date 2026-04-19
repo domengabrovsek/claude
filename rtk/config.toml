@@ -1,0 +1,61 @@
+# RTK (Rust Token Killer) configuration
+# Upstream: https://github.com/rtk-ai/rtk
+#
+# Symlink this file to the rtk config location on your platform:
+#   macOS:  ~/Library/Application Support/rtk/config.toml
+#   Linux:  ~/.config/rtk/config.toml
+#
+# Verify with: rtk config
+
+[tracking]
+enabled = true
+history_days = 90
+
+[display]
+colors = true
+emoji = true
+max_width = 120
+
+[filters]
+# Directories rtk skips when summarising trees, greps, finds.
+ignore_dirs = [
+    ".git",
+    "node_modules",
+    "target",
+    "__pycache__",
+    ".venv",
+    "vendor",
+]
+ignore_files = [
+    "*.lock",
+    "*.min.js",
+    "*.min.css",
+]
+
+[tee]
+# Keep tee ON in "failures" mode so the full unfiltered output is preserved
+# whenever a command fails. This is the safety net for debugging cases where
+# rtk's compression hides the pattern that matters (e.g. repeated timeouts
+# across services being collapsed into one).
+enabled = true
+mode = "failures"
+max_files = 20
+max_file_size = 1048576
+
+[telemetry]
+# Opt-out by default. Flip to true only if you want to send usage data upstream.
+enabled = false
+consent_given = false
+
+[hooks]
+# Commands to bypass rtk filtering entirely. Add commands here when raw output
+# matters more than token savings (e.g. production DB sessions, incident log
+# tailing). Empty by default — extend per machine if needed.
+exclude_commands = []
+
+[limits]
+grep_max_results = 200
+grep_max_per_file = 25
+status_max_files = 15
+status_max_untracked = 10
+passthrough_max_chars = 2000

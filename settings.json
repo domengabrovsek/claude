@@ -105,6 +105,10 @@
             "if": "Bash(gh pr create *)",
             "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/pre-pr-test-gate.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/pre-pr-test-gate.sh\"; [ -x \"$HOOK\" ] && exec \"$HOOK\"",
             "timeout": 120
+          },
+          {
+            "type": "command",
+            "command": "command -v rtk >/dev/null 2>&1 && rtk hook claude || true"
           }
         ]
       }
