@@ -39,6 +39,7 @@ ln -sf ~/dev/claude/commands ~/.claude/commands
 ln -sf ~/dev/claude/hooks ~/.claude/hooks
 ln -sf ~/dev/claude/scripts ~/.claude/scripts
 ln -sf ~/dev/claude/settings.json ~/.claude/settings.json
+ln -sf ~/dev/claude/RTK.md ~/.claude/RTK.md
 ln -sf ~/dev/claude/scripts/statusline.sh ~/.claude/statusline.sh
 
 # Configure smudge/clean filter to strip ephemeral state from settings.json
@@ -47,6 +48,42 @@ git config filter.strip-ephemeral-state.smudge cat
 ```
 
 > **Note**: Claude Code writes ephemeral state (e.g. `feedbackSurveyState`) to `settings.json` at runtime. The smudge/clean filter in `.gitattributes` automatically strips this before git sees it, so `git status` stays clean.
+
+## RTK (Token Optimization)
+
+[RTK](https://github.com/rtk-ai/rtk) is a CLI proxy written in Rust that sits between Claude Code and the shell. It intercepts common commands (`git status`, `npm test`, `grep`, `docker`, etc.), strips noise the model doesn't need (passing tests, progress bars, ASCII borders), and returns a compressed version. Reported savings are 60-90% tokens on typical dev operations, which translates to more exchanges per session before hitting rate limits.
+
+The integration lives in this repo:
+
+- `RTK.md` - meta-command reference, imported into every session via `@RTK.md` in `CLAUDE.md`
+- `rtk/config.toml` - tracked config with tee mode on (`failures`), telemetry off, default exclusions
+- `settings.json` - `PreToolUse` Bash hook that rewrites commands transparently
+
+### Installing RTK
+
+```bash
+# Install the binary and initialize the Claude Code hook
+brew install rtk
+rtk init -g --hook-only   # hook-only: the repo provides RTK.md
+
+# Symlink the tracked config (macOS)
+mkdir -p ~/Library/Application\ Support/rtk
+ln -sf ~/dev/claude/rtk/config.toml ~/Library/Application\ Support/rtk/config.toml
+
+# Verify
+rtk --version
+rtk config          # should print the symlinked config
+rtk gain            # token savings analytics
+```
+
+### Safety note
+
+RTK filters what the model sees. During complex debugging (e.g. correlating timeouts across services), compression can hide patterns that matter. Two mitigations are configured:
+
+- **Tee mode** (`failures`) preserves the full unfiltered output whenever a command fails, so raw data is always recoverable.
+- **`exclude_commands`** in `rtk/config.toml` lets you bypass filtering for specific commands when raw output is non-negotiable (prod DB sessions, incident log tailing).
+
+Use `rtk proxy <cmd>` for a one-shot unfiltered run without editing config.
 
 ## Components
 

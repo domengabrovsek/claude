@@ -63,3 +63,5 @@ Detailed git, testing, and exploration rules are in `rules/` (git-conventions, e
 - Cloud: GCP primary, AWS secondary
 - Current year: 2026 - verify when generating dates, timestamps, or date-dependent logic
 - Access boundaries: .env files, credentials, and secrets are blocked by deny rules - do not attempt workarounds. For Sentry, staging databases, and external services requiring auth, ask the user for credentials or URLs rather than trying to authenticate
+
+@RTK.md
