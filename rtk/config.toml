@@ -50,7 +50,7 @@ consent_given = false
 [hooks]
 # Commands to bypass rtk filtering entirely. Add commands here when raw output
 # matters more than token savings (e.g. production DB sessions, incident log
-# tailing). Empty by default — extend per machine if needed.
+# tailing). Empty by default - extend per machine if needed.
 exclude_commands = []
 
 [limits]
