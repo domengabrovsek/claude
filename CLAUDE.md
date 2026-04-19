@@ -28,6 +28,7 @@ For trivial changes (typos, one-liner fixes, config tweaks): skip straight to im
 - Use the project's formatter/linter (Biome, ESLint, Prettier - whatever is configured)
 - Complete code only - no TODOs, no placeholders, no incomplete implementations
 - Use Context7 MCP to pull latest docs when working with specific technologies (NestJS, PostgreSQL, Drizzle, etc.) - don't rely on potentially outdated training knowledge
+- Never reference issue, PR, or ticket numbers in code comments (no `pentla-api#535`, `PR #561`, `(#545)`, `Fixes #123`, etc.). They rot as soon as trackers move, and the PR description or git blame is the right place for that context. Comments should describe the WHY in self-contained prose.
 - Detailed standards are in rules/ (typescript, tests, database, infrastructure, security)
 
 ## Docs Sync
