@@ -1,5 +1,13 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  },
+  "autoUpdatesChannel": "stable",
+  "minimumVersion": "2.1.92",
+  "enabledPlugins": {
+    "frontend-design@claude-plugins-official": true
+  },
   "permissions": {
     "deny": [
       "Read(**/.env)",
@@ -8,6 +16,11 @@
       "Read(~/.gnupg/**)",
       "Read(~/.aws/**)",
       "Read(~/.config/gcloud/**)",
+      "Read(~/.config/gh/hosts.yml)",
+      "Read(~/.gradle/gradle.properties)",
+      "Read(~/.pypirc)",
+      "Read(~/.terraform.d/**)",
+      "Read(~/.vault-token)",
       "Read(~/.kube/**)",
       "Read(~/.docker/config.json)",
       "Read(~/.npmrc)",
@@ -94,7 +107,7 @@
       "Bash(*TRUNCATE TABLE*)"
     ]
   },
-  "effortLevel": "high",
+  "effortLevel": "xhigh",
   "hooks": {
     "PreToolUse": [
       {
