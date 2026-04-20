@@ -30,7 +30,7 @@ fi
 # Node version: prefer .nvmrc (fast file read), fall back to node -v
 node_version=""
 if [ -f "$cwd/.nvmrc" ]; then
-  node_version="v$(cat "$cwd/.nvmrc" | tr -d '[:space:]')"
+  node_version="v$(cat "$cwd/.nvmrc" | tr -d '[:space:]' | sed 's/^v//')"
 elif command -v node >/dev/null 2>&1; then
   node_version=$(node -v 2>/dev/null)
 fi
