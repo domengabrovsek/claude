@@ -50,6 +50,7 @@ For trivial changes (typos, one-liner fixes, config tweaks): skip straight to im
 - **Verification**: always run `/user:verify-done` before pushing - never push without all checks passing
 - **Atomic feature unit**: "implement" means implement + commit on a feature branch + push + open PR. Never stop after the code change. Never commit to `main`/`master` directly. If on a protected branch, create a feature branch first.
 - **Parallelization**: when a task has 2+ independent sub-tasks touching different files, split across multiple agents using git worktrees - see `rules/parallel-agents.md`
+- **Cross-session isolation**: before non-trivial work, isolate this session in a git worktree to avoid colliding with other Claude sessions on the same repo. See `rules/isolation.md`. The `/user:worktree <slug>` command does this. The PreToolUse guard will block mutations if another live session holds the lock and you are not in a worktree.
 
 Detailed git, testing, and exploration rules are in `rules/` (git-conventions, engineering-principles).
 

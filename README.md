@@ -109,6 +109,8 @@ Modular instruction files. **Always-loaded** rules have no frontmatter. **Path-s
 | `tests.md` | `**/*.test.ts,**/*.spec.ts` | Editing test files |
 | `database.md` | `**/migrations/**,**/*.sql` | Editing database/migration files |
 | `infrastructure.md` | `**/Dockerfile,**/*.tf` | Editing infrastructure files |
+| `isolation.md` | Always | Every session (cross-session repo isolation, worktree decision tree) |
+| `parallel-agents.md` | Always | Every session (worktree pattern for self-spawned parallel agents) |
 
 ### Agents (`agents/`)
 
@@ -144,6 +146,8 @@ Slash commands for frequent workflows. Available as `/user:<name>`.
 | `typecheck` | `/user:typecheck` | Run tsc and fix all type errors |
 | `verify-done` | `/user:verify-done` | Full quality gate before declaring work done (lint + typecheck + test + build + git status) |
 | `locks` | `/user:locks [--prune\|--release <hash>]` | List active Claude session locks across repos; prune stale; force-release |
+| `worktree` | `/user:worktree <slug>` | Create an isolated git worktree on a fresh branch and switch into it. Resolves cross-session collisions before they happen. |
+| `worktree-merge` | `/user:worktree-merge` | Clean up the current worktree after its branch is merged. Removes worktree dir, deletes local branch, releases lock. |
 
 ### Hooks (`hooks/`)
 
