@@ -115,6 +115,11 @@
         "hooks": [
           {
             "type": "command",
+            "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/repo-lock-guard.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/repo-lock-guard.sh\"; [ -x \"$HOOK\" ] && exec \"$HOOK\"",
+            "timeout": 5
+          },
+          {
+            "type": "command",
             "if": "Bash(gh pr create *)",
             "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/pre-pr-test-gate.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/pre-pr-test-gate.sh\"; [ -x \"$HOOK\" ] && exec \"$HOOK\"",
             "timeout": 120
@@ -128,6 +133,16 @@
           {
             "type": "command",
             "command": "command -v rtk >/dev/null 2>&1 && rtk hook claude || true"
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/repo-lock-guard.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/repo-lock-guard.sh\"; [ -x \"$HOOK\" ] && exec \"$HOOK\"",
+            "timeout": 5
           }
         ]
       }

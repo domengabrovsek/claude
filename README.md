@@ -156,6 +156,7 @@ Automation scripts triggered at lifecycle events. Configured in `settings.json` 
 | `repo-lock-status.sh` | SessionStart (startup\|resume) | Claim the repo lock for this session (or notice if held by another live session). Advisory, never blocks. |
 | `repo-lock-heartbeat.sh` | PostToolUse (Write\|Edit\|Bash) | Refresh lock `last_seen` so the session stays alive. Throttled to 60s via lock mtime. Never blocks. |
 | `repo-lock-release.sh` | SessionEnd | Release the repo lock if owned by this session. Idempotent. |
+| `repo-lock-guard.sh` | PreToolUse (Write\|Edit\|Bash mutations) | Hard-block mutations when another live session holds the lock and current session is not in a worktree. Bypass with `SKIP_LOCK=1`. |
 | `auto-format.sh` | PostToolUse (Write/Edit) | Auto-format files with project formatter (Biome/Prettier) |
 | `post-edit-typecheck.sh` | PostToolUse (Write/Edit) | Run typecheck and lint on .ts/.tsx files after edits |
 | `watch-pr-checks.sh` | PostToolUse (gh pr create) | Poll CI checks in background, notify on pass/fail |
