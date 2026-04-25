@@ -38,7 +38,7 @@ For trivial changes (typos, one-liner fixes, config tweaks): skip straight to im
 - Use the `/document` slash command to create or refresh docs - it embeds the quality rules and Diataxis routing
 - Never let docs drift from implementation - if you change it, document it
 - Only update docs that describe behavior actually changed in this session - no forward-looking references, planned features, or speculative content
-- Diagrams are Mermaid only (text-based, GitHub-rendered, AI-readable). No draw.io, no PNGs
+- Diagrams default to Mermaid (text-based, GitHub-rendered, AI-readable). Use drawio when the diagram needs custom shapes, multi-layer architecture, >2 swimlanes, or precise layout - see `rules/diagrams.md` for the policy and `/diagram` skill for the workflow
 - ADRs are immutable once Accepted - a reversed decision creates a new ADR that supersedes the old one
 
 ## Behavioral Rules

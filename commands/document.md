@@ -38,7 +38,7 @@ If a topic does not clearly fit one quadrant, ask. Do not split a single topic a
 2. **Lead with TL;DR** in 3 sentences or fewer, before any heading. Body expands.
 3. **Cite source files** with backticked relative paths (`src/foo/bar.ts`). Link, do not paste. Inline code blocks longer than 15 lines are forbidden - link to the file instead.
 4. **Tables over prose** for any list of more than 3 parallel items.
-5. **Diagrams for relationships only.** No diagram if a 3-row table conveys it. Mermaid only - no draw.io, no PNGs.
+5. **Diagrams for relationships only.** No diagram if a 3-row table conveys it. Mermaid by default; drawio for complex per `rules/diagrams.md`. The `/diagram` skill picks format and writes the source.
 6. **Why before how.** Every explanation doc opens with the problem the thing solves.
 7. **No forward-looking content.** Document only behavior that exists now. No "we plan to", no "in the future".
 8. **No issue/PR/ticket numbers.** They rot. Put them in PR descriptions and git history, not docs.
@@ -47,17 +47,26 @@ If a topic does not clearly fit one quadrant, ask. Do not split a single topic a
 11. **No emoji** unless the user explicitly asked for them.
 12. **No em dashes.** Use a regular hyphen.
 
-## Mermaid conventions
+## Diagram conventions
 
-- Use ` ```mermaid ` fenced blocks. GitHub renders them natively.
-- Diagram type by purpose:
-  - `flowchart TD` for high-level architecture and decision trees
-  - `sequenceDiagram` for request flows, auth flows, async messaging
-  - `erDiagram` for data models
-  - `stateDiagram-v2` for state machines (order status, sync status)
-  - `flowchart LR` with subgraphs for C4-context (services, queues, datastores)
-- Keep node labels short. Put long descriptions in adjacent prose, not in the diagram.
-- One diagram per doc maximum, unless the doc is explicitly an architecture doc.
+Mermaid is the default. Use ` ```mermaid ` fenced blocks - GitHub renders natively. Diagram type by purpose:
+
+- `flowchart TD` for high-level architecture and decision trees
+- `sequenceDiagram` for request flows, auth flows, async messaging
+- `erDiagram` for data models
+- `stateDiagram-v2` for state machines (order status, sync status)
+- `flowchart LR` with subgraphs for C4-context (services, queues, datastores)
+
+Keep node labels short. Long descriptions go in adjacent prose. One diagram per doc maximum unless the doc is explicitly an architecture overview.
+
+Switch to drawio when the diagram needs custom shapes, cloud icons, >2 swimlanes, multi-layer architecture, or precise layout. Source lives at `docs/diagrams/<topic>.drawio` with a committed PNG at `docs/diagrams/<topic>.png` (GitHub previews need the PNG; maintainers need the source). Embed via:
+
+```markdown
+![<topic>](diagrams/<topic>.png)
+*Source: [`<topic>.drawio`](diagrams/<topic>.drawio)*
+```
+
+Use the `/diagram` skill (or `mcp__drawio__*` tools directly) to author drawio diagrams. Full policy in `rules/diagrams.md`.
 
 ## File layout the command produces or expects
 

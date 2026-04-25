@@ -110,6 +110,7 @@ Modular instruction files. **Always-loaded** rules have no frontmatter. **Path-s
 | `database.md` | `**/migrations/**,**/*.sql` | Editing database/migration files |
 | `infrastructure.md` | `**/Dockerfile,**/*.tf` | Editing infrastructure files |
 | `isolation.md` | Always | Every session (cross-session repo isolation, worktree decision tree) |
+| `diagrams.md` | Always | Every session (mermaid-default + drawio-for-complex policy, file convention, MCP usage) |
 | `parallel-agents.md` | Always | Every session (worktree pattern for self-spawned parallel agents) |
 
 ### Agents (`agents/`)
@@ -133,6 +134,7 @@ Reusable workflows invoked on-demand. Cost ~200 tokens when idle (metadata only)
 | `ci` | `/ci` | Monitor CI pipeline status, analyze failures, propose fixes. Use with `/loop 2m /ci` for auto-polling |
 | `mr` | `/mr` | Create MR/PR with template, conventional commit checks, and stacked MR/PR dependency support |
 | `debug` | `/debug <error\|alert>` | Structured incident investigation: evidence, ranked hypotheses, minimal fix, regression test |
+| `diagram` | `/diagram <topic>` | Pick mermaid vs drawio per `rules/diagrams.md`, write the source, preview via drawio MCP |
 
 ### Commands (`commands/`)
 
