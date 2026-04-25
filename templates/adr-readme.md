@@ -10,7 +10,7 @@ ADRs capture significant technical decisions: what we chose, why, and what it co
 
 ## How to add one
 
-```
+```text
 /document adr "<short title>"
 ```
 

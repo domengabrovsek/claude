@@ -61,7 +61,7 @@ If a topic does not clearly fit one quadrant, ask. Do not split a single topic a
 
 ## File layout the command produces or expects
 
-```
+```text
 <repo>/
   docs/
     README.md             # index grouped by Diataxis quadrant
