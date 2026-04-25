@@ -153,7 +153,9 @@ Automation scripts triggered at lifecycle events. Configured in `settings.json` 
 | --- | --- | --- |
 | `pre-pr-test-gate.sh` | PreToolUse (gh pr create) | Block PR creation if tests fail |
 | `pre-push-gate.sh` | PreToolUse (git push) | Hard-block `git push` if lint/typecheck/test/build fail. Bypass with `SKIP_PUSH_GATE=1` |
-| `repo-lock-status.sh` | SessionStart (startup\|resume) | Phase 1 advisory notice when another live Claude session holds the repo lock. No blocking. |
+| `repo-lock-status.sh` | SessionStart (startup\|resume) | Claim the repo lock for this session (or notice if held by another live session). Advisory, never blocks. |
+| `repo-lock-heartbeat.sh` | PostToolUse (Write\|Edit\|Bash) | Refresh lock `last_seen` so the session stays alive. Throttled to 60s via lock mtime. Never blocks. |
+| `repo-lock-release.sh` | SessionEnd | Release the repo lock if owned by this session. Idempotent. |
 | `auto-format.sh` | PostToolUse (Write/Edit) | Auto-format files with project formatter (Biome/Prettier) |
 | `post-edit-typecheck.sh` | PostToolUse (Write/Edit) | Run typecheck and lint on .ts/.tsx files after edits |
 | `watch-pr-checks.sh` | PostToolUse (gh pr create) | Poll CI checks in background, notify on pass/fail |

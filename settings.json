@@ -145,6 +145,11 @@
             "type": "command",
             "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/post-edit-typecheck.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/post-edit-typecheck.sh\"; if [ -x \"$HOOK\" ]; then \"$HOOK\"; fi",
             "timeout": 60
+          },
+          {
+            "type": "command",
+            "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/repo-lock-heartbeat.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/repo-lock-heartbeat.sh\"; [ -x \"$HOOK\" ] && \"$HOOK\" || true",
+            "timeout": 5
           }
         ]
       },
@@ -155,6 +160,22 @@
             "type": "command",
             "if": "Bash(gh pr create *)",
             "command": "nohup bash -c '~/.claude/hooks/watch-pr-checks.sh' >/dev/null 2>&1 &",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/repo-lock-heartbeat.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/repo-lock-heartbeat.sh\"; [ -x \"$HOOK\" ] && \"$HOOK\" || true",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/repo-lock-release.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/repo-lock-release.sh\"; [ -x \"$HOOK\" ] && \"$HOOK\" || true",
             "timeout": 5
           }
         ]
