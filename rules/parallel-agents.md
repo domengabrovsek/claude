@@ -64,6 +64,7 @@ After all agents complete:
 3. After each merge, check for conflicts and resolve immediately
 4. Run the full test suite, typecheck, and lint after all merges are complete
 5. If a merge conflict arises, resolve it manually - do NOT re-spawn an agent for conflict resolution
+6. After all branches are merged into the integration branch, prune the agent worktrees: `~/.claude/scripts/worktree-prune.sh --apply`. The conservative rule will only remove worktrees whose branch is upstream-gone or merged into the default - exactly the post-merge state. Locked worktrees will auto-unlock if safe. Anything still active is preserved.
 
 ## Agent Prompt Quality
 

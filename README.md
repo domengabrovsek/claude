@@ -150,6 +150,8 @@ Slash commands for frequent workflows. Available as `/user:<name>`.
 | `locks` | `/user:locks [--prune\|--release <hash>]` | List active Claude session locks across repos; prune stale; force-release |
 | `worktree` | `/user:worktree <slug>` | Create an isolated git worktree on a fresh branch and switch into it. Resolves cross-session collisions before they happen. |
 | `worktree-merge` | `/user:worktree-merge` | Clean up the current worktree after its branch is merged. Removes worktree dir, deletes local branch, releases lock. |
+| `worktrees-prune` | `/user:worktrees-prune [--apply]` | Per-repo dry-run / apply: remove worktrees whose branch is upstream-gone or merged into default. |
+| `worktrees-audit` | `/user:worktrees-audit [--root <path>] [--apply]` | Cross-repo scan under `~/dev/`, verdict per worktree, optional bulk apply. |
 
 ### Hooks (`hooks/`)
 
@@ -162,6 +164,7 @@ Automation scripts triggered at lifecycle events. Configured in `settings.json` 
 | `repo-lock-status.sh` | SessionStart (startup\|resume) | Claim the repo lock for this session (or notice if held by another live session). Advisory, never blocks. |
 | `repo-lock-heartbeat.sh` | PostToolUse (Write\|Edit\|Bash) | Refresh lock `last_seen` so the session stays alive. Throttled to 60s via lock mtime. Never blocks. |
 | `repo-lock-release.sh` | SessionEnd | Release the repo lock if owned by this session. Idempotent. |
+| `worktree-cleanup.sh` | SessionEnd | Opportunistic safe-prune of the current repo's worktrees. Conservative; never blocks. Disable per-session with `CLAUDE_DISABLE_WORKTREE_CLEANUP=1`. |
 | `repo-lock-guard.sh` | PreToolUse (Write\|Edit\|Bash mutations) | Hard-block mutations when another live session holds the lock and current session is not in a worktree. Bypass with `SKIP_LOCK=1`. |
 | `auto-format.sh` | PostToolUse (Write/Edit) | Auto-format files with project formatter (Biome/Prettier) |
 | `post-edit-typecheck.sh` | PostToolUse (Write/Edit) | Run typecheck and lint on .ts/.tsx files after edits |
@@ -178,6 +181,7 @@ Utility scripts referenced by skills and hooks.
 | `notify.sh` | Send macOS desktop notification unless a terminal or IDE is in the foreground |
 | `statusline.sh` | Status line showing model, repo, branch, and node version. Symlink to `~/.claude/statusline.sh` |
 | `repo-lock.sh` | Repo lock manager. `claim/release/check/list/prune` against `~/.claude/locks/<sha1>.json`. Used by isolation hooks. |
+| `worktree-prune.sh` | Identify and (with `--apply`) remove safely-disposable worktrees. Conservative rule: upstream-gone OR merged into default. `audit-all` mode walks `~/dev/`. |
 
 ### State (`.claude/state/` per project)
 

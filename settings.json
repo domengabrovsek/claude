@@ -192,6 +192,11 @@
             "type": "command",
             "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/repo-lock-release.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/repo-lock-release.sh\"; [ -x \"$HOOK\" ] && \"$HOOK\" || true",
             "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/worktree-cleanup.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/worktree-cleanup.sh\"; [ -x \"$HOOK\" ] && \"$HOOK\" || true",
+            "timeout": 30
           }
         ]
       }

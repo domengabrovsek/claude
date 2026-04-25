@@ -30,13 +30,6 @@ Also output the summary to the conversation. Keep it concise - suitable for a st
 
 ## Worktree auto-cleanup
 
-After saving the diary, scan worktrees owned by this repo and remove ones that are safely disposable:
+After saving the diary, run `~/.claude/scripts/worktree-prune.sh --apply` against the current repo. The script applies the conservative rule (upstream-gone OR merged into default) and reports what was removed vs kept. Locked worktrees are auto-unlocked iff safely removable. Anything with unpushed work or open PR is preserved.
 
-1. `git worktree list --porcelain` to list every worktree.
-2. For each non-main worktree, check its branch:
-   - If the branch's upstream is `gone` (remote branch deleted, e.g. PR merged) - safe to remove.
-   - If `git rev-list --count <branch>@{upstream}..<branch>` is 0 (no unpushed commits) - safe to remove.
-   - Otherwise (unpushed work, no upstream, or uncommitted changes) - skip and tell the user the worktree was preserved with a one-line reason.
-3. For each safe worktree: `git worktree remove <path>` and `git branch -d <branch>`. Release the lock with `~/.claude/scripts/repo-lock.sh release <path>` if needed.
-
-Never force-remove. Never delete a branch with unpushed commits. If in doubt, preserve and report.
+The same hook fires automatically at SessionEnd, so this step is mostly for explicit closure and surface visibility.
