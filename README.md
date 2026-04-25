@@ -143,6 +143,7 @@ Slash commands for frequent workflows. Available as `/user:<name>`.
 | `summarize` | `/user:summarize` | Save session diary to `.claude/state/sessions/` |
 | `typecheck` | `/user:typecheck` | Run tsc and fix all type errors |
 | `verify-done` | `/user:verify-done` | Full quality gate before declaring work done (lint + typecheck + test + build + git status) |
+| `locks` | `/user:locks [--prune\|--release <hash>]` | List active Claude session locks across repos; prune stale; force-release |
 
 ### Hooks (`hooks/`)
 
@@ -152,6 +153,7 @@ Automation scripts triggered at lifecycle events. Configured in `settings.json` 
 | --- | --- | --- |
 | `pre-pr-test-gate.sh` | PreToolUse (gh pr create) | Block PR creation if tests fail |
 | `pre-push-gate.sh` | PreToolUse (git push) | Hard-block `git push` if lint/typecheck/test/build fail. Bypass with `SKIP_PUSH_GATE=1` |
+| `repo-lock-status.sh` | SessionStart (startup\|resume) | Phase 1 advisory notice when another live Claude session holds the repo lock. No blocking. |
 | `auto-format.sh` | PostToolUse (Write/Edit) | Auto-format files with project formatter (Biome/Prettier) |
 | `post-edit-typecheck.sh` | PostToolUse (Write/Edit) | Run typecheck and lint on .ts/.tsx files after edits |
 | `watch-pr-checks.sh` | PostToolUse (gh pr create) | Poll CI checks in background, notify on pass/fail |
@@ -166,6 +168,7 @@ Utility scripts referenced by skills and hooks.
 | --- | --- |
 | `notify.sh` | Send macOS desktop notification unless a terminal or IDE is in the foreground |
 | `statusline.sh` | Status line showing model, repo, branch, and node version. Symlink to `~/.claude/statusline.sh` |
+| `repo-lock.sh` | Repo lock manager. `claim/release/check/list/prune` against `~/.claude/locks/<sha1>.json`. Used by isolation hooks. |
 
 ### State (`.claude/state/` per project)
 
