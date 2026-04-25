@@ -33,9 +33,13 @@ For trivial changes (typos, one-liner fixes, config tweaks): skip straight to im
 
 ## Docs Sync
 
-- When code changes affect behavior documented in `.claude/docs/`, update the relevant docs in the same PR
+- Engineering docs live in each repo's `/docs/` tree, organized by [Diataxis](https://diataxis.fr/) (explanation, reference, how-to, tutorials) plus an `adr/` folder for Architecture Decision Records
+- When code changes affect behavior documented in `docs/`, update the relevant docs in the same PR
+- Use the `/document` slash command to create or refresh docs - it embeds the quality rules and Diataxis routing
 - Never let docs drift from implementation - if you change it, document it
 - Only update docs that describe behavior actually changed in this session - no forward-looking references, planned features, or speculative content
+- Diagrams are Mermaid only (text-based, GitHub-rendered, AI-readable). No draw.io, no PNGs
+- ADRs are immutable once Accepted - a reversed decision creates a new ADR that supersedes the old one
 
 ## Behavioral Rules
 
