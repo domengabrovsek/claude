@@ -24,9 +24,11 @@ Default to `feat/<slug>`. If the user's request looks like a bug fix, use `fix/<
 1. Find the repo root: `git rev-parse --show-toplevel`. Refuse if not inside a git repo.
 2. Compute target dir: `<repo-parent>/<repo-basename>-<slug>`. Refuse if it already exists (offer to `cd` into the existing one instead).
 3. Create the worktree on a new branch:
+
    ```bash
    git worktree add "<target>" -b "<branch>"
    ```
+
 4. `cd` into the worktree dir for all subsequent operations.
 5. Show the user the new working dir, branch name, and confirm next steps.
 

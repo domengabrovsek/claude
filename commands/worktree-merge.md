@@ -14,10 +14,12 @@ If the branch is not safe to remove, stop and explain what's still pending (unpu
 ## Steps
 
 1. Capture worktree path and branch name:
+
    ```bash
    WORKTREE=$(git rev-parse --show-toplevel)
    BRANCH=$(git rev-parse --abbrev-ref HEAD)
    ```
+
 2. Move out of the worktree to the main checkout (`cd "$(git rev-parse --git-common-dir)/.."`).
 3. Release the lock for the worktree path: `~/.claude/scripts/repo-lock.sh release "$WORKTREE"` (the SessionEnd hook will also do this; explicit release here is for the immediate cleanup).
 4. Remove the worktree: `git worktree remove "$WORKTREE"`. If it has uncommitted changes and `--force` was passed, use `git worktree remove --force "$WORKTREE"`.
