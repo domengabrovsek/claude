@@ -48,6 +48,7 @@ For trivial changes (typos, one-liner fixes, config tweaks): skip straight to im
 - **Existing patterns**: follow the conventions already in the codebase - consistency over personal preference
 - **Context first**: before choosing an approach, check how similar problems are already solved in the codebase - grep for existing patterns, read neighboring files, and follow established conventions rather than guessing
 - **Verification**: always run `/user:verify-done` before pushing - never push without all checks passing
+- **Atomic feature unit**: "implement" means implement + commit on a feature branch + push + open PR. Never stop after the code change. Never commit to `main`/`master` directly. If on a protected branch, create a feature branch first.
 - **Parallelization**: when a task has 2+ independent sub-tasks touching different files, split across multiple agents using git worktrees - see `rules/parallel-agents.md`
 
 Detailed git, testing, and exploration rules are in `rules/` (git-conventions, engineering-principles).

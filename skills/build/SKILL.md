@@ -24,8 +24,7 @@ For each task in the plan:
 4. **Compile continuously**: the project must build after every increment. Run typecheck after each file change.
 5. **Test alongside**: write tests as part of the increment, not as a separate step afterward
 6. **Checkpoint**: after completing each task:
-   - Run typecheck and lint before staging - do not rely on post-edit hooks alone
-   - Run `/user:verify-done` (typecheck + lint + tests + build)
+   - Run `/user:verify-done` (typecheck + lint + tests + build) - do not rely on post-edit hooks alone
    - If all pass, commit with a conventional commit message
    - If any fail, fix before moving to the next task - never accumulate errors across tasks
 

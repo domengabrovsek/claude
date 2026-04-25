@@ -130,6 +130,7 @@ Reusable workflows invoked on-demand. Cost ~200 tokens when idle (metadata only)
 | `review-pr` | `/review-pr 567` | Structured PR review with BLOCKER/ISSUE/SUGGESTION/NIT/PRAISE severity |
 | `ci` | `/ci` | Monitor CI pipeline status, analyze failures, propose fixes. Use with `/loop 2m /ci` for auto-polling |
 | `mr` | `/mr` | Create MR/PR with template, conventional commit checks, and stacked MR/PR dependency support |
+| `debug` | `/debug <error\|alert>` | Structured incident investigation: evidence, ranked hypotheses, minimal fix, regression test |
 
 ### Commands (`commands/`)
 
@@ -150,6 +151,7 @@ Automation scripts triggered at lifecycle events. Configured in `settings.json` 
 | Hook | Event | Purpose |
 | --- | --- | --- |
 | `pre-pr-test-gate.sh` | PreToolUse (gh pr create) | Block PR creation if tests fail |
+| `pre-push-gate.sh` | PreToolUse (git push) | Hard-block `git push` if lint/typecheck/test/build fail. Bypass with `SKIP_PUSH_GATE=1` |
 | `auto-format.sh` | PostToolUse (Write/Edit) | Auto-format files with project formatter (Biome/Prettier) |
 | `post-edit-typecheck.sh` | PostToolUse (Write/Edit) | Run typecheck and lint on .ts/.tsx files after edits |
 | `watch-pr-checks.sh` | PostToolUse (gh pr create) | Poll CI checks in background, notify on pass/fail |
