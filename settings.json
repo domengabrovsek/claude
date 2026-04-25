@@ -181,6 +181,16 @@
             "command": "echo 'Reminder: follow the workflow (Research - Plan - Annotate - Implement - Summarize). Minimal fix first for bugs. Run /user:verify-done before commits. Current year: 2026.'"
           }
         ]
+      },
+      {
+        "matcher": "startup|resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/repo-lock-status.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/repo-lock-status.sh\"; [ -x \"$HOOK\" ] && \"$HOOK\" || true",
+            "timeout": 10
+          }
+        ]
       }
     ]
   },
