@@ -15,6 +15,10 @@
    - **Pipeline passes** (`completed|success`):
      - Run `~/.claude/scripts/notify.sh "CI passed - <branch-name>"`
      - Report success
+   - **Pipeline awaiting manual action** (`completed|manual`, GitLab only):
+     - All automatic jobs completed; the pipeline is paused on a manual gate and will not progress without user action
+     - Run `~/.claude/scripts/notify.sh "CI awaiting manual action - <branch-name>"`
+     - Report status and stop watching - do NOT trigger the manual job automatically
    - **Pipeline fails** (`completed|failure` or any non-success conclusion):
      a. Fetch the job log:
         - GitLab: `glab ci trace <job-id>`
