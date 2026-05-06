@@ -179,7 +179,7 @@ Utility scripts referenced by skills and hooks.
 | Script | Purpose |
 | --- | --- |
 | `notify.sh` | Send macOS desktop notification unless a terminal or IDE is in the foreground |
-| `statusline.sh` | Status line showing model, repo, branch, and node version. Symlink to `~/.claude/statusline.sh` |
+| `statusline.sh` | Status line showing repo, branch (red if dirty), node version, and context usage (`145.7k (15%)`, color-graded green/yellow/red). Symlink to `~/.claude/statusline.sh` |
 | `repo-lock.sh` | Repo lock manager. `claim/release/check/list/prune` against `~/.claude/locks/<sha1>.json`. Used by isolation hooks. |
 | `worktree-prune.sh` | Identify and (with `--apply`) remove safely-disposable worktrees. Conservative rule: upstream-gone OR merged into default. `audit-all` mode walks `~/dev/`. |
 
