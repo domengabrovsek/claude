@@ -65,29 +65,28 @@ if [ -n "$node_version" ]; then
   printf " ${DIM}node${RESET} ${YELLOW}%s${RESET}" "$node_version"
 fi
 
-# Context block: only render when current_usage is available
+# Context block: render from the start, defaulting to 0 before the first API call
 if [ -n "$has_usage" ] && [ -n "$ctx_pct" ]; then
   pct_int=$(echo "$ctx_pct" | awk '{printf "%d", $1}')
-  if [ "$pct_int" -ge 80 ]; then
-    pct_color="$RED"
-  elif [ "$pct_int" -ge 50 ]; then
-    pct_color="$YELLOW"
-  else
-    pct_color="$GREEN"
-  fi
-
-  # Sum context-consuming tokens (output tokens are NOT part of the context window)
   used_tokens=$(echo "$input" | jq -r '
     (.context_window.current_usage.input_tokens // 0)
     + (.context_window.current_usage.cache_read_input_tokens // 0)
     + (.context_window.current_usage.cache_creation_input_tokens // 0)
   ')
-
-  # Window size: prefer the reported field, fall back to 200000
-  window_size=$(echo "$input" | jq -r '.context_window.context_window_size // 200000')
-
-  used_label=$(compact_tokens "$used_tokens")
-
-  printf " ${DIM}context${RESET} ${pct_color}%s (%d%%)${RESET}" \
-    "$used_label" "$pct_int"
+else
+  pct_int=0
+  used_tokens=0
 fi
+
+if [ "$pct_int" -ge 80 ]; then
+  pct_color="$RED"
+elif [ "$pct_int" -ge 50 ]; then
+  pct_color="$YELLOW"
+else
+  pct_color="$GREEN"
+fi
+
+used_label=$(compact_tokens "$used_tokens")
+
+printf " ${DIM}context${RESET} ${pct_color}%s (%d%%)${RESET}" \
+  "$used_label" "$pct_int"
