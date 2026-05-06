@@ -35,6 +35,25 @@ elif command -v node >/dev/null 2>&1; then
   node_version=$(node -v 2>/dev/null)
 fi
 
+# Context: only present after first API call (current_usage non-null)
+has_usage=$(echo "$input" | jq -r '.context_window.current_usage // empty')
+ctx_pct=$(echo "$input" | jq -r '.context_window.used_percentage // empty')
+
+# Compact a raw token number to e.g. "45.2k" or "999"
+compact_tokens() {
+  echo "$1" | awk '{
+    if ($1 >= 1000) {
+      val = $1 / 1000
+      # One decimal place, strip trailing .0
+      s = sprintf("%.1fk", val)
+      sub(/\.0k$/, "k", s)
+      print s
+    } else {
+      printf "%d", $1
+    }
+  }'
+}
+
 # Build output
 printf "${BOLD}${CYAN}%s${RESET}" "$folder"
 
@@ -44,4 +63,31 @@ fi
 
 if [ -n "$node_version" ]; then
   printf " ${DIM}node${RESET} ${YELLOW}%s${RESET}" "$node_version"
+fi
+
+# Context block: only render when current_usage is available
+if [ -n "$has_usage" ] && [ -n "$ctx_pct" ]; then
+  pct_int=$(echo "$ctx_pct" | awk '{printf "%d", $1}')
+  if [ "$pct_int" -ge 80 ]; then
+    pct_color="$RED"
+  elif [ "$pct_int" -ge 50 ]; then
+    pct_color="$YELLOW"
+  else
+    pct_color="$GREEN"
+  fi
+
+  # Sum context-consuming tokens (output tokens are NOT part of the context window)
+  used_tokens=$(echo "$input" | jq -r '
+    (.context_window.current_usage.input_tokens // 0)
+    + (.context_window.current_usage.cache_read_input_tokens // 0)
+    + (.context_window.current_usage.cache_creation_input_tokens // 0)
+  ')
+
+  # Window size: prefer the reported field, fall back to 200000
+  window_size=$(echo "$input" | jq -r '.context_window.context_window_size // 200000')
+
+  used_label=$(compact_tokens "$used_tokens")
+
+  printf " ${DIM}context${RESET} ${pct_color}%s (%d%%)${RESET}" \
+    "$used_label" "$pct_int"
 fi
