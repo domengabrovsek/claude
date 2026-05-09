@@ -135,6 +135,11 @@ Reusable workflows invoked on-demand. Cost ~200 tokens when idle (metadata only)
 | `mr` | `/mr` | Create MR/PR with template, conventional commit checks, and stacked MR/PR dependency support |
 | `debug` | `/debug <error\|alert>` | Structured incident investigation: evidence, ranked hypotheses, minimal fix, regression test |
 | `diagram` | `/diagram <topic>` | Pick mermaid vs drawio per `rules/diagrams.md`, write the source, preview via drawio MCP |
+| `grill-me` | `/grill-me` | Get relentlessly interviewed about a plan/design until every decision branch is resolved. From [mattpocock/skills](https://github.com/mattpocock/skills) |
+| `zoom-out` | `/zoom-out` | Map an unfamiliar code area: surrounding modules, callers, domain glossary terms. From [mattpocock/skills](https://github.com/mattpocock/skills) |
+| `to-issues` | `/to-issues` | Break a plan/PRD into independently-grabbable vertical-slice issues on the project tracker. From [mattpocock/skills](https://github.com/mattpocock/skills) |
+| `improve-codebase-architecture` | `/improve-codebase-architecture` | Surface deepening opportunities (shallow-module refactors) using deletion-test heuristics. From [mattpocock/skills](https://github.com/mattpocock/skills) |
+| `write-a-skill` | `/write-a-skill` | Scaffold a new skill with proper frontmatter, triggers, and progressive disclosure. From [mattpocock/skills](https://github.com/mattpocock/skills) |
 
 ### Commands (`commands/`)
 
