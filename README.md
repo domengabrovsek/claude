@@ -122,6 +122,8 @@ See [Agent Reference](docs/agents.md) for the full listing.
 
 Reusable workflows invoked on-demand. Cost ~200 tokens when idle (metadata only) vs. full cost if in CLAUDE.md.
 
+Skills tagged *(mattpocock)* below are vendored from [mattpocock/skills](https://github.com/mattpocock/skills). They were imported on 2026-05-08 and are not kept in sync upstream - they may diverge over time as they get adapted to this workflow. To pull a newer upstream version, copy it manually and re-review the diff.
+
 | Skill | Trigger | Purpose |
 | --- | --- | --- |
 | `spec` | `/spec <topic>` | Define requirements before planning |
@@ -134,11 +136,10 @@ Reusable workflows invoked on-demand. Cost ~200 tokens when idle (metadata only)
 | `mr` | `/mr` | Create MR/PR with template, conventional commit checks, and stacked MR/PR dependency support |
 | `debug` | `/debug <error\|alert>` | Structured incident investigation: evidence, ranked hypotheses, minimal fix, regression test |
 | `diagram` | `/diagram <topic>` | Pick mermaid vs drawio per `rules/diagrams.md`, write the source, preview via drawio MCP |
-| `grill-with-docs` | `/grill-with-docs` | Default alignment phase. Real-time Q&A walking the decision tree, updating `CONTEXT.md` and writing ADRs inline as decisions land. Replaces the old Plan + Annotate phases. From [mattpocock/skills](https://github.com/mattpocock/skills) |
-| `zoom-out` | `/zoom-out` | Map an unfamiliar code area: surrounding modules, callers, domain glossary terms. From [mattpocock/skills](https://github.com/mattpocock/skills) |
-| `to-issues` | `/to-issues` | Break a plan/PRD into independently-grabbable vertical-slice issues on the project tracker. From [mattpocock/skills](https://github.com/mattpocock/skills) |
-| `improve-codebase-architecture` | `/improve-codebase-architecture` | Surface deepening opportunities (shallow-module refactors) using deletion-test heuristics. From [mattpocock/skills](https://github.com/mattpocock/skills) |
-| `write-a-skill` | `/write-a-skill` | Scaffold a new skill with proper frontmatter, triggers, and progressive disclosure. From [mattpocock/skills](https://github.com/mattpocock/skills) |
+| `grill-with-docs` | `/grill-with-docs` | *(mattpocock)* Default alignment phase. Real-time Q&A walking the decision tree, updating `CONTEXT.md` and writing ADRs inline as decisions land. Replaces the old Plan + Annotate phases. |
+| `to-issues` | `/to-issues` | *(mattpocock)* Break a plan/PRD into independently-grabbable vertical-slice issues on the project tracker. |
+| `improve-codebase-architecture` | `/improve-codebase-architecture` | *(mattpocock)* Surface deepening opportunities (shallow-module refactors) using deletion-test heuristics. |
+| `write-a-skill` | `/write-a-skill` | *(mattpocock)* Scaffold a new skill with proper frontmatter, triggers, and progressive disclosure. |
 
 ### Commands (`commands/`)
 
