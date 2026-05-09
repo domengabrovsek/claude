@@ -91,7 +91,7 @@ Use `rtk proxy <cmd>` for a one-shot unfiltered run without editing config.
 
 Core rules loaded every session (~50 lines). Kept lean - detailed standards live in `rules/`.
 
-- 5-phase workflow: Research - Plan - Annotate - Implement - Summarize
+- 4-phase workflow: Research (optional) - Grill - Implement - Summarize. See [ADR 0001](docs/adr/0001-grill-driven-workflow.md) for the rationale and the priority order (`quality > consistent > efficient > fast`)
 - Security boundaries
 - Behavioral constraints (scope discipline, verification gates)
 
@@ -135,8 +135,7 @@ Reusable workflows invoked on-demand. Cost ~200 tokens when idle (metadata only)
 | `mr` | `/mr` | Create MR/PR with template, conventional commit checks, and stacked MR/PR dependency support |
 | `debug` | `/debug <error\|alert>` | Structured incident investigation: evidence, ranked hypotheses, minimal fix, regression test |
 | `diagram` | `/diagram <topic>` | Pick mermaid vs drawio per `rules/diagrams.md`, write the source, preview via drawio MCP |
-| `grill-me` | `/grill-me` | Get relentlessly interviewed about a plan/design until every decision branch is resolved. From [mattpocock/skills](https://github.com/mattpocock/skills) |
-| `grill-with-docs` | `/grill-with-docs` | Grill against the project's domain model and ADRs, updating `CONTEXT.md` and writing ADRs inline as decisions land. From [mattpocock/skills](https://github.com/mattpocock/skills) |
+| `grill-with-docs` | `/grill-with-docs` | Default alignment phase. Real-time Q&A walking the decision tree, updating `CONTEXT.md` and writing ADRs inline as decisions land. Replaces the old Plan + Annotate phases. From [mattpocock/skills](https://github.com/mattpocock/skills) |
 | `zoom-out` | `/zoom-out` | Map an unfamiliar code area: surrounding modules, callers, domain glossary terms. From [mattpocock/skills](https://github.com/mattpocock/skills) |
 | `to-issues` | `/to-issues` | Break a plan/PRD into independently-grabbable vertical-slice issues on the project tracker. From [mattpocock/skills](https://github.com/mattpocock/skills) |
 | `improve-codebase-architecture` | `/improve-codebase-architecture` | Surface deepening opportunities (shallow-module refactors) using deletion-test heuristics. From [mattpocock/skills](https://github.com/mattpocock/skills) |
@@ -148,8 +147,7 @@ Slash commands for frequent workflows. Available as `/user:<name>`.
 
 | Command | Trigger | Purpose |
 | --- | --- | --- |
-| `research` | `/user:research <topic>` | Phase 1: explore codebase, save findings to `.claude/state/research/` |
-| `plan` | `/user:plan` | Phase 2: create implementation plan, save to `.claude/state/plans/` |
+| `research` | `/user:research <topic>` | Optional Phase 1: explore codebase, save findings to `.claude/state/research/` |
 | `summarize` | `/user:summarize` | Save session diary to `.claude/state/sessions/` |
 | `typecheck` | `/user:typecheck` | Run tsc and fix all type errors |
 | `verify-done` | `/user:verify-done` | Full quality gate before declaring work done (lint + typecheck + test + build + git status) |
