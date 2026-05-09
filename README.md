@@ -30,6 +30,13 @@ Symlink the repo contents to `~/.claude/` so changes auto-sync:
 # Clone the repo
 git clone git@github.com:domengabrovsek/claude.git ~/dev/claude
 
+# IMPORTANT: if any of these targets already exist as real files or
+# directories under ~/.claude/, back them up first. The `ln -sf` for
+# directories will fail loudly if the target is a non-empty real dir,
+# but for files it silently overwrites - audit first to avoid losing
+# any local-only rules or settings.
+ls -la ~/.claude/
+
 # Symlink to ~/.claude/
 ln -sf ~/dev/claude/CLAUDE.md ~/.claude/CLAUDE.md
 ln -sf ~/dev/claude/agents ~/.claude/agents
@@ -47,7 +54,9 @@ git config filter.strip-ephemeral-state.clean 'jq "del(.feedbackSurveyState)" 2>
 git config filter.strip-ephemeral-state.smudge cat
 ```
 
-> **Note**: Claude Code writes ephemeral state (e.g. `feedbackSurveyState`) to `settings.json` at runtime. The smudge/clean filter in `.gitattributes` automatically strips this before git sees it, so `git status` stays clean.
+**Warning**: `~/.claude/rules/` is the most common collision point. If it already exists as a real directory with files in it, `ln -sf ~/dev/claude/rules ~/.claude/rules` will create the symlink *inside* it (e.g. `~/.claude/rules/rules`) instead of replacing it. Back up the contents into the repo first, then remove the directory before symlinking.
+
+**Note**: Claude Code writes ephemeral state (e.g. `feedbackSurveyState`) to `settings.json` at runtime. The smudge/clean filter in `.gitattributes` automatically strips this before git sees it, so `git status` stays clean.
 
 ## RTK (Token Optimization)
 
