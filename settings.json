@@ -220,7 +220,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo 'Reminder: follow the workflow (Research - Plan - Annotate - Implement - Summarize). Minimal fix first for bugs. Run /user:verify-done before commits. Current year: 2026.'"
+            "command": "echo 'Reminder: follow the workflow (Research - Grill - Implement - Summarize). Use /grill-with-docs for alignment. Minimal fix first for bugs. Run /user:verify-done before commits. Current year: 2026.'"
           }
         ]
       },

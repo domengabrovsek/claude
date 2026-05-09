@@ -2,15 +2,22 @@
 
 These rules apply to every project. Project-level CLAUDE.md files override where they conflict.
 
-## Workflow: Research - Plan - Implement
+## Priority order
 
-1. **Research**: read every relevant file, produce a research artifact. Save to `.claude/state/research/`. No solutions yet.
-2. **Plan**: produce a plan with goal, approach, file-by-file changes, task checklist. Save to `.claude/state/plans/`. Wait for approval.
-3. **Annotate**: user annotates the plan. Address every annotation, re-present. Repeat until explicit approval.
-4. **Implement**: execute the approved plan task by task. Run typecheck continuously. Build + lint + test must pass before done.
-5. **Summarize**: save a session diary entry to `.claude/state/sessions/` when work is complete.
+When goals conflict: **quality > consistent > efficient > fast**. Shipped bugs cost more than slow shipping. Consistency is the entire point of a global config. Token efficiency compounds. Speed of output matters least when shipping serious work.
 
-For trivial changes (typos, one-liner fixes, config tweaks): skip straight to implementation. If in doubt about whether something is trivial, it is not - follow the full workflow.
+## Workflow: Research - Grill - Implement - Summarize
+
+1. **Research** (optional): orientation pass when entering unfamiliar code. Read every relevant file, produce a research artifact at `.claude/state/research/`. Skip when the area is already familiar - the grill will explore inline.
+2. **Grill**: invoke `/grill-with-docs <topic>` for real-time alignment. The grill walks the decision tree question by question, emits CONTEXT.md updates (domain terms) and ADRs (architectural decisions) inline, and ends by writing a short execution plan to `.claude/state/plans/`. The user's confirmation at grill exit is the approval gate.
+3. **Implement**: explicit handoff after grill exits. Invoke `/build` to walk the execution plan task by task. Run typecheck continuously. Build + lint + test must pass before done.
+4. **Summarize**: save a session diary entry to `.claude/state/sessions/` when work is complete.
+
+The grill is self-pacing: heaviness scales with alignment complexity, not a separate threshold. When there is nothing to align on, the grill exits in two turns. So the trivial bypass narrows.
+
+Trivial bypass (skip everything, go straight to implement, skip Summarize): typos, single-line fixes, version bumps, config tweaks. Only when you are 100% sure. If in doubt, enter the grill - it is cheap when there is nothing to grill on.
+
+Other intents are first-class workflows with their own shapes, not stripped-down versions of the implementation workflow: `/debug` for incidents, `/zoom-out` for codebase exploration, `/review-pr` for reviewing others' code, `/document` for docs, `/spec` for feature requirements.
 
 ## Security
 
