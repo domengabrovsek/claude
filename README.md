@@ -208,4 +208,6 @@ Markdown linting runs on every push and PR via GitHub Actions.
 
 ## Documentation
 
+- [Cheatsheet](CHEATSHEET.md) - intent -> slash command map. Skim when you wonder "is there a slash for X?"
 - [Agent Reference](docs/agents.md) - full agent listing and structure
+- [ADRs](docs/adr/) - architectural decisions and their rationale
