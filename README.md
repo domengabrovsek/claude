@@ -101,7 +101,7 @@ Modular instruction files. **Always-loaded** rules have no frontmatter. **Path-s
 
 | Rule | Scope | Loads when... |
 | --- | --- | --- |
-| `agent-routing.md` | Always | Every session (agent selection table) |
+| `agent-routing.md` | Always | Every session (subagent_type lookup + cross-domain combinations) |
 | `git-conventions.md` | Always | Every session (commits, PRs, semver) |
 | `engineering-principles.md` | Always | Every session (sizing, slicing, exploration) |
 | `state-persistence.md` | Always | Every session (artifact saving, naming) |
@@ -114,7 +114,7 @@ Modular instruction files. **Always-loaded** rules have no frontmatter. **Path-s
 
 ### Agents (`agents/`)
 
-16 expert agent personas across 5 categories. Each follows a 9-section structure with strict guardrails, review checklists, and red-flag detection. Loaded automatically via the routing table in `rules/agent-routing.md`.
+16 expert agent personas across 5 categories. Each follows a 9-section structure with strict guardrails, review checklists, and red-flag detection. Spawned as subagents via the Agent tool when a task touches a specialized domain. The routing table in `rules/agent-routing.md` maps domain triggers to `subagent_type` values. See [ADR 0003](docs/adr/0003-agents-via-subagent-spawn.md) for the loading model.
 
 See [Agent Reference](docs/agents.md) for the full listing.
 
