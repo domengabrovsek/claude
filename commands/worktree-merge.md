@@ -1,5 +1,5 @@
 ---
-description: "Clean up a worktree after its branch has been merged. Removes the worktree dir, deletes the local branch, releases the lock."
+description: "Clean up a worktree after its branch has been merged. Removes the worktree dir and deletes the local branch."
 ---
 
 Clean up the current worktree: $ARGUMENTS
@@ -21,11 +21,10 @@ If the branch is not safe to remove, stop and explain what's still pending (unpu
    ```
 
 2. Move out of the worktree to the main checkout (`cd "$(git rev-parse --git-common-dir)/.."`).
-3. Release the lock for the worktree path: `~/.claude/scripts/repo-lock.sh release "$WORKTREE"` (the SessionEnd hook will also do this; explicit release here is for the immediate cleanup).
-4. Remove the worktree: `git worktree remove "$WORKTREE"`. If it has uncommitted changes and `--force` was passed, use `git worktree remove --force "$WORKTREE"`.
-5. Delete the local branch: `git branch -d "$BRANCH"` (or `-D` with `--force`).
-6. Report what was cleaned up.
+3. Remove the worktree: `git worktree remove "$WORKTREE"`. If it has uncommitted changes and `--force` was passed, use `git worktree remove --force "$WORKTREE"`.
+4. Delete the local branch: `git branch -d "$BRANCH"` (or `-D` with `--force`).
+5. Report what was cleaned up.
 
 ## After cleanup
 
-The next session can claim the lock on the main checkout cleanly. If the user has more work, suggest `/user:worktree <new-slug>` for the next task rather than mutating the main checkout.
+If the user has more work, suggest `/user:worktree <new-slug>` for the next task rather than mutating the main checkout.

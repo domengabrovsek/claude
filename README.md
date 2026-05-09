@@ -109,7 +109,6 @@ Modular instruction files. **Always-loaded** rules have no frontmatter. **Path-s
 | `tests.md` | `**/*.test.ts,**/*.spec.ts` | Editing test files |
 | `database.md` | `**/migrations/**,**/*.sql` | Editing database/migration files |
 | `infrastructure.md` | `**/Dockerfile,**/*.tf` | Editing infrastructure files |
-| `isolation.md` | Always | Every session (cross-session repo isolation, worktree decision tree) |
 | `diagrams.md` | Always | Every session (mermaid-default + drawio-for-complex policy, file convention, MCP usage) |
 | `parallel-agents.md` | Always | Every session (worktree pattern for self-spawned parallel agents) |
 
@@ -151,9 +150,8 @@ Slash commands for frequent workflows. Available as `/user:<name>`.
 | `summarize` | `/user:summarize` | Save session diary to `.claude/state/sessions/` |
 | `typecheck` | `/user:typecheck` | Run tsc and fix all type errors |
 | `verify-done` | `/user:verify-done` | Full quality gate before declaring work done (lint + typecheck + test + build + git status) |
-| `locks` | `/user:locks [--prune\|--release <hash>]` | List active Claude session locks across repos; prune stale; force-release |
-| `worktree` | `/user:worktree <slug>` | Create an isolated git worktree on a fresh branch and switch into it. Resolves cross-session collisions before they happen. |
-| `worktree-merge` | `/user:worktree-merge` | Clean up the current worktree after its branch is merged. Removes worktree dir, deletes local branch, releases lock. |
+| `worktree` | `/user:worktree <slug>` | Create a git worktree on a fresh branch and switch into it. Useful for parallel sub-agent setup. |
+| `worktree-merge` | `/user:worktree-merge` | Clean up the current worktree after its branch is merged. Removes worktree dir, deletes local branch. |
 | `worktrees-prune` | `/user:worktrees-prune [--apply]` | Per-repo dry-run / apply: remove worktrees whose branch is upstream-gone or merged into default. |
 | `worktrees-audit` | `/user:worktrees-audit [--root <path>] [--apply]` | Cross-repo scan under `~/dev/`, verdict per worktree, optional bulk apply. |
 
@@ -165,14 +163,10 @@ Automation scripts triggered at lifecycle events. Configured in `settings.json` 
 | --- | --- | --- |
 | `pre-pr-test-gate.sh` | PreToolUse (gh pr create) | Block PR creation if tests fail |
 | `pre-push-gate.sh` | PreToolUse (git push) | Hard-block `git push` if lint/typecheck/test/build fail. Bypass with `SKIP_PUSH_GATE=1` |
-| `repo-lock-status.sh` | SessionStart (startup\|resume) | Claim the repo lock for this session (or notice if held by another live session). Advisory, never blocks. |
-| `repo-lock-heartbeat.sh` | PostToolUse (Write\|Edit\|Bash) | Refresh lock `last_seen` so the session stays alive. Throttled to 60s via lock mtime. Never blocks. |
-| `repo-lock-release.sh` | SessionEnd | Release the repo lock if owned by this session. Idempotent. |
-| `worktree-cleanup.sh` | SessionEnd | Opportunistic safe-prune of the current repo's worktrees. Conservative; never blocks. Disable per-session with `CLAUDE_DISABLE_WORKTREE_CLEANUP=1`. |
-| `repo-lock-guard.sh` | PreToolUse (Write\|Edit\|Bash mutations) | Hard-block mutations when another live session holds the lock and current session is not in a worktree. Bypass with `SKIP_LOCK=1`. |
 | `auto-format.sh` | PostToolUse (Write/Edit) | Auto-format files with project formatter (Biome/Prettier) |
 | `post-edit-typecheck.sh` | PostToolUse (Write/Edit) | Run typecheck and lint on .ts/.tsx files after edits |
 | `watch-pr-checks.sh` | PostToolUse (gh pr create) | Poll CI checks in background, notify on pass/fail |
+| `worktree-cleanup.sh` | SessionEnd | Opportunistic safe-prune of merged worktrees. Conservative; never blocks. Disable per-session with `CLAUDE_DISABLE_WORKTREE_CLEANUP=1`. |
 | Notification | Notification | macOS desktop notification when Claude needs input |
 | Compact reminder | SessionStart (compact) | Re-inject workflow context after compaction |
 
@@ -184,7 +178,6 @@ Utility scripts referenced by skills and hooks.
 | --- | --- |
 | `notify.sh` | Send macOS desktop notification unless a terminal or IDE is in the foreground |
 | `statusline.sh` | Status line showing repo, branch (red if dirty), node version, and context usage (`145.7k (15%)`, color-graded green/yellow/red). Symlink to `~/.claude/statusline.sh` |
-| `repo-lock.sh` | Repo lock manager. `claim/release/check/list/prune` against `~/.claude/locks/<sha1>.json`. Used by isolation hooks. |
 | `worktree-prune.sh` | Identify and (with `--apply`) remove safely-disposable worktrees. Conservative rule: upstream-gone OR merged into default. `audit-all` mode walks `~/dev/`. |
 
 ### State (`.claude/state/` per project)
