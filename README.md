@@ -149,6 +149,7 @@ Skills tagged *(mattpocock)* below are vendored from [mattpocock/skills](https:/
 | `to-issues` | `/to-issues` | *(mattpocock)* Break a plan/PRD into independently-grabbable vertical-slice issues on the project tracker. |
 | `improve-codebase-architecture` | `/improve-codebase-architecture` | *(mattpocock)* Surface deepening opportunities (shallow-module refactors) using deletion-test heuristics. |
 | `write-a-skill` | `/write-a-skill` | *(mattpocock)* Scaffold a new skill with proper frontmatter, triggers, and progressive disclosure. |
+| `handoff` | `/handoff <focus>` | *(mattpocock)* Compact the current conversation into a handoff document so a fresh agent can pick up the work. |
 
 ### Commands (`commands/`)
 
