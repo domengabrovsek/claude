@@ -35,7 +35,8 @@ Other intents are first-class workflows with their own shapes, not stripped-down
 - Use the project's formatter/linter (Biome, ESLint, Prettier - whatever is configured)
 - Complete code only - no TODOs, no placeholders, no incomplete implementations
 - Use Context7 MCP to pull latest docs when working with specific technologies (NestJS, PostgreSQL, Drizzle, etc.) - don't rely on potentially outdated training knowledge
-- Never reference issue, PR, or ticket numbers in code comments (no `owner/repo#535`, `PR #561`, `(#545)`, `Fixes #123`, `JIRA-1234`, etc.). They rot as soon as trackers move, and the PR description or git blame is the right place for that context. Comments should describe the WHY in self-contained prose.
+- Default to writing no comments. Prefer readable, explicit code (well-named variables, functions, and types) over commentary. A comment is justified only when it explains a non-obvious WHY: hidden constraint, subtle invariant, workaround for a known bug, or surprising behavior a future reader would otherwise misread. Comments that restate WHAT the code does are forbidden, including multiline narrative blocks. JSDoc/docstring format (`/** */`) is allowed only when its content is WHY - the format alone does not earn an exemption.
+- Never reference issue, PR, ticket, or ADR numbers in code comments (no `owner/repo#535`, `PR #561`, `(#545)`, `Fixes #123`, `JIRA-1234`, `ADR-0042`, etc.). They rot as soon as trackers move or decisions are superseded. The PR description, the ADR document itself, and git blame are the right places for that context. Comments should describe the WHY in self-contained prose.
 - Detailed standards are in rules/ (typescript, tests, database, infrastructure, security)
 
 ## Docs Sync
