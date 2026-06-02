@@ -1,10 +1,11 @@
 ---
-description: "Create or refresh technical engineering docs in the current repo's /docs/ tree. Diataxis layout, mermaid diagrams, ADR support, drift audit."
+name: document
+description: "Create or refresh technical engineering docs in the current repo's /docs/ tree. Diataxis layout, mermaid diagrams, ADR support, drift audit. Use when the user says 'write docs', 'document this', 'audit the docs', or '/document'."
 ---
 
 Generate or update engineering documentation for: $ARGUMENTS
 
-This command writes docs that are dual-audience: engineers reading on GitHub AND Claude agents reading the repo. Apply the rules below without exception.
+This skill writes docs that are dual-audience: engineers reading on GitHub AND Claude agents reading the repo. Apply the rules below without exception.
 
 ## Subcommands
 
@@ -68,7 +69,7 @@ Switch to drawio when the diagram needs custom shapes, cloud icons, >2 swimlanes
 
 Use the `/diagram` skill (or `mcp__drawio__*` tools directly) to author drawio diagrams. Full policy in `rules/diagrams.md`.
 
-## File layout the command produces or expects
+## File layout the skill produces or expects
 
 ```text
 <repo>/
@@ -118,8 +119,8 @@ After bootstrapping or significant doc changes, update the repo's `CLAUDE.md` so
 
 If any check fails, fix it before reporting done.
 
-## Out of scope for this command
+## Out of scope
 
 - Generated API references (Swagger/OpenAPI, TypeDoc) - separate tooling.
-- Product specs - those live in `pentla-specs`.
+- Product specs - those live in their own repo / system.
 - Anything outside `docs/` in the current repo.

@@ -27,4 +27,4 @@ If the branch is not safe to remove, stop and explain what's still pending (unpu
 
 ## After cleanup
 
-If the user has more work, suggest `/user:worktree <new-slug>` for the next task rather than mutating the main checkout.
+If the user has more work, suggest `/worktree <new-slug>` for the next task rather than mutating the main checkout.
