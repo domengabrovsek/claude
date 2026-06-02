@@ -39,7 +39,7 @@ git config filter.strip-ephemeral-state.clean 'jq "del(.feedbackSurveyState)" 2>
 git config filter.strip-ephemeral-state.smudge cat
 ```
 
-The setup script handles all 9 expected symlinks (CLAUDE.md, RTK.md, settings.json, agents, commands, hooks, rules, skills, statusline.sh). If something already exists at one of those paths:
+The setup script handles all 10 expected symlinks (CLAUDE.md, RTK.md, settings.json, agents, commands, hooks, rules, skills, statusline.sh, pull_request_template.md). If something already exists at one of those paths:
 
 - Correctly symlinked already -> skipped.
 - Symlinked to a wrong target -> the wrong link is removed and replaced.
