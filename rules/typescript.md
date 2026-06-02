@@ -1,9 +1,6 @@
----
-globs: "**/*.ts,**/*.tsx"
-description: "TypeScript coding standards"
----
-
 # TypeScript Standards
+
+**When to apply:** editing TypeScript files (`*.ts`, `*.tsx`).
 
 - No `any` or `unknown` - use proper types, generics, or branded types
 - 2-space indentation, single quotes

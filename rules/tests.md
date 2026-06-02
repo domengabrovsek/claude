@@ -1,9 +1,6 @@
----
-globs: "**/*.test.ts,**/*.spec.ts,**/*.test.tsx,**/*.spec.tsx"
-description: "Testing standards and patterns"
----
-
 # Testing Standards
+
+**When to apply:** editing test files (`*.test.ts`, `*.spec.ts`, `*.test.tsx`, `*.spec.tsx`).
 
 - Vitest preferred as the test runner
 - Mock external dependencies only (APIs, databases, file system) - not internal modules

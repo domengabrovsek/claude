@@ -1,6 +1,6 @@
 # Engineering Principles
 
-Universal principles that apply to all implementation work, regardless of domain or language.
+**When to apply:** every implementation task, regardless of domain or language.
 
 ## Change Sizing
 

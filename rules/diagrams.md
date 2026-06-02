@@ -1,5 +1,7 @@
 # Diagram Policy
 
+**When to apply:** creating or updating any diagram in `docs/` (flowchart, sequence, architecture, state machine, etc.).
+
 Two diagram formats are allowed in `docs/`. Pick by complexity, not by aesthetic preference.
 
 ## Mermaid (default)

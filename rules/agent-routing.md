@@ -1,5 +1,7 @@
 # Expert Agent Routing
 
+**When to apply:** when a task touches a specialized domain (architecture, frontend, backend, security, infra, etc.). Skip for trivial changes (typos, one-liners, config tweaks).
+
 Specialized agent personas live in `~/.claude/agents/`. Each captures domain expertise plus guardrails and red flags.
 
 ## Loading model

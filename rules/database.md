@@ -1,9 +1,6 @@
----
-globs: "**/migrations/**,**/*.sql,**/prisma/**,**/drizzle/**,**/knex/**"
-description: "Database conventions and migration safety"
----
-
 # Database Conventions
+
+**When to apply:** editing migrations, SQL files, or any database schema / query code (Prisma, Drizzle, Knex, raw SQL).
 
 - Soft delete only - never hard delete records (use `deleted_at` timestamp)
 - Explicit migrations only - never auto-sync schemas in production

@@ -1,5 +1,7 @@
 # Parallel Work with Agent Worktrees
 
+**When to apply:** when a task has 2+ independent sub-tasks that touch different files / modules and can run concurrently.
+
 When a task can be split into independent pieces, parallelize by spawning multiple agents in isolated git worktrees. This dramatically reduces wall-clock time for multi-part work.
 
 ## When to Parallelize
