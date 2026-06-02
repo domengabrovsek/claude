@@ -34,8 +34,9 @@ Other intents are first-class workflows with their own shapes, not stripped-down
 
 - Use the project's formatter/linter (Biome, ESLint, Prettier - whatever is configured)
 - Complete code only - no TODOs, no placeholders, no incomplete implementations
-- Default to writing no comments. Prefer readable, explicit code (well-named variables, functions, and types) over commentary. A comment is justified only when it explains a non-obvious WHY: hidden constraint, subtle invariant, workaround for a known bug, or surprising behavior a future reader would otherwise misread. Comments that restate WHAT the code does are forbidden, including multiline narrative blocks. JSDoc/docstring format (`/** */`) is allowed only when its content is WHY - the format alone does not earn an exemption.
-- Never reference issue, PR, ticket, or ADR numbers in code comments (no `owner/repo#535`, `PR #561`, `(#545)`, `Fixes #123`, `JIRA-1234`, `ADR-0042`, etc.). They rot as soon as trackers move or decisions are superseded. The PR description, the ADR document itself, and git blame are the right places for that context. Comments should describe the WHY in self-contained prose.
+- **Comments**: default to NONE.
+  - Allowed: a non-obvious **why** (hidden constraint, subtle invariant, workaround for a known bug). Code must explain itself otherwise.
+  - Forbidden: WHAT-comments restating the code; multi-line narrative blocks; JSDoc/docstring blocks unless the body is a why-comment (the `/** */` format alone earns no exemption); ticket/PR/issue/ADR numbers in any comment (`JIRA-123`, `#456`, `Fixes owner/repo#789`, `ADR-0042`, etc. - those belong in PR descriptions, ADR files, and `git blame`).
 - Detailed standards are in rules/ (typescript, tests, database, infrastructure, security, jira)
 
 ## Docs Sync
@@ -61,6 +62,7 @@ Other intents are first-class workflows with their own shapes, not stripped-down
 - **Verification**: always run `/verify-done` before pushing - never push without all checks passing
 - **Atomic feature unit**: "implement" means implement + commit on a feature branch + push + open PR. Never stop after the code change. Never commit to `main`/`master` directly. If on a protected branch, create a feature branch first.
 - **Parallelization**: when a task has 2+ independent sub-tasks touching different files, split across multiple agents using git worktrees - see `rules/parallel-agents.md`
+- **One question at a time**: when asking the user a clarifying question, ask only one per turn and wait for the answer before asking the next - no stacked or bundled questions, even closely related ones. See `rules/communication.md`
 
 Detailed git, testing, and exploration rules are in `rules/` (git-conventions, engineering-principles).
 
@@ -84,6 +86,7 @@ Detailed git, testing, and exploration rules are in `rules/` (git-conventions, e
 The files below are loaded into every session via these `@`-imports. Edit the individual rule files in `rules/` - they are the source of truth, not this list.
 
 @rules/agent-routing.md
+@rules/communication.md
 @rules/context7.md
 @rules/database.md
 @rules/diagrams.md

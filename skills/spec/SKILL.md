@@ -13,7 +13,7 @@ Follow this workflow:
    - **Why** - what problem does it solve? What is the success metric?
    - **Constraints** - what technical, time, or scope constraints exist?
    - **Boundaries** - what is explicitly out of scope?
-   - Ask all questions at once. Wait for answers before proceeding.
+   - Ask **one question at a time**, waiting for the answer before asking the next. The list above is the topic checklist to cover across the discovery phase, not a batch to dump in one turn. See `rules/communication.md`.
 
 2. **Draft the spec**: based on the answers, write a specification with these sections:
 
