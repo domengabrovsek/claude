@@ -18,7 +18,7 @@ rules/                         # Modular instruction files (always-loaded + path
 scripts/                       # Utility scripts (notifications)
 skills/                        # Reusable workflows with supporting files
 docs/                          # Reference documentation
-pull_request_template.md       # Default PR template
+.github/pull_request_template.md   # Default PR template (GitHub convention)
 .github/workflows/             # CI (markdown linting)
 ```
 
