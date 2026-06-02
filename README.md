@@ -30,31 +30,24 @@ Symlink the repo contents to `~/.claude/` so changes auto-sync:
 # Clone the repo
 git clone git@github.com:domengabrovsek/claude.git ~/dev/claude
 
-# IMPORTANT: if any of these targets already exist as real files or
-# directories under ~/.claude/, back them up first. The `ln -sf` for
-# directories will fail loudly if the target is a non-empty real dir,
-# but for files it silently overwrites - audit first to avoid losing
-# any local-only rules or settings.
-ls -la ~/.claude/
-
-# Symlink to ~/.claude/
-ln -sf ~/dev/claude/CLAUDE.md ~/.claude/CLAUDE.md
-ln -sf ~/dev/claude/agents ~/.claude/agents
-ln -sf ~/dev/claude/rules ~/.claude/rules
-ln -sf ~/dev/claude/skills ~/.claude/skills
-ln -sf ~/dev/claude/commands ~/.claude/commands
-ln -sf ~/dev/claude/hooks ~/.claude/hooks
-ln -sf ~/dev/claude/scripts ~/.claude/scripts
-ln -sf ~/dev/claude/settings.json ~/.claude/settings.json
-ln -sf ~/dev/claude/RTK.md ~/.claude/RTK.md
-ln -sf ~/dev/claude/scripts/statusline.sh ~/.claude/statusline.sh
+# Bootstrap the symlinks (idempotent, safe to re-run, dry-run via --check)
+bash ~/dev/claude/scripts/setup-symlinks.sh
 
 # Configure smudge/clean filter to strip ephemeral state from settings.json
+cd ~/dev/claude
 git config filter.strip-ephemeral-state.clean 'jq "del(.feedbackSurveyState)" 2>/dev/null || cat'
 git config filter.strip-ephemeral-state.smudge cat
 ```
 
-**Warning**: `~/.claude/rules/` is the most common collision point. If it already exists as a real directory with files in it, `ln -sf ~/dev/claude/rules ~/.claude/rules` will create the symlink *inside* it (e.g. `~/.claude/rules/rules`) instead of replacing it. Back up the contents into the repo first, then remove the directory before symlinking.
+The setup script handles all 9 expected symlinks (CLAUDE.md, RTK.md, settings.json, agents, commands, hooks, rules, skills, statusline.sh). If something already exists at one of those paths:
+
+- Correctly symlinked already -> skipped.
+- Symlinked to a wrong target -> the wrong link is removed and replaced.
+- A real file or directory -> backed up to `<path>.bak.<timestamp>` before being replaced. Your local-only content is preserved next to the new symlink for you to inspect.
+
+Run `bash ~/dev/claude/scripts/setup-symlinks.sh --check` first if you want a dry-run showing exactly what each step would do.
+
+Once the symlinks are in place, the `symlink-check.sh` SessionStart hook (in `hooks/`) will warn on stderr if any of them drift later.
 
 **Note**: Claude Code writes ephemeral state (e.g. `feedbackSurveyState`) to `settings.json` at runtime. The smudge/clean filter in `.gitattributes` automatically strips this before git sees it, so `git status` stays clean.
 
