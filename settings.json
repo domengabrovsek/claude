@@ -206,6 +206,16 @@
             "command": "echo 'Reminder: follow the workflow (Research - Grill - Implement - Summarize). Use /grill-with-docs for alignment. Minimal fix first for bugs. Run /verify-done before pushing. Current year: 2026.'"
           }
         ]
+      },
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/symlink-check.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/symlink-check.sh\"; [ -x \"$HOOK\" ] && \"$HOOK\" || true",
+            "timeout": 5
+          }
+        ]
       }
     ]
   },
