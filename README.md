@@ -9,7 +9,7 @@ The whole config is symlinked into `~/.claude/`, so edits to this repo apply to 
 ## Quick start
 
 ```bash
-# Clone the repo wherever you keep dotfiles - the setup script auto-detects its own location
+# Clone the repo - the setup script auto-detects its own location
 git clone git@github.com:domengabrovsek/claude.git
 cd claude
 
