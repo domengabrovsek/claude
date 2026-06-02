@@ -89,112 +89,22 @@ Use `rtk proxy <cmd>` for a one-shot unfiltered run without editing config.
 
 ## Components
 
-### CLAUDE.md
+Each top-level directory is the canonical source for what it contains. Edit the source files; this README only points.
 
-Core rules loaded every session (~50 lines). Kept lean - detailed standards live in `rules/`.
+- **`CLAUDE.md`** - core rules loaded every session: priority order, workflow, security boundaries, code standards, behavioral constraints. See [ADR 0001](docs/adr/0001-grill-driven-workflow.md) for the workflow rationale.
+- **`rules/`** - 13 modular rule files (agent-routing, communication, context7, database, diagrams, engineering-principles, git-conventions, infrastructure, jira, parallel-agents, state-persistence, tests, typescript). All `@`-imported into `CLAUDE.md` so they load in every session.
+- **`agents/`** - 16 expert subagent personas (Staff Engineer, PR Reviewer, PostgreSQL Expert, ...). Spawned via the Agent tool; routing in [`rules/agent-routing.md`](rules/agent-routing.md). Full grouped listing in [`docs/agents.md`](docs/agents.md). See [ADR 0003](docs/adr/0003-agents-via-subagent-spawn.md) for the loading model.
+- **`skills/`** - reusable workflows invoked as `/<skill>` (`/grill-with-docs`, `/build`, `/ship`, `/debug`, ...). Each lives in `skills/<name>/SKILL.md`. Skills marked `(mattpocock)` in their description are vendored from [mattpocock/skills](https://github.com/mattpocock/skills) and may diverge from upstream.
+- **`commands/`** - slash commands for one-shot operations: `/research`, `/summarize`, `/typecheck`, `/verify-done`, `/worktree`, `/worktree-merge`, `/worktrees-prune`, `/worktrees-audit`.
+- **`hooks/`** - shell scripts wired into `settings.json` for `PreToolUse`, `PostToolUse`, `SessionStart`, `SessionEnd` events (pre-pr-test-gate, pre-push-gate, pre-commit-branch-gate, auto-format, post-edit-typecheck, post-edit-lint, watch-pr-checks, worktree-cleanup, symlink-check).
+- **`scripts/`** - utilities referenced by hooks and skills: `setup-symlinks.sh` (bootstrap), `statusline.sh`, `notify.sh`, `worktree-prune.sh`.
+- **`docs/adr/`** - Architecture Decision Records.
+- **`references/`** - longer-form checklists (security, testing patterns) referenced by skills and agents.
+- **`templates/`** - boilerplate for new ADRs and docs.
 
-- 4-phase workflow: Research (optional) - Grill - Implement - Summarize. See [ADR 0001](docs/adr/0001-grill-driven-workflow.md) for the rationale and the priority order (`quality > consistent > efficient > fast`)
-- Security boundaries
-- Behavioral constraints (scope discipline, verification gates)
+For a quick "is there a slash for X?" lookup, see [CHEATSHEET.md](CHEATSHEET.md).
 
-### Rules (`rules/`)
-
-Modular instruction files. **Always-loaded** rules have no frontmatter. **Path-scoped** rules use `globs:` frontmatter and only load when editing matching files, saving tokens.
-
-| Rule | Scope | Loads when... |
-| --- | --- | --- |
-| `agent-routing.md` | Always | Every session (subagent_type lookup + cross-domain combinations) |
-| `git-conventions.md` | Always | Every session (commits, PRs, semver) |
-| `engineering-principles.md` | Always | Every session (sizing, slicing, exploration) |
-| `state-persistence.md` | Always | Every session (artifact saving, naming) |
-| `typescript.md` | `**/*.ts,**/*.tsx` | Editing TypeScript files |
-| `tests.md` | `**/*.test.ts,**/*.spec.ts` | Editing test files |
-| `database.md` | `**/migrations/**,**/*.sql` | Editing database/migration files |
-| `infrastructure.md` | `**/Dockerfile,**/*.tf` | Editing infrastructure files |
-| `diagrams.md` | Always | Every session (mermaid-default + drawio-for-complex policy, file convention, MCP usage) |
-| `parallel-agents.md` | Always | Every session (worktree pattern for self-spawned parallel agents) |
-
-### Agents (`agents/`)
-
-16 expert agent personas across 5 categories. Each follows a 9-section structure with strict guardrails, review checklists, and red-flag detection. Spawned as subagents via the Agent tool when a task touches a specialized domain. The routing table in `rules/agent-routing.md` maps domain triggers to `subagent_type` values. See [ADR 0003](docs/adr/0003-agents-via-subagent-spawn.md) for the loading model.
-
-See [Agent Reference](docs/agents.md) for the full listing.
-
-### Skills (`skills/`)
-
-Reusable workflows invoked on-demand. Cost ~200 tokens when idle (metadata only) vs. full cost if in CLAUDE.md.
-
-Skills tagged *(mattpocock)* below are vendored from [mattpocock/skills](https://github.com/mattpocock/skills). They were imported on 2026-05-08 and are not kept in sync upstream - they may diverge over time as they get adapted to this workflow. To pull a newer upstream version, copy it manually and re-review the diff.
-
-| Skill | Trigger | Purpose |
-| --- | --- | --- |
-| `spec` | `/spec <topic>` | Define requirements before planning |
-| `build` | `/build` | Implement approved plan incrementally with quality gates |
-| `test` | `/test <target>` | Write tests using TDD (RED-GREEN-REFACTOR) or prove-it pattern |
-| `ship` | `/ship` | Pre-launch validation and release workflow |
-| `fix-issue` | `/fix-issue 1234` | Full issue resolution: fetch, research, plan, implement, test, PR |
-| `review-pr` | `/review-pr 567` | Structured PR review with BLOCKER/ISSUE/SUGGESTION/NIT/PRAISE severity |
-| `ci` | `/ci` | Monitor CI pipeline status, analyze failures, propose fixes. Use with `/loop 2m /ci` for auto-polling |
-| `mr` | `/mr` | Create MR/PR with template, conventional commit checks, and stacked MR/PR dependency support |
-| `debug` | `/debug <error\|alert>` | Structured incident investigation: evidence, ranked hypotheses, minimal fix, regression test |
-| `diagram` | `/diagram <topic>` | Pick mermaid vs drawio per `rules/diagrams.md`, write the source, preview via drawio MCP |
-| `grill-with-docs` | `/grill-with-docs` | *(mattpocock)* Default alignment phase. Real-time Q&A walking the decision tree, updating `CONTEXT.md` and writing ADRs inline as decisions land. Replaces the old Plan + Annotate phases. |
-| `to-issues` | `/to-issues` | *(mattpocock)* Break a plan/PRD into independently-grabbable vertical-slice issues on the project tracker. |
-| `improve-codebase-architecture` | `/improve-codebase-architecture` | *(mattpocock)* Surface deepening opportunities (shallow-module refactors) using deletion-test heuristics. |
-| `write-a-skill` | `/write-a-skill` | *(mattpocock)* Scaffold a new skill with proper frontmatter, triggers, and progressive disclosure. |
-| `handoff` | `/handoff <focus>` | *(mattpocock)* Compact the current conversation into a handoff document so a fresh agent can pick up the work. |
-
-### Commands (`commands/`)
-
-Slash commands for frequent workflows. Available as `/user:<name>`.
-
-| Command | Trigger | Purpose |
-| --- | --- | --- |
-| `research` | `/user:research <topic>` | Optional Phase 1: explore codebase, save findings to `.claude/state/research/` |
-| `summarize` | `/user:summarize` | Save session diary to `.claude/state/sessions/` |
-| `typecheck` | `/user:typecheck` | Run tsc and fix all type errors |
-| `verify-done` | `/user:verify-done` | Full quality gate before declaring work done (lint + typecheck + test + build + git status) |
-| `worktree` | `/user:worktree <slug>` | Create a git worktree on a fresh branch and switch into it. Useful for parallel sub-agent setup. |
-| `worktree-merge` | `/user:worktree-merge` | Clean up the current worktree after its branch is merged. Removes worktree dir, deletes local branch. |
-| `worktrees-prune` | `/user:worktrees-prune [--apply]` | Per-repo dry-run / apply: remove worktrees whose branch is upstream-gone or merged into default. |
-| `worktrees-audit` | `/user:worktrees-audit [--root <path>] [--apply]` | Cross-repo scan under `~/dev/`, verdict per worktree, optional bulk apply. |
-
-### Hooks (`hooks/`)
-
-Automation scripts triggered at lifecycle events. Configured in `settings.json` (symlinked to `~/.claude/settings.json`).
-
-| Hook | Event | Purpose |
-| --- | --- | --- |
-| `pre-pr-test-gate.sh` | PreToolUse (gh pr create) | Block PR creation if tests fail |
-| `pre-push-gate.sh` | PreToolUse (git push) | Hard-block `git push` if lint/typecheck/test/build fail. Bypass with `SKIP_PUSH_GATE=1` |
-| `auto-format.sh` | PostToolUse (Write/Edit) | Auto-format files with project formatter (Biome/Prettier) |
-| `post-edit-typecheck.sh` | PostToolUse (Write/Edit) | Run typecheck and lint on .ts/.tsx files after edits |
-| `watch-pr-checks.sh` | PostToolUse (gh pr create) | Poll CI checks in background, notify on pass/fail |
-| `worktree-cleanup.sh` | SessionEnd | Opportunistic safe-prune of merged worktrees. Conservative; never blocks. Disable per-session with `CLAUDE_DISABLE_WORKTREE_CLEANUP=1`. |
-| Notification | Notification | macOS desktop notification when Claude needs input |
-| Compact reminder | SessionStart (compact) | Re-inject workflow context after compaction |
-
-### Scripts (`scripts/`)
-
-Utility scripts referenced by skills and hooks.
-
-| Script | Purpose |
-| --- | --- |
-| `notify.sh` | Send macOS desktop notification unless a terminal or IDE is in the foreground |
-| `statusline.sh` | Status line showing repo, branch (red if dirty), node version, and context usage (`145.7k (15%)`, color-graded green/yellow/red). Symlink to `~/.claude/statusline.sh` |
-| `worktree-prune.sh` | Identify and (with `--apply`) remove safely-disposable worktrees. Conservative rule: upstream-gone OR merged into default. `audit-all` mode walks `~/dev/`. |
-
-### State (`.claude/state/` per project)
-
-Session artifacts saved at the project level so they persist across sessions and machines.
-
-```text
-.claude/state/
-  research/    # Research artifacts from Phase 1
-  specs/       # Specification documents from /spec
-  plans/       # Implementation plans from Phase 2
-  sessions/    # Session diary entries from Phase 5
-```
+Per-project session state (not in this repo) lives under each consuming project's `.claude/state/{research,specs,plans,sessions}/`. Conventions in [`rules/state-persistence.md`](rules/state-persistence.md).
 
 ## Security
 
@@ -208,9 +118,3 @@ Session artifacts saved at the project level so they persist across sessions and
 ## CI
 
 Markdown linting runs on every push and PR via GitHub Actions.
-
-## Documentation
-
-- [Cheatsheet](CHEATSHEET.md) - intent -> slash command map. Skim when you wonder "is there a slash for X?"
-- [Agent Reference](docs/agents.md) - full agent listing and structure
-- [ADRs](docs/adr/) - architectural decisions and their rationale
