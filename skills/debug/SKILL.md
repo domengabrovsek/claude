@@ -34,7 +34,7 @@ Pick the top candidate. If two are tied or the user has a strong prior, ask the 
 
 - Minimal change first per CLAUDE.md (1-5 lines, ideally). State the change before applying it.
 - Add a regression test that reproduces the original failure and now passes.
-- Run `/user:verify-done` (lint + typecheck + test + build).
+- Run `/verify-done` (lint + typecheck + test + build).
 - Commit on a feature branch with a conventional message that names the root cause.
 - Open a PR per `mr` skill. PR body: link to the alert/log, root cause statement with evidence, and why this fix is correct.
 
