@@ -2,7 +2,7 @@
 
 ## Workflow
 
-1. **Run `/user:verify-done` first**: hard-fail on any failure. Do not proceed to push, title generation, or PR ceremony if lint, typecheck, test, or build is broken. This pre-empts the most common CI failures (lint, format, typecheck) before they cost a CI run.
+1. **Run `/verify-done` first**: hard-fail on any failure. Do not proceed to push, title generation, or PR ceremony if lint, typecheck, test, or build is broken. This pre-empts the most common CI failures (lint, format, typecheck) before they cost a CI run.
 2. **Detect VCS platform**: check for `.gitlab-ci.yml` (-> glab) or `.github/` (-> gh)
 3. **Determine base branch**:
    - Default for GitLab repos: `main`
@@ -19,7 +19,7 @@
 9. **Preview and wait for approval**:
    - Print the validated MR/PR title, the fully filled-in description body, and the target branch to the chat
    - Explicitly stop and wait for the user to confirm in a subsequent turn (e.g. "go", "create it", "lgtm")
-   - Ambiguous or non-committal replies do not count as approval — ask again rather than proceed
+   - Ambiguous or non-committal replies do not count as approval - ask again rather than proceed
    - Do NOT call `gh pr create` / `glab mr create` until that explicit confirmation arrives
 10. **Create MR/PR using the template**:
     - If `.github/pull_request_template.md` or `.gitlab/merge_request_templates/` exists, use that template
@@ -61,7 +61,7 @@
 - Pass the body via HEREDOC for correct formatting
 - If auth fails, stop and ask the user to authenticate - do not retry
 - If the repo has a specific MR template, prefer it over the default
-- Never reference local Claude artifacts (research notes, plans, session summaries under `.claude/state/`, etc.) in the MR/PR description — they only have value locally and mean nothing to reviewers
+- Never reference local Claude artifacts (research notes, plans, session summaries under `.claude/state/`, etc.) in the MR/PR description - they only have value locally and mean nothing to reviewers
 - Never pass `--yes` or any other non-interactive auto-accept flag to `glab mr create` / `gh pr create`
-- This approval gate applies even when auto mode is active — auto mode is not a license to open MRs/PRs without a human checkpoint
-- **Scope of the approval gate**: the gate is specifically on the `glab mr create` / `gh pr create` invocation. Related operations that happen before it — pushing the branch, drafting the body, transitioning the Jira ticket — do not need a separate prompt once MR creation itself has been approved in the same turn
+- This approval gate applies even when auto mode is active - auto mode is not a license to open MRs/PRs without a human checkpoint
+- **Scope of the approval gate**: the gate is specifically on the `glab mr create` / `gh pr create` invocation. Related operations that happen before it - pushing the branch, drafting the body, transitioning the Jira ticket - do not need a separate prompt once MR creation itself has been approved in the same turn

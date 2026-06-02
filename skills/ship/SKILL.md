@@ -11,7 +11,7 @@ Run these checks in order. Stop at the first failure.
 
 ### 1. Code Quality
 
-- [ ] Run `/user:verify-done` - stop on first failure (typecheck + lint + tests + build)
+- [ ] Run `/verify-done` - stop on first failure (typecheck + lint + tests + build)
 - [ ] No debugging artifacts (`console.log`, `debugger`, `.only()`, `TODO` without issue link)
 
 ### 2. Git Hygiene
