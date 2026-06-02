@@ -19,7 +19,19 @@ rtk gain              # Should work (not "command not found")
 which rtk             # Verify correct binary
 ```
 
-⚠️ **Name collision**: If `rtk gain` fails, you may have reachingforthejack/rtk (Rust Type Kit) installed instead.
+**Name collision**: if `rtk gain` fails, you may have reachingforthejack/rtk (Rust Type Kit) installed instead.
+
+## Re-installing / upgrading without clobbering configs
+
+**Always pass `--hook-only`** to `rtk init`:
+
+```bash
+rtk init -g --hook-only
+```
+
+Plain `rtk init -g` (without the flag) would overwrite `~/.claude/RTK.md` (this file, symlinked to the dotfiles repo) with the 10-line stock version, and prompt to patch `~/.claude/settings.json` (also symlinked). If you ever see `Patch existing ... settings.json? [y/N]`, answer **N**: the repo's `settings.json` already has the `rtk hook claude` registration.
+
+Drift recovery: if a symlink already got replaced with a real file, run `bash ~/dev/claude/scripts/setup-symlinks.sh` to back up the bad version (`.bak.<timestamp>`) and restore the symlink.
 
 ## Hook-Based Usage
 
@@ -33,14 +45,14 @@ Refer to CLAUDE.md for full command reference.
 The RTK hook silently falls back to raw output when a command contains shell
 operators it cannot parse cleanly. To keep adoption high:
 
-- **Do not append `2>&1`** — RTK filters already surface stderr usefully; the
+- **Do not append `2>&1`** - RTK filters already surface stderr usefully; the
   redirect suppresses the rewrite and loses the savings. Let failure output
   flow through naturally.
 - Avoid command substitution (`$(...)`), pipes into interpreters
   (`| python -c`, `| node -e`), and compound commands (`&&`, `;`) when a
   simpler single-command form exists.
 
-**Exception: `glab`** — RTK has no `glab` filter yet (tracked upstream at
+**Exception: `glab`** - RTK has no `glab` filter yet (tracked upstream at
 rtk-ai/rtk#1085). Until that ships, `glab` commands bypass RTK regardless of
 redirects, so `2>&1` is harmless there.
 
