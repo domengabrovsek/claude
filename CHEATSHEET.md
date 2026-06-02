@@ -8,7 +8,7 @@ For full descriptions of each tool see the [README](README.md).
 
 | Intent | Tool |
 | --- | --- |
-| Understand an unfamiliar code area | `/user:research <topic>` |
+| Understand an unfamiliar code area | `/research <topic>` |
 | Define formal requirements before planning | `/spec <topic>` |
 | Stress-test a plan / reach alignment before code | `/grill-with-docs <topic>` |
 | Build the agreed plan | `/build` |
@@ -16,21 +16,20 @@ For full descriptions of each tool see the [README](README.md).
 | Investigate a prod incident with evidence-first hypothesis ranking | `/debug <error>` |
 | Resolve a GitHub issue end-to-end | `/fix-issue 1234` |
 | Review someone's PR | `/review-pr 567` |
-| Verify everything before pushing | `/user:verify-done` |
+| Verify everything before pushing | `/verify-done` |
 | Open a PR/MR (auto-runs verify-done first, regex-checks the title) | `/mr` |
 | Watch CI on the latest PR | `/ci` (or `/loop 2m /ci`) |
 | Cut a release | `/ship` |
 | Make a diagram (mermaid or drawio) | `/diagram <topic>` |
-| Save the session's work as a diary entry | `/user:summarize` |
-| Run typecheck and fix errors | `/user:typecheck` |
-| Refresh a library's API docs (React, Prisma, Next.js, etc.) | mention the library by name - Context7 auto-fires |
+| Save the session's work as a diary entry | `/summarize` |
+| Refresh a library's API docs (React, Prisma, Next.js, etc.) | mention the library by name - the `ctx7` CLI auto-fires |
 | Break a plan/PRD into independently-grabbable tracker issues | `/to-issues` |
 | Find architectural deepening opportunities in a codebase | `/improve-codebase-architecture` |
 | Scaffold a new skill | `/write-a-skill` |
-| Create a worktree for parallel sub-agent work | `/user:worktree <slug>` |
-| Clean up a worktree after its branch merged | `/user:worktree-merge` |
-| Prune dead worktrees in this repo | `/user:worktrees-prune [--apply]` |
-| Audit worktrees across all repos under `~/dev/` | `/user:worktrees-audit [--apply]` |
+| Create a worktree for parallel sub-agent work | `/worktree <slug>` |
+| Clean up a worktree after its branch merged | `/worktree-merge` |
+| Prune dead worktrees in this repo | `/worktrees [--apply]` |
+| Audit worktrees across all repos under `~/dev/` | `/worktrees --all [--apply]` |
 
 ## When the slash IS the value
 
@@ -41,7 +40,7 @@ Some skills enforce a discipline plain English would skip. Use the slash when yo
 - `/build` - quality gates per task
 - `/test` - red-green-refactor or prove-it pattern
 - `/spec` - stakeholder-framed requirements doc
-- `/user:verify-done` - every CI step in CI's exact order
+- `/verify-done` - every CI step in CI's exact order
 - `/mr` - verify-done + commit-format + title-regex gates before opening
 - `/ship` - pre-launch validation checklist
 - `/fix-issue` - full issue resolution flow
@@ -53,22 +52,22 @@ Lightweight helpers; structure is minimal:
 
 - `/diagram`, `/ci`, `/loop`, `/schedule`
 
-## Workflow phases (4-phase, post-#46)
+## Workflow phases (4-phase)
 
 ```text
-[/user:research]  optional orientation
+[/research]       optional orientation
         ↓
 /grill-with-docs  alignment - emits CONTEXT.md + ADRs + execution plan
         ↓
 /build            walk the execution plan
         ↓
-/user:verify-done full quality gate
+/verify-done      full quality gate
         ↓
 /mr               open PR (gate runs again)
         ↓
 /ci               watch pipeline
         ↓
-/user:summarize   session diary
+/summarize        session diary
 ```
 
 ## Other intents
