@@ -118,4 +118,3 @@ Per-project session state (not in this repo) lives under each consuming project'
 ## CI
 
 Markdown linting runs on every push and PR via GitHub Actions.
-
