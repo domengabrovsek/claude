@@ -71,6 +71,7 @@ ENTRIES=(
   "rules|rules"
   "skills|skills"
   "statusline.sh|scripts/statusline.sh"
+  "pull_request_template.md|.github/pull_request_template.md"
 )
 
 TS=$(date +%Y%m%d-%H%M%S)

@@ -19,6 +19,7 @@ EXPECTED=(
   "rules|$REPO/rules"
   "skills|$REPO/skills"
   "statusline.sh|$REPO/scripts/statusline.sh"
+  "pull_request_template.md|$REPO/.github/pull_request_template.md"
 )
 
 ISSUES=()
