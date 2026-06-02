@@ -9,6 +9,8 @@
   "enabledPlugins": {
     "frontend-design@claude-plugins-official": true
   },
+  "effortLevel": "high",
+  "skipAutoPermissionPrompt": false,
   "permissions": {
     "deny": [
       "Read(**/.env)",
@@ -105,10 +107,10 @@
       "Write(**/pnpm-lock.yaml)",
       "Bash(*DROP TABLE*)",
       "Bash(*DROP DATABASE*)",
-      "Bash(*TRUNCATE TABLE*)"
+      "Bash(*TRUNCATE TABLE*)",
+      "mcp__claude_ai_Atlassian__*"
     ]
   },
-  "effortLevel": "xhigh",
   "hooks": {
     "PreToolUse": [
       {
@@ -146,6 +148,11 @@
             "type": "command",
             "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/post-edit-typecheck.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/post-edit-typecheck.sh\"; if [ -x \"$HOOK\" ]; then \"$HOOK\"; fi",
             "timeout": 60
+          },
+          {
+            "type": "command",
+            "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/post-edit-lint.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/post-edit-lint.sh\"; if [ -x \"$HOOK\" ]; then \"$HOOK\"; fi",
+            "timeout": 15
           }
         ]
       },
@@ -190,10 +197,10 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo 'Reminder: follow the workflow (Research - Grill - Implement - Summarize). Use /grill-with-docs for alignment. Minimal fix first for bugs. Run /user:verify-done before commits. Current year: 2026.'"
+            "command": "echo 'Reminder: follow the workflow (Research - Grill - Implement - Summarize). Use /grill-with-docs for alignment. Minimal fix first for bugs. Run /verify-done before pushing. Current year: 2026.'"
           }
         ]
-      },
+      }
     ]
   },
   "statusLine": {
