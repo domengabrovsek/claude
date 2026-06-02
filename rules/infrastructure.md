@@ -1,9 +1,6 @@
----
-globs: "**/terraform/**,**/Dockerfile,**/docker-compose*,**/*.tf,**/k8s/**,**/.github/workflows/**"
-description: "Infrastructure and CI/CD conventions"
----
-
 # Infrastructure Conventions
+
+**When to apply:** editing Terraform, Dockerfiles, docker-compose, Kubernetes manifests, or CI/CD workflow files.
 
 - Infrastructure as Code only - no manual changes to cloud resources
 - No `latest` tags for Docker images - always use specific version tags

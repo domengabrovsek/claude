@@ -1,4 +1,8 @@
-Use the `ctx7` CLI to fetch current documentation whenever the user asks about a library, framework, SDK, API, CLI tool, or cloud service -- even well-known ones like React, Next.js, Prisma, Express, Tailwind, Django, or Spring Boot. This includes API syntax, configuration, version migration, library-specific debugging, setup instructions, and CLI tool usage. Use even when you think you know the answer -- your training data may not reflect recent changes. Prefer this over web search for library docs.
+# Library Documentation (ctx7 CLI)
+
+**When to apply:** whenever the user asks about a library, framework, SDK, API, CLI tool, or cloud service. Including well-known ones (React, Next.js, Prisma, Tailwind, Django) since your training data may not reflect recent changes.
+
+Use the `ctx7` CLI to fetch current documentation. This covers API syntax, configuration, version migration, library-specific debugging, setup instructions, and CLI tool usage. Prefer it over web search for library docs.
 
 Do not use for: refactoring, writing scripts from scratch, debugging business logic, code review, or general programming concepts.
 

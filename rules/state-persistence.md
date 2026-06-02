@@ -1,5 +1,7 @@
 # State Persistence
 
+**When to apply:** when saving research artifacts, specs, plans, or session diaries.
+
 All work artifacts must be saved to the project-level `.claude/state/` directory so they persist across sessions and machines.
 
 ## Directories
