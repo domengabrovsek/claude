@@ -10,7 +10,7 @@ If $ARGUMENTS is non-empty, treat the first argument as the slug.
 
 If $ARGUMENTS is empty:
 
-- If a plan file exists at `~/.claude/plans/<latest>.md`, derive slug from its basename (strip date prefix and `.md` extension).
+- If a plan file exists at `.claude/state/plans/<latest>.md` in the current project, derive slug from its basename (strip date prefix and `.md` extension).
 - Else generate `<topic>-<6char-hex>` and ask the user to confirm.
 
 The slug must be lowercase, hyphen-separated, no spaces.
@@ -39,4 +39,4 @@ The worktree is its own working tree - the PreToolUse guard auto-bypasses inside
 When work is done:
 
 - Open a PR from the worktree's branch as normal.
-- After merge, run `/user:worktree-merge` to clean up the worktree and remove the local branch.
+- After merge, run `/worktree-merge` to clean up the worktree and remove the local branch.
