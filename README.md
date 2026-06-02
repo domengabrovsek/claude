@@ -9,14 +9,15 @@ The whole config is symlinked into `~/.claude/`, so edits to this repo apply to 
 ## Quick start
 
 ```bash
-git clone git@github.com:domengabrovsek/claude.git ~/dev/claude
-cd ~/dev/claude
+# Clone the repo wherever you keep dotfiles - the setup script auto-detects its own location
+git clone git@github.com:domengabrovsek/claude.git
+cd claude
 
-# Dry-run first, then apply
+# Dry-run first to see what would change, then apply
 bash scripts/setup-symlinks.sh --check
 bash scripts/setup-symlinks.sh
 
-# Strip ephemeral state Claude Code writes to settings.json
+# Strip ephemeral state Claude Code writes to settings.json at runtime
 git config filter.strip-ephemeral-state.clean 'jq "del(.feedbackSurveyState)" 2>/dev/null || cat'
 git config filter.strip-ephemeral-state.smudge cat
 ```
