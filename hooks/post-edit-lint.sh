@@ -1,13 +1,13 @@
 #!/bin/bash
-# Post-edit lint hook for Write|Edit.
+# Post-edit lint hook for Write|Edit. Backs rules/comments.md.
 #
-# Three checks:
-#   1. Em-dash ban   - auto-fix (silent in-place sed replace).
-#   2. Ticket / PR / JIRA / ADR refs in comments - notify Claude (exit 2).
-#   3. New JSDoc blocks in JS/TS files - notify Claude (exit 2).
-#
-# Exit 0 if clean or only auto-fixed. Exit 2 if Claude needs to address something
-# (stderr is displayed and fed back to Claude as a follow-up message).
+# Checks (exit 2 = Claude must address; exit 0 = clean or auto-fixed):
+#   1. Em-dash ban                                          - auto-fix
+#   2. Ticket / PR / JIRA / ADR refs in comments            - exit 2
+#   3. JSDoc blocks in JS/TS files                          - exit 2
+#   4. Multi-line /* */ block openers (non-JSDoc, JS/TS/CSS) - exit 2
+#   5. Consecutive // comment lines (JS/TS)                  - exit 2
+#   6. Consecutive -- SQL comment lines (.sql)              - exit 2
 #
 # Bypass with SKIP_POST_EDIT_LINT=1 in the environment.
 
@@ -78,8 +78,53 @@ case "$FILE" in
   *.js|*.jsx|*.ts|*.tsx|*.mjs|*.cjs)
     JSDOC=$(echo "$ADDED" | grep -nE '^[[:space:]]*/\*\*' 2>/dev/null || true)
     if [ -n "$JSDOC" ]; then
-      VIOLATIONS+="JSDoc block added. Allowed only when the body explains a non-obvious WHY (hidden constraint, subtle invariant, workaround for a known bug). WHAT-restating JSDoc must be removed:
+      VIOLATIONS+="JSDoc block added. rules/comments.md: default no comments; only one-line WHY. Remove and move rationale to docs/:
 $JSDOC
+
+"
+    fi
+    ;;
+esac
+
+# --- 4. Multi-line /* */ block openers (non-JSDoc) in JS/TS/CSS ---
+case "$FILE" in
+  *.js|*.jsx|*.ts|*.tsx|*.mjs|*.cjs|*.css|*.scss)
+    CBLOCK=$(echo "$ADDED" | grep -nE '^[[:space:]]*/\*[^*]' | grep -vE '\*/' 2>/dev/null || true)
+    if [ -n "$CBLOCK" ]; then
+      VIOLATIONS+="Multi-line /* */ comment block opener. rules/comments.md: comments must be one line. Use a single-line // for one-line WHY; move multi-line rationale to docs/:
+$CBLOCK
+
+"
+    fi
+    ;;
+esac
+
+# --- 5. Consecutive // comment lines in JS/TS ---
+case "$FILE" in
+  *.js|*.jsx|*.ts|*.tsx|*.mjs|*.cjs)
+    CONSEC_SLASH=$(echo "$ADDED" | awk '
+      /^[[:space:]]*\/\// { if (prev) print NR": "$0; prev=1; next }
+      { prev=0 }
+    ' 2>/dev/null || true)
+    if [ -n "$CONSEC_SLASH" ]; then
+      VIOLATIONS+="Consecutive // comment lines. rules/comments.md: comments must be one line. Move multi-line rationale to docs/:
+$CONSEC_SLASH
+
+"
+    fi
+    ;;
+esac
+
+# --- 6. Consecutive -- SQL comment lines ---
+case "$FILE" in
+  *.sql)
+    CONSEC_DASH=$(echo "$ADDED" | awk '
+      /^[[:space:]]*--/ { if (prev) print NR": "$0; prev=1; next }
+      { prev=0 }
+    ' 2>/dev/null || true)
+    if [ -n "$CONSEC_DASH" ]; then
+      VIOLATIONS+="Consecutive -- SQL comment lines. rules/comments.md: comments must be one line. Move multi-line rationale to docs/:
+$CONSEC_DASH
 
 "
     fi
