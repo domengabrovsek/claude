@@ -1,15 +1,5 @@
 #!/bin/bash
-# Post-edit lint hook for Write|Edit. Backs rules/comments.md.
-#
-# Checks (exit 2 = Claude must address; exit 0 = clean or auto-fixed):
-#   1. Em-dash ban                                          - auto-fix
-#   2. Ticket / PR / JIRA / ADR refs in comments            - exit 2
-#   3. JSDoc blocks in JS/TS files                          - exit 2
-#   4. Multi-line /* */ block openers (non-JSDoc, JS/TS/CSS) - exit 2
-#   5. Consecutive // comment lines (JS/TS)                  - exit 2
-#   6. Consecutive -- SQL comment lines (.sql)              - exit 2
-#
-# Bypass with SKIP_POST_EDIT_LINT=1 in the environment.
+# Post-edit lint hook backing rules/comments.md. Bypass: SKIP_POST_EDIT_LINT=1.
 
 INPUT=$(cat)
 FILE=$(echo "$INPUT" | jq -r '.tool_input.file_path // empty')
@@ -29,26 +19,21 @@ case "$FILE" in
 esac
 
 # --- 1. Em-dash auto-fix (whole file, idempotent, silent) ---
-# Applies to ALL file types. The em-dash ban from CLAUDE.md is universal.
 if LC_ALL=C grep -q $'\xe2\x80\x94' "$FILE" 2>/dev/null; then
-  # macOS sed in-place without backup.
   sed -i '' $'s/\xe2\x80\x94/-/g' "$FILE"
 fi
 
-# --- Comment / JSDoc checks only run on code files in git repos ---
-# Skip docs/text: false positives from markdown headings (# Foo) and prose em-dashes are not relevant here.
+# --- Skip docs/text: prose comment markers cause false positives ---
 case "$FILE" in
   *.md|*.markdown|*.txt|*.rst|*.adoc|*.tex) exit 0 ;;
 esac
 
 FILE_DIR=$(dirname "$FILE")
 if ! git -C "$FILE_DIR" rev-parse --git-dir >/dev/null 2>&1; then
-  # Not in a git repo - skip diff-based checks.
   exit 0
 fi
 
-# Collect lines added by this edit (vs HEAD).
-# If the file is untracked, treat the whole file as added.
+# Untracked file: treat whole file as added.
 if git -C "$FILE_DIR" ls-files --error-unmatch "$FILE" >/dev/null 2>&1; then
   ADDED=$(git -C "$FILE_DIR" diff --unified=0 HEAD -- "$FILE" 2>/dev/null | grep -E '^\+[^+]' | sed 's/^\+//')
 else
@@ -60,8 +45,6 @@ fi
 VIOLATIONS=""
 
 # --- 2. Ticket / PR / JIRA / ADR refs inside comments ---
-# Looks for a comment marker (// # /* *) somewhere before a tracker ref on the same line.
-# Tracker refs: UPPERCASE-### (e.g. JIRA-123), #digits, owner/repo#digits, ADR-####, Fixes/Closes/Refs/Resolves <ref>.
 TICKETS=$(echo "$ADDED" | grep -nE \
   '(//|#|/\*|^\s*\*).*(\b[A-Z]{2,}-[0-9]+\b|[[:space:]]#[0-9]+\b|\b[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+#[0-9]+\b|\bADR-[0-9]+\b|\b(Fixes|Closes|Refs|Resolves)[[:space:]]+(#|[A-Z]{2,}-))' \
   2>/dev/null || true)
