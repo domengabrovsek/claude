@@ -34,10 +34,8 @@ Other intents are first-class workflows with their own shapes, not stripped-down
 
 - Use the project's formatter/linter (Biome, ESLint, Prettier - whatever is configured)
 - Complete code only - no TODOs, no placeholders, no incomplete implementations
-- **Comments**: default to NONE.
-  - Allowed: a non-obvious **why** (hidden constraint, subtle invariant, workaround for a known bug). Code must explain itself otherwise.
-  - Forbidden: WHAT-comments restating the code; multi-line narrative blocks; JSDoc/docstring blocks unless the body is a why-comment (the `/** */` format alone earns no exemption); ticket/PR/issue/ADR numbers in any comment (`JIRA-123`, `#456`, `Fixes owner/repo#789`, `ADR-0042`, etc. - those belong in PR descriptions, ADR files, and `git blame`).
-- Detailed standards are in rules/ (typescript, tests, database, infrastructure, security, jira)
+- **Comments**: see [`rules/comments.md`](rules/comments.md). Default NONE; one-line non-obvious WHY only; hook-enforced.
+- Detailed standards are in rules/ (typescript, tests, database, infrastructure, security, jira, comments)
 
 ## Docs Sync
 
@@ -86,6 +84,7 @@ Detailed git, testing, and exploration rules are in `rules/` (git-conventions, e
 The files below are loaded into every session via these `@`-imports. Edit the individual rule files in `rules/` - they are the source of truth, not this list.
 
 @rules/agent-routing.md
+@rules/comments.md
 @rules/communication.md
 @rules/context7.md
 @rules/database.md
