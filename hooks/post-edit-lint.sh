@@ -46,7 +46,7 @@ VIOLATIONS=""
 
 # --- 2. Ticket / PR / JIRA / ADR refs inside comments ---
 TICKETS=$(echo "$ADDED" | grep -nE \
-  '(//|#|/\*|^\s*\*).*(\b[A-Z]{2,}-[0-9]+\b|[[:space:]]#[0-9]+\b|\b[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+#[0-9]+\b|\bADR-[0-9]+\b|\b(Fixes|Closes|Refs|Resolves)[[:space:]]+(#|[A-Z]{2,}-))' \
+  '(//|#|/\*|^\s*\*).*(\b[A-Z]{2,}-[0-9]+\b|[[:space:]]#[0-9]+\b|\b[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+#[0-9]+\b|\b[Aa][Dd][Rr][[:space:]-]+[0-9]+\b|\b(Fixes|Closes|Refs|Resolves)[[:space:]]+(#|[A-Z]{2,}-))' \
   2>/dev/null || true)
 
 if [ -n "$TICKETS" ]; then
@@ -108,6 +108,21 @@ case "$FILE" in
     if [ -n "$CONSEC_DASH" ]; then
       VIOLATIONS+="Consecutive -- SQL comment lines. rules/comments.md: comments must be one line. Move multi-line rationale to docs/:
 $CONSEC_DASH
+
+"
+    fi
+    ;;
+esac
+
+# --- 7. Tracker refs inside Terraform description = "..." attributes ---
+case "$FILE" in
+  *.tf|*.tfvars)
+    TF_DESC_REFS=$(echo "$ADDED" | grep -nE \
+      'description[[:space:]]*=.*(\b[A-Z]{2,}-[0-9]+\b|[[:space:]]#[0-9]+\b|\b[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+#[0-9]+\b|\b[Aa][Dd][Rr][[:space:]-]+[0-9]+\b|\b(Fixes|Closes|Refs|Resolves)[[:space:]]+(#|[A-Z]{2,}-))' \
+      2>/dev/null || true)
+    if [ -n "$TF_DESC_REFS" ]; then
+      VIOLATIONS+="Tracker reference inside Terraform description attribute. rules/comments.md: descriptions surface in terraform-docs and module-consumer docs - tracker refs belong in PR descriptions, ADR files, and git blame:
+$TF_DESC_REFS
 
 "
     fi
