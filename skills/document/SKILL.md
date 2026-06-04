@@ -9,16 +9,18 @@ This skill writes docs that are dual-audience: engineers reading on GitHub AND C
 
 ## Subcommands
 
+**why-not-mechanizable:** skill workflow guidance; each step requires understanding the surrounding context (repo, task shape, prior state).
+
 Parse the first word of `$ARGUMENTS` as the subcommand:
 
-- `explain <topic>` - create/update `docs/explanation/<topic>.md` (the *why* and *how it fits together*)
-- `reference <topic>` - create/update `docs/reference/<topic>.md` (lookup tables, env vars, schemas, enums)
-- `how-to <task>` - create/update `docs/how-to/<task>.md` (a recipe to do one thing)
-- `tutorial <topic>` - create/update `docs/tutorials/<topic>.md` (learning path, onboarding)
-- `adr "<title>"` - draft the next-numbered ADR in `docs/adr/`
-- `diagram <type> <topic>` - add or update a mermaid diagram inside the matching doc
-- `audit` - read every `docs/**/*.md`, compare against current code, produce a drift report (read-only, no edits)
-- `bootstrap` - create the full `docs/` skeleton in a repo that has none yet (uses `~/.claude/templates/docs-readme.md` and `~/.claude/templates/adr.md`)
+- `explain <topic>` - create/update `docs/explanation/<topic>.md` (the *why* and *how it fits together*) `(review-time: see section note)`
+- `reference <topic>` - create/update `docs/reference/<topic>.md` (lookup tables, env vars, schemas, enums) `(review-time: see section note)`
+- `how-to <task>` - create/update `docs/how-to/<task>.md` (a recipe to do one thing) `(review-time: see section note)`
+- `tutorial <topic>` - create/update `docs/tutorials/<topic>.md` (learning path, onboarding) `(review-time: see section note)`
+- `adr "<title>"` - draft the next-numbered ADR in `docs/adr/` `(review-time: see section note)`
+- `diagram <type> <topic>` - add or update a mermaid diagram inside the matching doc `(review-time: see section note)`
+- `audit` - read every `docs/**/*.md`, compare against current code, produce a drift report (read-only, no edits) `(review-time: see section note)`
+- `bootstrap` - create the full `docs/` skeleton in a repo that has none yet (uses `~/.claude/templates/docs-readme.md` and `~/.claude/templates/adr.md`) `(review-time: see section note)`
 
 If no subcommand matches, ask the user which one they meant before writing anything.
 
@@ -35,28 +37,28 @@ If a topic does not clearly fit one quadrant, ask. Do not split a single topic a
 
 ## Quality rules (apply to every doc you write)
 
-1. **One topic per file.** If two H1-worthy ideas appear, split into two files.
-2. **Lead with TL;DR** in 3 sentences or fewer, before any heading. Body expands.
-3. **Cite source files** with backticked relative paths (`src/foo/bar.ts`). Link, do not paste. Inline code blocks longer than 15 lines are forbidden - link to the file instead.
-4. **Tables over prose** for any list of more than 3 parallel items.
-5. **Diagrams for relationships only.** No diagram if a 3-row table conveys it. Mermaid by default; drawio for complex per `rules/diagrams.md`. The `/diagram` skill picks format and writes the source.
-6. **Why before how.** Every explanation doc opens with the problem the thing solves.
-7. **No forward-looking content.** Document only behavior that exists now. No "we plan to", no "in the future".
-8. **No issue/PR/ticket numbers.** They rot. Put them in PR descriptions and git history, not docs.
-9. **ADRs are immutable once Accepted.** A new decision = a new ADR with `Status: Supersedes NNNN`. Never edit the body of an Accepted ADR.
-10. **Max 300 lines per doc.** If longer, split by sub-topic.
-11. **No emoji** unless the user explicitly asked for them.
-12. **No em dashes.** Use a regular hyphen.
+1. **One topic per file.** If two H1-worthy ideas appear, split into two files. `(review-time: see section note)`
+2. **Lead with TL;DR** in 3 sentences or fewer, before any heading. Body expands. `(review-time: see section note)`
+3. **Cite source files** with backticked relative paths (`src/foo/bar.ts`). Link, do not paste. Inline code blocks longer than 15 lines are forbidden - link to the file instead. `(review-time: see section note)`
+4. **Tables over prose** for any list of more than 3 parallel items. `(review-time: see section note)`
+5. **Diagrams for relationships only.** No diagram if a 3-row table conveys it. Mermaid by default; drawio for complex per `rules/diagrams.md`. The `/diagram` skill picks format and writes the source. `(review-time: see section note)`
+6. **Why before how.** Every explanation doc opens with the problem the thing solves. `(review-time: see section note)`
+7. **No forward-looking content.** Document only behavior that exists now. No "we plan to", no "in the future". `(review-time: see section note)`
+8. **No issue/PR/ticket numbers.** They rot. Put them in PR descriptions and git history, not docs. `(review-time: see section note)`
+9. **ADRs are immutable once Accepted.** A new decision = a new ADR with `Status: Supersedes NNNN`. Never edit the body of an Accepted ADR. `(review-time: see section note)`
+10. **Max 300 lines per doc.** If longer, split by sub-topic. `(review-time: see section note)`
+11. **No emoji** unless the user explicitly asked for them. `(review-time: see section note)`
+12. **No em dashes.** Use a regular hyphen. `(review-time: see section note)`
 
 ## Diagram conventions
 
 Mermaid is the default. Use ` ```mermaid ` fenced blocks - GitHub renders natively. Diagram type by purpose:
 
-- `flowchart TD` for high-level architecture and decision trees
-- `sequenceDiagram` for request flows, auth flows, async messaging
-- `erDiagram` for data models
-- `stateDiagram-v2` for state machines (order status, sync status)
-- `flowchart LR` with subgraphs for C4-context (services, queues, datastores)
+- `flowchart TD` for high-level architecture and decision trees `(review-time: see section note)`
+- `sequenceDiagram` for request flows, auth flows, async messaging `(review-time: see section note)`
+- `erDiagram` for data models `(review-time: see section note)`
+- `stateDiagram-v2` for state machines (order status, sync status) `(review-time: see section note)`
+- `flowchart LR` with subgraphs for C4-context (services, queues, datastores) `(review-time: see section note)`
 
 Keep node labels short. Long descriptions go in adjacent prose. One diagram per doc maximum unless the doc is explicitly an architecture overview.
 
@@ -89,22 +91,22 @@ Use the `/diagram` skill (or `mcp__drawio__*` tools directly) to author drawio d
 
 When `adr "<title>"`:
 
-1. Scan `docs/adr/` for highest existing number. New file = `NNNN-<kebab-title>.md`, zero-padded to 4 digits.
-2. Use `~/.claude/templates/adr.md` as the body. Fill `<Title>`, today's date, status `Proposed`.
-3. Append a row to `docs/adr/README.md` table.
-4. Ask the user for Context, Decision, Consequences before finalizing - never invent a decision.
+1. Scan `docs/adr/` for highest existing number. New file = `NNNN-<kebab-title>.md`, zero-padded to 4 digits. `(review-time: see section note)`
+2. Use `~/.claude/templates/adr.md` as the body. Fill `<Title>`, today's date, status `Proposed`. `(review-time: see section note)`
+3. Append a row to `docs/adr/README.md` table. `(review-time: see section note)`
+4. Ask the user for Context, Decision, Consequences before finalizing - never invent a decision. `(review-time: see section note)`
 
 ## Audit procedure
 
 When `audit`:
 
-1. Walk `docs/**/*.md`.
-2. For each doc, extract source-file citations (backticked paths). Verify they exist with `Glob`/`Read`. Report missing files.
-3. For each ADR, verify `Status` is one of {Proposed, Accepted, Superseded by NNNN, Deprecated}. Flag malformed ADRs.
-4. For each `docs/reference/*.md`, scan referenced enums/configs (e.g. `src/**/enums/*.ts`) and report mismatches between doc tables and code.
-5. Report doc files exceeding 300 lines.
-6. Report any `docs/**/*.md` not linked from `docs/README.md`.
-7. Output a report only - do NOT edit files. The user runs targeted subcommands afterward to fix drift.
+1. Walk `docs/**/*.md`. `(review-time: see section note)`
+2. For each doc, extract source-file citations (backticked paths). Verify they exist with `Glob`/`Read`. Report missing files. `(review-time: see section note)`
+3. For each ADR, verify `Status` is one of {Proposed, Accepted, Superseded by NNNN, Deprecated}. Flag malformed ADRs. `(review-time: see section note)`
+4. For each `docs/reference/*.md`, scan referenced enums/configs (e.g. `src/**/enums/*.ts`) and report mismatches between doc tables and code. `(review-time: see section note)`
+5. Report doc files exceeding 300 lines. `(review-time: see section note)`
+6. Report any `docs/**/*.md` not linked from `docs/README.md`. `(review-time: see section note)`
+7. Output a report only - do NOT edit files. The user runs targeted subcommands afterward to fix drift. `(review-time: see section note)`
 
 ## CLAUDE.md integration
 
@@ -112,15 +114,15 @@ After bootstrapping or significant doc changes, update the repo's `CLAUDE.md` so
 
 ## Verification before finishing
 
-- `markdownlint-cli2 docs/**/*.md` if the repo has it configured (check for `.markdownlint*` files).
-- All mermaid blocks are syntactically valid (rough check: balanced fences, recognized diagram type).
-- All source-file citations resolve.
-- The doc fits the quality rules above.
+- `markdownlint-cli2 docs/**/*.md` if the repo has it configured (check for `.markdownlint*` files). `(review-time: see section note)`
+- All mermaid blocks are syntactically valid (rough check: balanced fences, recognized diagram type). `(review-time: see section note)`
+- All source-file citations resolve. `(review-time: see section note)`
+- The doc fits the quality rules above. `(review-time: see section note)`
 
 If any check fails, fix it before reporting done.
 
 ## Out of scope
 
-- Generated API references (Swagger/OpenAPI, TypeDoc) - separate tooling.
-- Product specs - those live in their own repo / system.
-- Anything outside `docs/` in the current repo.
+- Generated API references (Swagger/OpenAPI, TypeDoc) - separate tooling. `(review-time: see section note)`
+- Product specs - those live in their own repo / system. `(review-time: see section note)`
+- Anything outside `docs/` in the current repo. `(review-time: see section note)`

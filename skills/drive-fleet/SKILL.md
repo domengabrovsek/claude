@@ -9,9 +9,11 @@ A two-phase workflow for driving a fleet of MRs/PRs to done in parallel with a m
 
 ## When to use
 
-- 2+ independent lanes / multiple MRs, often across sibling repos
-- You want a hands-off MANAGER that delegates every edit and only stops when the whole fleet is done
-- Not for single-MR work - use `/build` + `/mr` directly
+**why-not-mechanizable:** skill workflow guidance; each step requires understanding the surrounding context (repo, task shape, prior state).
+
+- 2+ independent lanes / multiple MRs, often across sibling repos `(review-time: see section note)`
+- You want a hands-off MANAGER that delegates every edit and only stops when the whole fleet is done `(review-time: see section note)`
+- Not for single-MR work - use `/build` + `/mr` directly `(review-time: see section note)`
 
 ## The goal condition
 
@@ -29,8 +31,8 @@ Template (fill the `{knobs}`):
 
 ## Phase 1 - Plan via grills
 
-1. Run `/grill-with-docs` (add `grill-me` if you have it installed) to pressure-test the approach against the existing domain model, sharpen terminology, and emit CONTEXT.md + ADRs inline.
-2. Output: an execution plan in `.claude/state/plans/` that defines the lanes / MRs and **proves they are file-isolated** - no two lanes touch the same file.
+1. Run `/grill-with-docs` (add `grill-me` if you have it installed) to pressure-test the approach against the existing domain model, sharpen terminology, and emit CONTEXT.md + ADRs inline. `(review-time: see section note)`
+2. Output: an execution plan in `.claude/state/plans/` that defines the lanes / MRs and **proves they are file-isolated** - no two lanes touch the same file. `(review-time: see section note)`
 
 The plan is the contract. Approving it and setting the `/goal` is your batched authorization for the fleet (see [orchestration.md](orchestration.md)).
 
@@ -38,9 +40,9 @@ The plan is the contract. Approving it and setting the `/goal` is your batched a
 
 Phase 2 is started by **you, the operator** - the agent cannot open its own session or set its own goal:
 
-1. Open a **fresh** Claude Code session. The plan on disk is the whole handoff; nothing from the grill carries over. This boundary is also a deliberate gate - a long autonomous run should not start as a side effect of planning.
-2. Type `/goal <condition>` (built into Claude Code). With auto mode on, `/goal` is what keeps the **one** manager session working turn after turn until the fleet meets the condition, then auto-clears.
-3. Invoke this skill and run the manager loop (see [orchestration.md](orchestration.md)).
+1. Open a **fresh** Claude Code session. The plan on disk is the whole handoff; nothing from the grill carries over. This boundary is also a deliberate gate - a long autonomous run should not start as a side effect of planning. `(review-time: see section note)`
+2. Type `/goal <condition>` (built into Claude Code). With auto mode on, `/goal` is what keeps the **one** manager session working turn after turn until the fleet meets the condition, then auto-clears. `(review-time: see section note)`
+3. Invoke this skill and run the manager loop (see [orchestration.md](orchestration.md)). `(review-time: see section note)`
 
 This stays a **single, thin manager session** the whole time - it never spawns nested sessions. Its context stays small because all editing / review / rebase / conflict work goes to subagents (each with its own context window) and worktrees; the harness compacts the manager's context as it grows. The main loop manages and nothing else - it never edits, reviews, rebases, or resolves conflicts.
 

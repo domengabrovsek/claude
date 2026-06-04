@@ -79,11 +79,13 @@ Don't couple `CONTEXT.md` to implementation details. Only include terms that are
 
 ### Offer ADRs sparingly
 
+**why-not-mechanizable:** skill workflow guidance; each step requires understanding the surrounding context (repo, task shape, prior state).
+
 Only offer to create an ADR when all three are true:
 
-1. **Hard to reverse** — the cost of changing your mind later is meaningful
-2. **Surprising without context** — a future reader will wonder "why did they do it this way?"
-3. **The result of a real trade-off** — there were genuine alternatives and you picked one for specific reasons
+1. **Hard to reverse** — the cost of changing your mind later is meaningful `(review-time: see section note)`
+2. **Surprising without context** — a future reader will wonder "why did they do it this way?" `(review-time: see section note)`
+3. **The result of a real trade-off** — there were genuine alternatives and you picked one for specific reasons `(review-time: see section note)`
 
 If any of the three is missing, skip the ADR. Use the format in [ADR-FORMAT.md](./ADR-FORMAT.md).
 

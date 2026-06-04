@@ -7,12 +7,14 @@ Review the pull request: $ARGUMENTS
 
 Follow this process:
 
-1. **Fetch PR details**: run `gh pr view $ARGUMENTS --json title,body,files,commits,additions,deletions,baseRefName,headRefName`
-2. **Read the diff**: run `gh pr diff $ARGUMENTS` to see all changes
-3. **Understand intent**: read the PR description, linked issues, and commit messages before reviewing code
-4. **Load relevant agents**: based on the files changed, load the appropriate expert agents from `~/.claude/agents/` for domain-specific review
-5. **Review systematically** using the checklist in @checklist.md
-6. **Produce structured output** in this format:
+**why-not-mechanizable:** review workflow guidance; each step requires reading the PR and judging code quality / intent.
+
+1. **Fetch PR details**: run `gh pr view $ARGUMENTS --json title,body,files,commits,additions,deletions,baseRefName,headRefName` `(review-time: see section note)`
+2. **Read the diff**: run `gh pr diff $ARGUMENTS` to see all changes `(review-time: see section note)`
+3. **Understand intent**: read the PR description, linked issues, and commit messages before reviewing code `(review-time: see section note)`
+4. **Load relevant agents**: based on the files changed, load the appropriate expert agents from `~/.claude/agents/` for domain-specific review `(review-time: see section note)`
+5. **Review systematically** using the checklist in @checklist.md `(review-time: see section note)`
+6. **Produce structured output** in this format: `(review-time: see section note)`
 
 ```markdown
 ## Summary
