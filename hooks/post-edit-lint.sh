@@ -56,33 +56,7 @@ $TICKETS
 "
 fi
 
-# --- 3. New JSDoc blocks in JS/TS files ---
-case "$FILE" in
-  *.js|*.jsx|*.ts|*.tsx|*.mjs|*.cjs)
-    JSDOC=$(echo "$ADDED" | grep -nE '^[[:space:]]*/\*\*' 2>/dev/null || true)
-    if [ -n "$JSDOC" ]; then
-      VIOLATIONS+="JSDoc block added. rules/comments.md: default no comments; only one-line WHY. Remove and move rationale to docs/:
-$JSDOC
-
-"
-    fi
-    ;;
-esac
-
-# --- 4. Multi-line /* */ block openers (non-JSDoc) in JS/TS/CSS ---
-case "$FILE" in
-  *.js|*.jsx|*.ts|*.tsx|*.mjs|*.cjs|*.css|*.scss)
-    CBLOCK=$(echo "$ADDED" | grep -nE '^[[:space:]]*/\*[^*]' | grep -vE '\*/' 2>/dev/null || true)
-    if [ -n "$CBLOCK" ]; then
-      VIOLATIONS+="Multi-line /* */ comment block opener. rules/comments.md: comments must be one line. Use a single-line // for one-line WHY; move multi-line rationale to docs/:
-$CBLOCK
-
-"
-    fi
-    ;;
-esac
-
-# --- 5. Consecutive // comment lines in JS/TS ---
+# --- 3. Consecutive // comment lines in JS/TS (rules/comments.md: multi-line must use /* */) ---
 case "$FILE" in
   *.js|*.jsx|*.ts|*.tsx|*.mjs|*.cjs)
     CONSEC_SLASH=$(echo "$ADDED" | awk '
@@ -90,7 +64,7 @@ case "$FILE" in
       { prev=0 }
     ' 2>/dev/null || true)
     if [ -n "$CONSEC_SLASH" ]; then
-      VIOLATIONS+="Consecutive // comment lines. rules/comments.md: comments must be one line. Move multi-line rationale to docs/:
+      VIOLATIONS+="Consecutive // comment lines. rules/comments.md: multi-line comments must use /* */, never a stack of //:
 $CONSEC_SLASH
 
 "
@@ -98,7 +72,7 @@ $CONSEC_SLASH
     ;;
 esac
 
-# --- 6. Consecutive -- SQL comment lines ---
+# --- 4. Consecutive -- SQL comment lines (rules/comments.md: multi-line must use /* */) ---
 case "$FILE" in
   *.sql)
     CONSEC_DASH=$(echo "$ADDED" | awk '
@@ -106,7 +80,7 @@ case "$FILE" in
       { prev=0 }
     ' 2>/dev/null || true)
     if [ -n "$CONSEC_DASH" ]; then
-      VIOLATIONS+="Consecutive -- SQL comment lines. rules/comments.md: comments must be one line. Move multi-line rationale to docs/:
+      VIOLATIONS+="Consecutive -- SQL comment lines. rules/comments.md: multi-line comments must use /* */, never a stack of --:
 $CONSEC_DASH
 
 "
@@ -114,7 +88,7 @@ $CONSEC_DASH
     ;;
 esac
 
-# --- 7. Tracker refs inside Terraform description = "..." attributes ---
+# --- 5. Tracker refs inside Terraform description = "..." attributes ---
 case "$FILE" in
   *.tf|*.tfvars)
     TF_DESC_REFS=$(echo "$ADDED" | grep -nE \
@@ -128,6 +102,28 @@ $TF_DESC_REFS
     fi
     ;;
 esac
+
+# --- 6. New `var` declarations in JS/TS (rules/typescript.md: never use var) ---
+case "$FILE" in
+  *.js|*.jsx|*.ts|*.tsx|*.mjs|*.cjs)
+    VAR_DECL=$(echo "$ADDED" | grep -nE '^[[:space:]]*var[[:space:]]+[A-Za-z_$]' 2>/dev/null || true)
+    if [ -n "$VAR_DECL" ]; then
+      VIOLATIONS+="New \`var\` declaration. rules/typescript.md: use \`const\` (or \`let\` when reassignment is required); never \`var\`:
+$VAR_DECL
+
+"
+    fi
+    ;;
+esac
+
+# --- 7. New TODO/FIXME/XXX/HACK markers in code (engineering-principles: complete code only) ---
+TODOS=$(echo "$ADDED" | grep -nE '\b(TODO|FIXME|XXX|HACK)\b' 2>/dev/null || true)
+if [ -n "$TODOS" ]; then
+  VIOLATIONS+="TODO / FIXME / XXX / HACK marker. rules/engineering-principles.md: complete code only - no placeholders. Either finish the work now or open a tracked issue and remove the marker:
+$TODOS
+
+"
+fi
 
 if [ -n "$VIOLATIONS" ]; then
   echo "[post-edit-lint] $FILE" >&2

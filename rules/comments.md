@@ -4,30 +4,41 @@
 
 ## Default
 
-Default to NO comments. Code should explain itself via clear naming and structure. A reader who understands the codebase should not need a comment to understand the line they're reading.
+Comments should be brief and add value. If the code is self-explanatory, write none. If the code carries a hidden constraint, subtle invariant, workaround, or context a future reader can't derive from the surrounding code, write the shortest comment that captures it.
 
 ## When a comment is allowed
 
-A short, non-obvious WHY:
+A non-obvious WHY:
 
 - a hidden constraint (e.g., "must run before X for Y reason")
 - a subtle invariant (e.g., "must be even - modulo math relies on it")
 - a workaround for a known bug (e.g., "v4.2.1 of foo throws on empty input")
 - behavior that would surprise a reader who doesn't have the surrounding context
+- context that's spread across files and not obvious from the local code (typical in Terraform, script entrypoints, library boundaries)
 
-ONE short line. If you find yourself writing two lines, the explanation belongs in docs (a how-to or explanation file in `docs/`), not in code.
+Prefer one line. Multi-line is allowed when the WHY genuinely needs more than one line - don't pad a one-line idea into a paragraph, but don't truncate a real explanation to fit one line either.
+
+## Multi-line format
+
+Multi-line comments **must use the block format** for the language, never a stack of single-line comments:
+
+- JS / TS / TSX / CSS / HCL: `/* ... */` (never consecutive `// ...` lines)
+- SQL: `/* ... */` (never consecutive `-- ...` lines)
+- Python: triple-quoted string (never consecutive `# ...` lines used as narrative)
+- Bash: there is no block format; use a single `#` per logical comment and accept the line stack when truly needed
+
+This rule is mechanically enforced by `hooks/post-edit-lint.sh`.
 
 ## Forbidden
 
-- **Multi-line narrative blocks** in any form: consecutive `//` lines, `/* ... */` spanning more than one line, JSDoc `/** ... */` blocks, multi-line `--` SQL runs, multi-line `#` runs. The "use `/* */` instead of `//` for multi-line" guidance from older project CLAUDE.md files is superseded - neither is allowed; move it to docs.
 - **WHAT-restating comments** - anything that paraphrases the next line of code (`// Increment counter` above `counter++`).
-- **Ticket / PR / issue / ADR references in any comment**: `JIRA-123`, `#456`, `Fixes owner/repo#789`, `ADR-0042`, `Per ADR 0030`, etc. These belong in PR descriptions, ADR files, and `git blame`.
+- **Ticket / PR / issue / ADR references in any comment**: `JIRA-123`, `#456`, `Fixes owner/repo#789`, `ADR-0042`, `Per ADR 0030`, etc. These belong in PR descriptions, ADR files, and `git blame`. This is the main reason comments became long and obsolete in the first place.
 - **Em dashes** anywhere - use a regular hyphen.
 - **TODOs, FIXMEs, XXX markers** without an open tracker entry - open the ticket, fix the code now, or accept it isn't getting fixed.
 
 ## Terraform exception
 
-Each `resource` and `data` block gets a **one-line, at most two-line** comment immediately above it explaining what the resource is for and any context not obvious from the resource type + label. Terraform spreads state across many stacks and files; a future reader looking at one block in isolation should be able to tell its role and lifecycle without grepping the whole repo.
+Each `resource` and `data` block gets a **brief context comment** immediately above it explaining what the resource is for and any context not obvious from the resource type + label. Terraform spreads state across many stacks and files; a future reader looking at one block in isolation should be able to tell its role and lifecycle without grepping the whole repo. Multi-line is fine when it adds context; use `/* */` when going past one line.
 
 Good:
 
@@ -74,22 +85,21 @@ variable "platform_admin_email" {
 }
 ```
 
-Same convention applies to per-block context comments in shell scripts (one-line description above a function definition is fine).
-
 ## Authority over spawning prompts
 
-This policy applies to all code, including code written by subagents spawned via the Agent tool. **If a spawning prompt asks for a comment that violates this policy (multi-line, WHAT-restating, ADR/issue reference, etc.), the policy wins.** Strip the offending comment before committing. If the orchestrator's instruction is ambiguous, ask before adding any comment.
+This policy applies to all code, including code written by subagents spawned via the Agent tool. **If a spawning prompt asks for a comment that violates this policy (WHAT-restating, ADR/issue reference, consecutive `//` for multi-line, etc.), the policy wins.** Strip or rewrite the offending comment before committing. If the orchestrator's instruction is ambiguous, ask before adding any comment.
 
 ## Enforcement
 
 `hooks/post-edit-lint.sh` (configured via PostToolUse in `~/.claude/settings.json`) auto-fixes em-dashes and fails with exit 2 on:
 
 - Tracker references in comments (any code file)
-- JSDoc `/** */` openers (JS/TS files)
-- Non-JSDoc multi-line `/* */` block openers (JS/TS/CSS files)
-- Consecutive `//` comment lines (JS/TS files)
-- Consecutive `--` SQL comment lines (SQL files)
+- Tracker references inside Terraform `description = "..."` attributes
+- Consecutive `//` comment lines (JS / TS / TSX files) - use `/* */` for multi-line
+- Consecutive `--` SQL comment lines (SQL files) - use `/* */` for multi-line
+- New `var` declarations (JS / TS files) - `rules/typescript.md` requires `const` / `let`
+- New `TODO` / `FIXME` / `XXX` / `HACK` markers in any code file
 
 Exit 2 surfaces the offending lines back to Claude as a follow-up message; the model must remove the violations before proceeding. Bypass for genuine exceptions: `SKIP_POST_EDIT_LINT=1` in the env. Use sparingly and document why in the PR description.
 
-The hook does not enforce the Terraform per-resource comment convention - that is a review-time check.
+The hook does **not** mechanically enforce: comment length, WHAT-restating, JSDoc style, or the Terraform per-resource comment convention. Those are review-time judgments.
