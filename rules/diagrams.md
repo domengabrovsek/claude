@@ -10,30 +10,30 @@ Use mermaid for diagrams whose value is the **logical structure**, where a clean
 
 Mermaid is correct when:
 
-- Sequence flows (request lifecycle, auth, async messaging)
-- State machines (order status, sync status)
-- ER diagrams (data models)
-- Class diagrams
-- Simple flowcharts and decision trees
-- Graph/topology with <15 nodes and standard shapes
-- gitGraph, journey, gantt, pie
+- Sequence flows (request lifecycle, auth, async messaging) `(review-time: diagram-type classification)`
+- State machines (order status, sync status) `(review-time: diagram-type classification)`
+- ER diagrams (data models) `(review-time: diagram-type classification)`
+- Class diagrams `(review-time: diagram-type classification)`
+- Simple flowcharts and decision trees `(review-time: diagram-type classification)`
+- Graph/topology with <15 nodes and standard shapes `(review-time: requires diagram analysis)`
+- gitGraph, journey, gantt, pie `(review-time: diagram-type classification)`
 
 How:
 
-- Write inline in the doc using ```` ```mermaid ```` fenced blocks. GitHub renders natively.
-- One diagram per doc maximum, unless it is an architecture doc.
-- Keep labels short - long descriptions go in adjacent prose.
+- Write inline in the doc using ```` ```mermaid ```` fenced blocks. GitHub renders natively. `(review-time: format guidance for diagram authoring)`
+- One diagram per doc maximum, unless it is an architecture doc. `(review-time: doc-classification "architecture")`
+- Keep labels short - long descriptions go in adjacent prose. `(review-time: subjective "short")`
 
 ## Drawio (for complex)
 
 Use drawio when mermaid genuinely fails the diagram. Reach for drawio when:
 
-- Precise grid / column layout matters (network topology, rack diagrams)
-- Custom shapes / icons / cloud provider symbols are required
-- Swimlanes with >2 lanes or nested swimlanes
-- Multi-layer architecture (data plane + control plane stacked)
-- Color and styling carry semantic weight that mermaid styling cannot express cleanly
-- Interactive editing is expected post-merge (cross-team architecture review)
+- Precise grid / column layout matters (network topology, rack diagrams) `(review-time: diagram-complexity judgment)`
+- Custom shapes / icons / cloud provider symbols are required `(review-time: diagram-complexity judgment)`
+- Swimlanes with >2 lanes or nested swimlanes `(review-time: diagram-complexity judgment)`
+- Multi-layer architecture (data plane + control plane stacked) `(review-time: diagram-complexity judgment)`
+- Color and styling carry semantic weight that mermaid styling cannot express cleanly `(review-time: diagram-complexity judgment)`
+- Interactive editing is expected post-merge (cross-team architecture review) `(review-time: workflow choice)`
 
 If you find yourself fighting mermaid syntax for layout reasons, switch to drawio - that's the signal.
 
@@ -41,9 +41,9 @@ If you find yourself fighting mermaid syntax for layout reasons, switch to drawi
 
 For each drawio diagram:
 
-- Source: `docs/diagrams/<topic>.drawio` (XML, the source of truth, committed)
-- Render: `docs/diagrams/<topic>.png` (committed alongside so GitHub previews work)
-- Reference from docs: embed the PNG with a markdown image link, then a one-line caption naming the source file.
+- Source: `docs/diagrams/<topic>.drawio` (XML, the source of truth, committed) `(review-time: file-convention for drawio diagrams)`
+- Render: `docs/diagrams/<topic>.png` (committed alongside so GitHub previews work) `(review-time: file-convention)`
+- Reference from docs: embed the PNG with a markdown image link, then a one-line caption naming the source file. `(review-time: formatting convention)`
 
 ```markdown
 ![Order Lifecycle](diagrams/order-lifecycle.png)
@@ -54,9 +54,9 @@ For each drawio diagram:
 
 The `drawio` MCP server is configured in `.mcp.json`. Three tools are exposed:
 
-- `mcp__drawio__open_drawio_xml` - paste raw drawio XML, opens in the editor
-- `mcp__drawio__open_drawio_csv` - tabular import (org charts, lists)
-- `mcp__drawio__open_drawio_mermaid` - mermaid input rendered through drawio (useful when you want a richer-styled version of an existing mermaid diagram)
+- `mcp__drawio__open_drawio_xml` - paste raw drawio XML, opens in the editor `(review-time: descriptive of available tool)`
+- `mcp__drawio__open_drawio_csv` - tabular import (org charts, lists) `(review-time: descriptive)`
+- `mcp__drawio__open_drawio_mermaid` - mermaid input rendered through drawio (useful when you want a richer-styled version of an existing mermaid diagram) `(review-time: descriptive)`
 
 Workflow:
 
@@ -69,10 +69,10 @@ The `/diagram` skill automates steps 1-3.
 
 ## Forbidden
 
-- Hand-drawn / scanned diagrams (illegible, undiffable, accessibility-hostile).
-- ASCII art for anything more than a 4-node flow (use mermaid).
-- Embedded screenshots of UML tools other than drawio.
-- Diagrams without a captioned source link in the surrounding doc.
+- Hand-drawn / scanned diagrams (illegible, undiffable, accessibility-hostile). `(review-time: image-content classification)`
+- ASCII art for anything more than a 4-node flow (use mermaid). `(review-time: counting nodes in ASCII art)`
+- Embedded screenshots of UML tools other than drawio. `(review-time: image-source classification)`
+- Diagrams without a captioned source link in the surrounding doc. `(review-time: requires reading surrounding doc)`
 
 ## Drift
 

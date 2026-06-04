@@ -86,7 +86,9 @@ The files below are loaded into every session via these `@`-imports. Edit the in
 @rules/agent-routing.md
 @rules/comments.md
 @rules/communication.md
+@rules/comments.md
 @rules/context7.md
+@rules/rule-authoring.md
 @rules/database.md
 @rules/diagrams.md
 @rules/engineering-principles.md
