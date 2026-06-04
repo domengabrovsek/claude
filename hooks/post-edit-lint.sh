@@ -125,6 +125,32 @@ $TODOS
 "
 fi
 
+# --- 8. SELECT * in SQL files (rules/database.md: explicitly list columns) ---
+case "$FILE" in
+  *.sql)
+    SELECT_STAR=$(echo "$ADDED" | grep -niE '\bselect[[:space:]]+\*' 2>/dev/null || true)
+    if [ -n "$SELECT_STAR" ]; then
+      VIOLATIONS+="\`SELECT *\` detected. rules/database.md: list columns explicitly. Catalog the columns you actually need:
+$SELECT_STAR
+
+"
+    fi
+    ;;
+esac
+
+# --- 9. `:latest` Docker tag in Dockerfile / compose / k8s (rules/infrastructure.md) ---
+case "$FILE" in
+  *Dockerfile*|*docker-compose*.y*ml|*compose.y*ml|*/k8s/*.y*ml|*/k8s/*.yaml)
+    LATEST_TAG=$(echo "$ADDED" | grep -nE '^[[:space:]]*(FROM[[:space:]]+[^:[:space:]]+:latest\b|image:[[:space:]]*[^:[:space:]]+:latest\b)' 2>/dev/null || true)
+    if [ -n "$LATEST_TAG" ]; then
+      VIOLATIONS+="\`:latest\` Docker tag detected. rules/infrastructure.md: pin a specific version so the build is reproducible:
+$LATEST_TAG
+
+"
+    fi
+    ;;
+esac
+
 if [ -n "$VIOLATIONS" ]; then
   echo "[post-edit-lint] $FILE" >&2
   echo "$VIOLATIONS" >&2

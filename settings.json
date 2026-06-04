@@ -136,6 +136,18 @@
           },
           {
             "type": "command",
+            "if": "Bash(git commit *)",
+            "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/pre-commit-coauthor-gate.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/pre-commit-coauthor-gate.sh\"; [ -x \"$HOOK\" ] && exec \"$HOOK\"",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "if": "Bash(git commit *)",
+            "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/pre-commit-conventional-gate.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/pre-commit-conventional-gate.sh\"; [ -x \"$HOOK\" ] && exec \"$HOOK\"",
+            "timeout": 10
+          },
+          {
+            "type": "command",
             "command": "command -v rtk >/dev/null 2>&1 && rtk hook claude || true"
           }
         ]
