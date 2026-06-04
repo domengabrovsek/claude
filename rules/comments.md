@@ -50,6 +50,30 @@ resource "random_password" "platform_admin_initial" {
 
 `variable`, `output`, and `module` blocks use their built-in `description` attribute - don't add a comment on top of those.
 
+### Terraform `description` attributes follow the same tracker-ref rule
+
+The content of any `description = "..."` attribute (on `variable`, `output`, `module`, or `resource` schema attributes) is subject to the same prohibition on ticket / PR / issue / ADR references that applies to comments. These descriptions are surfaced in `terraform-docs`-generated READMEs, `terraform plan` output, and module-consumer documentation - tracker refs there are MORE visible to readers than buried in a code comment, not less.
+
+Multi-line descriptions are fine - they are documentation, not code comments. WHAT-style content is fine - describing what a variable is for is the description's job. Just no tracker refs and no em-dashes.
+
+Good:
+
+```hcl
+variable "platform_admin_email" {
+  description = "Email address for the platform admin account. Used by the app-bootstrap job to seed the initial user."
+  type        = string
+}
+```
+
+Bad:
+
+```hcl
+variable "platform_admin_email" {
+  description = "Per ADR 0031: email for the platform admin. See pentla-api PR #1397."
+  type        = string
+}
+```
+
 Same convention applies to per-block context comments in shell scripts (one-line description above a function definition is fine).
 
 ## Authority over spawning prompts
