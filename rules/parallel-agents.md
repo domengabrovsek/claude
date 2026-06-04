@@ -6,77 +6,79 @@ When a task can be split into independent pieces, parallelize by spawning multip
 
 ## When to Parallelize
 
+**why-not-mechanizable:** every condition below requires understanding the task shape ("independent", "meaningful effort", "would take significantly longer"). The harness can't see what the task is until I describe it.
+
 Spawn parallel agents when ALL of these are true:
 
-- The task has 2+ independent sub-tasks that touch different files or modules
-- Each sub-task takes meaningful effort (not a one-liner fix)
-- The sub-tasks do not need to read each other's output to proceed
-- The overall task would take significantly longer done sequentially
+- The task has 2+ independent sub-tasks that touch different files or modules `(review-time: see section note)`
+- Each sub-task takes meaningful effort (not a one-liner fix) `(review-time: see section note)`
+- The sub-tasks do not need to read each other's output to proceed `(review-time: see section note)`
+- The overall task would take significantly longer done sequentially `(review-time: see section note)`
 
 Good candidates:
 
-- Implementing features across multiple modules (e.g., API endpoint + frontend page + tests)
-- Writing tests for several unrelated modules
-- Fixing multiple independent bugs in one batch
-- Refactoring several files that do not depend on each other
-- Adding similar functionality to different parts of the codebase (e.g., validation to 5 different endpoints)
-- Research tasks that explore different parts of the codebase
+- Implementing features across multiple modules (e.g., API endpoint + frontend page + tests) `(review-time: example, not a strict rule)`
+- Writing tests for several unrelated modules `(review-time: example)`
+- Fixing multiple independent bugs in one batch `(review-time: example)`
+- Refactoring several files that do not depend on each other `(review-time: example)`
+- Adding similar functionality to different parts of the codebase (e.g., validation to 5 different endpoints) `(review-time: example)`
+- Research tasks that explore different parts of the codebase `(review-time: example)`
 
 ## When NOT to Parallelize
 
 Do NOT spawn parallel agents when:
 
-- The task is a single focused change (one file, one module)
-- Sub-tasks are tightly coupled - one must see the other's output before it can start
-- The work is strictly sequential (step 2 depends on step 1's result)
-- The task is trivial enough to finish in under 2 minutes sequentially
-- Changes will inevitably conflict (e.g., multiple agents editing the same file)
-- There are only cosmetic or config changes
+- The task is a single focused change (one file, one module) `(review-time: task-shape judgment)`
+- Sub-tasks are tightly coupled - one must see the other's output before it can start `(review-time: task-shape judgment)`
+- The work is strictly sequential (step 2 depends on step 1's result) `(review-time: task-shape judgment)`
+- The task is trivial enough to finish in under 2 minutes sequentially `(review-time: time-estimate)`
+- Changes will inevitably conflict (e.g., multiple agents editing the same file) `(review-time: conflict prediction)`
+- There are only cosmetic or config changes `(review-time: task-shape judgment)`
 
 ## How to Split Work
 
-- **File-level isolation**: Each agent should own a distinct set of files. NEVER assign two agents to edit the same file.
-- **Module boundaries**: Split along natural module/package/directory boundaries
-- **Vertical slices**: Prefer giving an agent a complete vertical slice (e.g., "add the /users endpoint including route, controller, service, and tests") over horizontal slices (e.g., "write all controllers")
-- **Self-contained units**: Each agent's task must be completable and testable in isolation
-- **Shared dependencies**: If sub-tasks share a dependency that needs to be created first, either create it before spawning agents or assign it to one agent and make the others wait
+- **File-level isolation**: Each agent should own a distinct set of files. NEVER assign two agents to edit the same file. `(review-time: requires knowing the file plan)`
+- **Module boundaries**: Split along natural module/package/directory boundaries `(review-time: module-boundary recognition)`
+- **Vertical slices**: Prefer giving an agent a complete vertical slice (e.g., "add the /users endpoint including route, controller, service, and tests") over horizontal slices (e.g., "write all controllers") `(review-time: slice-shape choice)`
+- **Self-contained units**: Each agent's task must be completable and testable in isolation `(review-time: completability judgment)`
+- **Shared dependencies**: If sub-tasks share a dependency that needs to be created first, either create it before spawning agents or assign it to one agent and make the others wait `(review-time: dependency-graph reasoning)`
 
 ## Worktree Isolation
 
 Every parallel agent MUST use worktree isolation:
 
-- Set `isolation: "worktree"` on every Agent tool call for parallel work
-- Each agent gets its own full copy of the repo via git worktree
-- Each agent works on its own branch - no risk of stepping on other agents' changes
-- NEVER run parallel agents without worktree isolation - concurrent edits to the same working directory will cause corruption
+- Set `isolation: "worktree"` on every Agent tool call for parallel work `(review-time: tool-call parameter choice; not currently hook-gated on Agent calls)`
+- Each agent gets its own full copy of the repo via git worktree `(review-time: descriptive of the mechanism)`
+- Each agent works on its own branch - no risk of stepping on other agents' changes `(review-time: descriptive of the mechanism)`
+- NEVER run parallel agents without worktree isolation - concurrent edits to the same working directory will cause corruption `(review-time: tool-call parameter choice; not currently hook-gated)`
 
 ## Background Execution
 
-- Spawn agents with `run_in_background: true` so they execute concurrently
-- Launch all independent agents in a single message with multiple Agent tool calls
-- After spawning, wait for automatic completion notifications - do NOT poll or check repeatedly
-- Continue with other non-conflicting work while agents run, if possible
+- Spawn agents with `run_in_background: true` so they execute concurrently `(review-time: tool-call parameter)`
+- Launch all independent agents in a single message with multiple Agent tool calls `(review-time: message-shape choice)`
+- After spawning, wait for automatic completion notifications - do NOT poll or check repeatedly `(review-time: behavioral discipline)`
+- Continue with other non-conflicting work while agents run, if possible `(review-time: requires identifying non-conflicting work)`
 
 ## Merging Results
 
 After all agents complete:
 
-1. Review each agent's changes for correctness
-2. Merge branches one at a time into the main working branch
-3. After each merge, check for conflicts and resolve immediately
-4. Run the full test suite, typecheck, and lint after all merges are complete
-5. If a merge conflict arises, resolve it manually - do NOT re-spawn an agent for conflict resolution
-6. After all branches are merged into the integration branch, prune the agent worktrees: `~/.claude/scripts/worktree-prune.sh --apply`. The conservative rule will only remove worktrees whose branch is upstream-gone or merged into the default - exactly the post-merge state. Locked worktrees will auto-unlock if safe. Anything still active is preserved.
+1. Review each agent's changes for correctness `(review-time: code review)`
+2. Merge branches one at a time into the main working branch `(review-time: workflow step)`
+3. After each merge, check for conflicts and resolve immediately `(review-time: workflow step)`
+4. Run the full test suite, typecheck, and lint after all merges are complete `(review-time: workflow step; pre-push-gate.sh enforces at push)`
+5. If a merge conflict arises, resolve it manually - do NOT re-spawn an agent for conflict resolution `(review-time: subagent-use choice)`
+6. After all branches are merged into the integration branch, prune the agent worktrees: `~/.claude/scripts/worktree-prune.sh --apply`. The conservative rule will only remove worktrees whose branch is upstream-gone or merged into the default - exactly the post-merge state. Locked worktrees will auto-unlock if safe. Anything still active is preserved. `(review-time: cleanup step)`
 
 ## Agent Prompt Quality
 
 Each agent's prompt MUST be self-contained. The agent cannot see the parent conversation. Include:
 
-- **Goal**: Exactly what the agent must accomplish - be specific and unambiguous
-- **Context**: Relevant background (why this change is needed, what the broader task is)
-- **File paths**: Exact files to read and modify - do not make the agent search blindly
-- **Constraints**: Patterns to follow, styles to match, things to avoid
-- **Verification**: How the agent should verify its work (run tests, typecheck, lint)
+- **Goal**: Exactly what the agent must accomplish - be specific and unambiguous `(review-time: prompt-quality)`
+- **Context**: Relevant background (why this change is needed, what the broader task is) `(review-time: prompt-quality)`
+- **File paths**: Exact files to read and modify - do not make the agent search blindly `(review-time: prompt-quality)`
+- **Constraints**: Patterns to follow, styles to match, things to avoid `(review-time: prompt-quality)`
+- **Verification**: How the agent should verify its work (run tests, typecheck, lint) `(review-time: prompt-quality)`
 
 Bad prompt: "Add validation to the API"
 
@@ -84,10 +86,10 @@ Good prompt: "Add Zod input validation to the POST /api/users endpoint in src/ro
 
 ## Limits
 
-- **Target: 4 parallel agents.** Most real tasks decompose cleanly into 2-4 truly independent units; beyond that you're usually inventing artificial seams.
-- **Hard ceiling: 5 parallel agents.** Only go this high when the task genuinely has 5 clean independent slices.
-- If a task splits into more than 5 pieces, batch them into rounds rather than spawning more concurrently.
-- Always prefer 3 well-scoped agents over 6 narrowly-scoped ones.
+- **Target: 4 parallel agents.** Most real tasks decompose cleanly into 2-4 truly independent units; beyond that you're usually inventing artificial seams. `(review-time: parallelism target)`
+- **Hard ceiling: 5 parallel agents.** Only go this high when the task genuinely has 5 clean independent slices. `(review-time: parallelism ceiling)`
+- If a task splits into more than 5 pieces, batch them into rounds rather than spawning more concurrently. `(review-time: batching strategy)`
+- Always prefer 3 well-scoped agents over 6 narrowly-scoped ones. `(review-time: scope-vs-count trade-off)`
 
 Why these numbers:
 

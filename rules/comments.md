@@ -10,11 +10,11 @@ Comments should be brief and add value. If the code is self-explanatory, write n
 
 A non-obvious WHY:
 
-- a hidden constraint (e.g., "must run before X for Y reason")
-- a subtle invariant (e.g., "must be even - modulo math relies on it")
-- a workaround for a known bug (e.g., "v4.2.1 of foo throws on empty input")
-- behavior that would surprise a reader who doesn't have the surrounding context
-- context that's spread across files and not obvious from the local code (typical in Terraform, script entrypoints, library boundaries)
+- a hidden constraint (e.g., "must run before X for Y reason") `(review-time: classification of comment intent)`
+- a subtle invariant (e.g., "must be even - modulo math relies on it") `(review-time: classification of comment intent)`
+- a workaround for a known bug (e.g., "v4.2.1 of foo throws on empty input") `(review-time: classification of comment intent)`
+- behavior that would surprise a reader who doesn't have the surrounding context `(review-time: classification of comment intent)`
+- context that's spread across files and not obvious from the local code (typical in Terraform, script entrypoints, library boundaries) `(review-time: classification of comment intent)`
 
 Prefer one line. Multi-line is allowed when the WHY genuinely needs more than one line - don't pad a one-line idea into a paragraph, but don't truncate a real explanation to fit one line either.
 
@@ -22,19 +22,19 @@ Prefer one line. Multi-line is allowed when the WHY genuinely needs more than on
 
 Multi-line comments **must use the block format** for the language, never a stack of single-line comments:
 
-- JS / TS / TSX / CSS / HCL: `/* ... */` (never consecutive `// ...` lines)
-- SQL: `/* ... */` (never consecutive `-- ...` lines)
-- Python: triple-quoted string (never consecutive `# ...` lines used as narrative)
-- Bash: there is no block format; use a single `#` per logical comment and accept the line stack when truly needed
+- JS / TS / TSX / CSS / HCL: `/* ... */` (never consecutive `// ...` lines) `(hook)`
+- SQL: `/* ... */` (never consecutive `-- ...` lines) `(hook)`
+- Python: triple-quoted string (never consecutive `# ...` lines used as narrative) `(review-time: no hook for Python yet)`
+- Bash: there is no block format; use a single `#` per logical comment and accept the line stack when truly needed `(review-time: language limitation, not enforceable)`
 
 This rule is mechanically enforced by `hooks/post-edit-lint.sh`.
 
 ## Forbidden
 
-- **WHAT-restating comments** - anything that paraphrases the next line of code (`// Increment counter` above `counter++`).
-- **Ticket / PR / issue / ADR references in any comment**: `JIRA-123`, `#456`, `Fixes owner/repo#789`, `ADR-0042`, `Per ADR 0030`, etc. These belong in PR descriptions, ADR files, and `git blame`. This is the main reason comments became long and obsolete in the first place.
-- **Em dashes** anywhere - use a regular hyphen.
-- **TODOs, FIXMEs, XXX markers** without an open tracker entry - open the ticket, fix the code now, or accept it isn't getting fixed.
+- **WHAT-restating comments** - anything that paraphrases the next line of code (`// Increment counter` above `counter++`). `(review-time: requires semantic comparison of comment text and the next statement)`
+- **Ticket / PR / issue / ADR references in any comment**: `JIRA-123`, `#456`, `Fixes owner/repo#789`, `ADR-0042`, `Per ADR 0030`, etc. These belong in PR descriptions, ADR files, and `git blame`. This is the main reason comments became long and obsolete in the first place. `(hook)`
+- **Em dashes** anywhere - use a regular hyphen. `(hook)`
+- **TODOs, FIXMEs, XXX markers** without an open tracker entry - open the ticket, fix the code now, or accept it isn't getting fixed. `(hook)`
 
 ## Terraform exception
 

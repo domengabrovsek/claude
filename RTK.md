@@ -47,10 +47,10 @@ operators it cannot parse cleanly. To keep adoption high:
 
 - **Do not append `2>&1`** - RTK filters already surface stderr usefully; the
   redirect suppresses the rewrite and loses the savings. Let failure output
-  flow through naturally.
+  flow through naturally. `(review-time: requires recognizing the redirect in the command being composed)`
 - Avoid command substitution (`$(...)`), pipes into interpreters
   (`| python -c`, `| node -e`), and compound commands (`&&`, `;`) when a
-  simpler single-command form exists.
+  simpler single-command form exists. `(review-time: command-shape choice)`
 
 **Exception: `glab`** - RTK has no `glab` filter yet (tracked upstream at
 rtk-ai/rtk#1085). Until that ships, `glab` commands bypass RTK regardless of
@@ -64,17 +64,17 @@ makes it a scalpel, not a session-wide shield. Reach for it only when an
 rtk adapter is provably broken for one specific command.
 
 - **Default**: bare `npm` / bare tool invocation. Trust RTK filters to
-  surface failures. Do not prefix `rtk proxy` out of habit.
+  surface failures. Do not prefix `rtk proxy` out of habit. `(review-time: command-composition discipline)`
 - **When one adapter misbehaves** (e.g. the lint adapter on a Biome
   project emitting `ESLint output (JSON parse failed: EOF ...)`), scope
   `rtk proxy` to just that one command (`rtk proxy npm run lint`). Leave
-  every other command on bare invocation so their adapters keep working.
+  every other command on bare invocation so their adapters keep working. `(review-time: requires recognising adapter failure)`
 - **A quiet proxied run is not a validated run**. `rtk proxy` shows raw
   end-of-stream output, which can look like success even when a coverage
   gate, typecheck, or integration assertion failed mid-stream. If you
   used `rtk proxy`, re-read the raw output yourself; do not trust the
-  tail.
+  tail. `(review-time: output-reading discipline)`
 - **Before reaching for proxy, dry-run the rewrite**: `rtk hook check
   "<cmd>"` prints what rtk will rewrite the command to. If it routes to
   an adapter that does not match the actual tool (`biome check` ->
-  `rtk lint check`), that is the collision to scope a proxy around.
+  `rtk lint check`), that is the collision to scope a proxy around. `(review-time: workflow step)`
