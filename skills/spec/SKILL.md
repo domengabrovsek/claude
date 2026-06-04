@@ -42,11 +42,13 @@ Follow this workflow:
 - <Explicitly excluded from this work>
 
 ## Open Questions
+**why-not-mechanizable:** skill workflow guidance; each step requires understanding the surrounding context (repo, task shape, prior state).
+
 - <Anything unresolved that needs a decision>
 ```
 
-1. **Save**: save the spec to `.claude/state/specs/YYYY-MM-DD-spec-<topic>.md`
-2. **Review**: present the spec to the user. Wait for approval before proceeding to /plan.
-3. **Iterate**: if the user has feedback, update the spec and re-present. Repeat until approved.
+1. **Save**: save the spec to `.claude/state/specs/YYYY-MM-DD-spec-<topic>.md` `(review-time: see section note)`
+2. **Review**: present the spec to the user. Wait for approval before proceeding to /plan. `(review-time: see section note)`
+3. **Iterate**: if the user has feedback, update the spec and re-present. Repeat until approved. `(review-time: see section note)`
 
 Do NOT proceed to planning or implementation until the spec is explicitly approved.
