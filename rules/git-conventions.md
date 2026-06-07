@@ -21,6 +21,15 @@
 - After pushing new commits to an existing PR, update the PR title and description to reflect all changes - use `gh pr edit` to keep them accurate `(review-time: requires judging "reflects all changes")`
 - If the repo has a PR template (`.github/pull_request_template.md`), use it. If not, use `~/.claude/pull_request_template.md` `(review-time: template selection requires reading directory)`
 
+## PR State Freshness
+
+PR / branch state from earlier in the conversation goes stale. Probe ground truth before acting or claiming.
+
+- Before asserting PR state in a reply (open / merged / closed / checks-passing / "you're all set"), run `gh pr view --json state,mergedAt,statusCheckRollup,url` and base the reply on that output, not on conversation memory `(review-time: requires recognizing a state-claim in the reply)`
+- A probe result is reusable for 5 minutes within the same turn-stream, but only if no state-changing action (`git push`, `gh pr merge`, `gh pr close`, `gh pr ready`, etc.) was taken in between - any such action voids the exemption, re-probe `(review-time: requires tracking probe age and intervening actions)`
+- Write-side `git push` / `git commit` / `gh pr (edit|comment|merge|close|ready|review)` are auto-probed by `hooks/pre-git-state-refresh.sh`, which injects a `[pr-state]` line into the tool context - read that line before deciding the next step `(hook)`
+- If the injected `[pr-state]` line reports `state=MERGED` or `state=CLOSED` for a command that writes to that PR, pause and confirm intent with the user instead of proceeding silently `(review-time: requires reading the injected state line and recognizing intent mismatch)`
+
 ## Testing Hygiene
 
 - When modifying test files, ensure all mocks are updated to match new DB queries, service dependencies, and module imports `(review-time: requires understanding mock-target coupling)`
