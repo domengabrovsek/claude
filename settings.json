@@ -118,6 +118,24 @@
         "hooks": [
           {
             "type": "command",
+            "if": "Bash(git push *)",
+            "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/pre-git-state-refresh.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/pre-git-state-refresh.sh\"; [ -x \"$HOOK\" ] && exec \"$HOOK\"",
+            "timeout": 15
+          },
+          {
+            "type": "command",
+            "if": "Bash(git commit *)",
+            "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/pre-git-state-refresh.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/pre-git-state-refresh.sh\"; [ -x \"$HOOK\" ] && exec \"$HOOK\"",
+            "timeout": 15
+          },
+          {
+            "type": "command",
+            "if": "Bash(gh pr *)",
+            "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/pre-git-state-refresh.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/pre-git-state-refresh.sh\"; [ -x \"$HOOK\" ] && exec \"$HOOK\"",
+            "timeout": 15
+          },
+          {
+            "type": "command",
             "if": "Bash(gh pr create *)",
             "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/pre-pr-test-gate.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/pre-pr-test-gate.sh\"; [ -x \"$HOOK\" ] && exec \"$HOOK\"",
             "timeout": 120
