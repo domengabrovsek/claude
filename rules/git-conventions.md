@@ -6,7 +6,7 @@
 
 - Always use conventional commits format (`feat:`, `fix:`, `refactor:`, `docs:`, `chore:`, `test:`, `ci:`, etc.) `(hook)`
 - Scope is optional, e.g. `feat(auth): add token refresh` `(review-time: descriptive sub-rule of the format above)`
-- Never add Co-Authored-By or any AI attribution to commits `(hook)`
+- Never add Co-Authored-By or any AI attribution anywhere - commits, PR/MR titles and descriptions, issues, comments, or any other artifact. This includes the "Generated with Claude Code" footer harnesses append by default `(hook for commits; review-time for PR bodies and other artifacts)`
 - Before committing, verify the current branch with `git branch --show-current` - never commit directly to main/master `(hook)`
 - Never auto-commit or push - wait for explicit instructions `(review-time: depends on conversational signal, not pattern)`
 
