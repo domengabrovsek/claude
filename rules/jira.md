@@ -42,3 +42,9 @@ Run `acli jira workitem --help` for the current command surface - flags change b
 - **Do not invent keys**: only act on keys the user actually provided. Do not guess project prefixes. `(review-time: requires reading user's message)`
 - **Stay scoped**: fetch the specific tickets referenced, not the entire backlog. Avoid broad `--jql` sweeps unless asked. `(review-time: judging "broad" scope)`
 - **Surface auth errors**: if `acli` returns an auth or permission error, report it verbatim - do not retry blindly or attempt to re-auth. `(review-time: error-handling pattern)`
+
+## Writing tickets
+
+- **Reporter voice**: write every ticket as someone reporting the problem before the fix and investigation are done - even when the fix already exists. Describe symptoms as currently happening, keep any proposed fix in future/conditional tense, and never reference the implementing PR or completed work in the description. PR links belong on the PR side (ticket key in PR title/description), not in the ticket body.
+- **Match the project's format**: before writing, view 1-2 recent tickets the user reported in the same project and mirror their section headings and tone (e.g. "What's happening / Root cause / Why we should fix it / Proposed fix / Acceptance / Related" in plain prose).
+- **Plain language**: summaries readable by non-engineers; keep deep technical detail (status codes, stack traces, code paths) out of the ticket unless the project's existing tickets carry it.
