@@ -19,6 +19,7 @@
 - Always rebase onto the target branch (`git fetch origin main && git rebase origin/main`) before creating a PR `(hook)`
 - Always run `/verify-done` before pushing any branch - never push without all checks passing `(hook)`
 - PR descriptions: always use bullet points in the summary section, not prose paragraphs `(review-time: formatting of free-form text Claude produces)`
+- Never reference local planning artifacts (`.claude/state/` plans, research, session diaries) in PR descriptions - they are untracked and invisible to reviewers `(review-time: formatting of free-form text Claude produces)`
 - After pushing new commits to an existing PR, update the PR title and description to reflect all changes - use `gh pr edit` to keep them accurate `(review-time: requires judging "reflects all changes")`
 - If the repo has a PR template (`.github/pull_request_template.md`), use it. If not, use `~/.claude/pull_request_template.md` `(review-time: template selection requires reading directory)`
 
