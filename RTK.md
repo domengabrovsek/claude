@@ -29,9 +29,32 @@ which rtk             # Verify correct binary
 rtk init -g --hook-only
 ```
 
-Plain `rtk init -g` (without the flag) would overwrite `~/.claude/RTK.md` (this file, symlinked to the dotfiles repo) with the 10-line stock version, and prompt to patch `~/.claude/settings.json` (also symlinked). If you ever see `Patch existing ... settings.json? [y/N]`, answer **N**: the repo's `settings.json` already has the `rtk hook claude` registration.
+Plain `rtk init -g` (without the flag) would overwrite `~/.claude/RTK.md` (this file, symlinked to the dotfiles repo) with the 10-line stock version, and prompt to patch `~/.claude/settings.json` (also symlinked). If you ever see `Patch existing ... settings.json? [y/N]`, answer **N**: the repo's `settings.json` already has the (env-gated) `rtk hook claude` registration.
 
 Drift recovery: if a symlink already got replaced with a real file, run `bash ~/dev/claude/scripts/setup-symlinks.sh` to back up the bad version (`.bak.<timestamp>`) and restore the symlink.
+
+## Disabling RTK (per-machine opt-out)
+
+The hook is **gated on the `RTK_DISABLE` env var**. RTK runs only when `RTK_DISABLE` is unset **and** `rtk` is on `PATH`. The registration in the shared `settings.json` is:
+
+```bash
+if [ -z "$RTK_DISABLE" ] && command -v rtk >/dev/null 2>&1; then rtk hook claude || true; fi
+```
+
+To turn RTK off on **one machine** without editing the shared (symlinked) `settings.json`, set the flag in `~/.claude/settings.local.json` - a machine-local file that is neither symlinked into the dotfiles nor committed:
+
+```json
+{
+  "env": {
+    "RTK_DISABLE": "1"
+  }
+}
+```
+
+To re-enable, delete `settings.local.json` or clear the variable. Other machines are unaffected because they do not carry the flag.
+
+- Put the `RTK_DISABLE` flag in `settings.local.json`, never in the symlinked `settings.json` - the latter is shared across every machine `(review-time: config-placement decision when editing, not pattern-checkable)`
+- Restart Claude Code after changing the flag - `env` from `settings.local.json` is applied at session start, so a mid-session change has no effect until restart `(review-time: requires recognizing a settings.local.json env change was just made)`
 
 ## Hook-Based Usage
 
