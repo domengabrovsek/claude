@@ -4,13 +4,6 @@
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
     "RTK_HOOK_AUDIT": "1"
   },
-  "autoUpdatesChannel": "stable",
-  "minimumVersion": "2.1.92",
-  "enabledPlugins": {
-    "frontend-design@claude-plugins-official": true
-  },
-  "effortLevel": "high",
-  "skipAutoPermissionPrompt": false,
   "permissions": {
     "deny": [
       "Read(**/.env)",
@@ -116,55 +109,55 @@
         "hooks": [
           {
             "type": "command",
+            "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/pre-git-state-refresh.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/pre-git-state-refresh.sh\"; [ -x \"$HOOK\" ] && exec \"$HOOK\"",
             "if": "Bash(git push *)",
-            "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/pre-git-state-refresh.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/pre-git-state-refresh.sh\"; [ -x \"$HOOK\" ] && exec \"$HOOK\"",
             "timeout": 15
           },
           {
             "type": "command",
+            "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/pre-git-state-refresh.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/pre-git-state-refresh.sh\"; [ -x \"$HOOK\" ] && exec \"$HOOK\"",
             "if": "Bash(git commit *)",
-            "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/pre-git-state-refresh.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/pre-git-state-refresh.sh\"; [ -x \"$HOOK\" ] && exec \"$HOOK\"",
             "timeout": 15
           },
           {
             "type": "command",
+            "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/pre-git-state-refresh.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/pre-git-state-refresh.sh\"; [ -x \"$HOOK\" ] && exec \"$HOOK\"",
             "if": "Bash(gh pr *)",
-            "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/pre-git-state-refresh.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/pre-git-state-refresh.sh\"; [ -x \"$HOOK\" ] && exec \"$HOOK\"",
             "timeout": 15
           },
           {
             "type": "command",
-            "if": "Bash(gh pr create *)",
             "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/pre-pr-test-gate.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/pre-pr-test-gate.sh\"; [ -x \"$HOOK\" ] && exec \"$HOOK\"",
+            "if": "Bash(gh pr create *)",
             "timeout": 120
           },
           {
             "type": "command",
-            "if": "Bash(git push *)",
             "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/pre-push-gate.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/pre-push-gate.sh\"; [ -x \"$HOOK\" ] && exec \"$HOOK\"",
+            "if": "Bash(git push *)",
             "timeout": 300
           },
           {
             "type": "command",
-            "if": "Bash(git commit *)",
             "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/pre-commit-branch-gate.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/pre-commit-branch-gate.sh\"; [ -x \"$HOOK\" ] && exec \"$HOOK\"",
+            "if": "Bash(git commit *)",
             "timeout": 30
           },
           {
             "type": "command",
-            "if": "Bash(git commit *)",
             "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/pre-commit-coauthor-gate.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/pre-commit-coauthor-gate.sh\"; [ -x \"$HOOK\" ] && exec \"$HOOK\"",
-            "timeout": 10
-          },
-          {
-            "type": "command",
             "if": "Bash(git commit *)",
-            "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/pre-commit-conventional-gate.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/pre-commit-conventional-gate.sh\"; [ -x \"$HOOK\" ] && exec \"$HOOK\"",
             "timeout": 10
           },
           {
             "type": "command",
-            "command": "if [ -z \"$RTK_DISABLE\" ] && command -v rtk >/dev/null 2>&1; then rtk hook claude || true; fi"
+            "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/pre-commit-conventional-gate.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/pre-commit-conventional-gate.sh\"; [ -x \"$HOOK\" ] && exec \"$HOOK\"",
+            "if": "Bash(git commit *)",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "if [ -n \"$RTK_ENABLE\" ] && command -v rtk >/dev/null 2>&1; then rtk hook claude || true; fi"
           }
         ]
       }
@@ -195,8 +188,8 @@
         "hooks": [
           {
             "type": "command",
-            "if": "Bash(gh pr create *)",
             "command": "nohup bash -c '~/.claude/hooks/watch-pr-checks.sh' >/dev/null 2>&1 &",
+            "if": "Bash(gh pr create *)",
             "timeout": 5
           }
         ]
@@ -250,5 +243,13 @@
   "statusLine": {
     "type": "command",
     "command": "~/.claude/statusline.sh"
-  }
+  },
+  "enabledPlugins": {
+    "frontend-design@claude-plugins-official": true
+  },
+  "effortLevel": "high",
+  "autoUpdatesChannel": "stable",
+  "minimumVersion": "2.1.92",
+  "skipAutoPermissionPrompt": false,
+  "tui": "fullscreen"
 }
