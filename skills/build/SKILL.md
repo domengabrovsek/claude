@@ -15,6 +15,7 @@ Follow these disciplines:
 - If no plan exists, stop and ask the user to run /plan first `(review-time: see section note)`
 - Read the plan and identify the task list `(review-time: see section note)`
 - Load relevant expert agents based on the plan's domain (see `rules/agent-routing.md`) - their guardrails apply to every increment `(review-time: see section note)`
+- If the plan has 2+ file-isolated lanes, execute it in **lane mode** - spawn one lane-mode teammate per lane (see `rules/parallel-agents.md`); single-lane plans stay in this session `(review-time: lane-vs-single judgment from the plan shape)`
 
 ## Increment Rules
 
