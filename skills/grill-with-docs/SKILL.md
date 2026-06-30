@@ -3,7 +3,7 @@ name: grill-with-docs
 description: Grilling session that challenges your plan against the existing domain model, sharpens terminology, and updates documentation (CONTEXT.md, ADRs) inline as decisions crystallise. Use when user wants to stress-test a plan against their project's language and documented decisions.
 ---
 
-> Source: [mattpocock/skills — engineering/grill-with-docs](https://github.com/mattpocock/skills/tree/main/skills/engineering/grill-with-docs)
+> Source: [mattpocock/skills - engineering/grill-with-docs](https://github.com/mattpocock/skills/tree/main/skills/engineering/grill-with-docs)
 
 <what-to-do>
 
@@ -51,17 +51,17 @@ If a `CONTEXT-MAP.md` exists at the root, the repo has multiple contexts. The ma
 │       └── docs/adr/
 ```
 
-Create files lazily — only when you have something to write. If no `CONTEXT.md` exists, create one when the first term is resolved. If no `docs/adr/` exists, create it when the first ADR is needed.
+Create files lazily - only when you have something to write. If no `CONTEXT.md` exists, create one when the first term is resolved. If no `docs/adr/` exists, create it when the first ADR is needed.
 
 ## During the session
 
 ### Challenge against the glossary
 
-When the user uses a term that conflicts with the existing language in `CONTEXT.md`, call it out immediately. "Your glossary defines 'cancellation' as X, but you seem to mean Y — which is it?"
+When the user uses a term that conflicts with the existing language in `CONTEXT.md`, call it out immediately. "Your glossary defines 'cancellation' as X, but you seem to mean Y - which is it?"
 
 ### Sharpen fuzzy language
 
-When the user uses vague or overloaded terms, propose a precise canonical term. "You're saying 'account' — do you mean the Customer or the User? Those are different things."
+When the user uses vague or overloaded terms, propose a precise canonical term. "You're saying 'account' - do you mean the Customer or the User? Those are different things."
 
 ### Discuss concrete scenarios
 
@@ -69,11 +69,11 @@ When domain relationships are being discussed, stress-test them with specific sc
 
 ### Cross-reference with code
 
-When the user states how something works, check whether the code agrees. If you find a contradiction, surface it: "Your code cancels entire Orders, but you just said partial cancellation is possible — which is right?"
+When the user states how something works, check whether the code agrees. If you find a contradiction, surface it: "Your code cancels entire Orders, but you just said partial cancellation is possible - which is right?"
 
 ### Update CONTEXT.md inline
 
-When a term is resolved, update `CONTEXT.md` right there. Don't batch these up — capture them as they happen. Use the format in [CONTEXT-FORMAT.md](./CONTEXT-FORMAT.md).
+When a term is resolved, update `CONTEXT.md` right there. Don't batch these up - capture them as they happen. Use the format in [CONTEXT-FORMAT.md](./CONTEXT-FORMAT.md).
 
 Don't couple `CONTEXT.md` to implementation details. Only include terms that are meaningful to domain experts.
 
@@ -83,10 +83,19 @@ Don't couple `CONTEXT.md` to implementation details. Only include terms that are
 
 Only offer to create an ADR when all three are true:
 
-1. **Hard to reverse** — the cost of changing your mind later is meaningful `(review-time: see section note)`
-2. **Surprising without context** — a future reader will wonder "why did they do it this way?" `(review-time: see section note)`
-3. **The result of a real trade-off** — there were genuine alternatives and you picked one for specific reasons `(review-time: see section note)`
+1. **Hard to reverse** - the cost of changing your mind later is meaningful `(review-time: see section note)`
+2. **Surprising without context** - a future reader will wonder "why did they do it this way?" `(review-time: see section note)`
+3. **The result of a real trade-off** - there were genuine alternatives and you picked one for specific reasons `(review-time: see section note)`
 
 If any of the three is missing, skip the ADR. Use the format in [ADR-FORMAT.md](./ADR-FORMAT.md).
+
+## Panel grilling (optional)
+
+For a plan with genuine cross-domain tension or competing approaches, convene a **panel** (see `rules/parallel-agents.md`) instead of grilling solo:
+
+- Spawn domain-expert teammates via the Agent tool (route per `rules/agent-routing.md`), each with a read-only brief and a distinct stance to argue `(review-time: panel-vs-solo judgment)`
+- Have them debate the plan among themselves via SendMessage - the cross-talk between teammates surfaces contradictions and trade-offs you would miss solo `(review-time: protocol guidance)`
+- Distill their disagreement into the next question and put it to the user - keep the user-facing cadence to one question at a time per `rules/communication.md`; the panel never messages the user directly `(review-time: cadence discipline)`
+- Skip the panel for single-domain plans - solo grilling is cheaper and a panel adds nothing when there is nothing to contend `(review-time: panel-vs-solo judgment)`
 
 </supporting-info>
