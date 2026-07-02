@@ -2,7 +2,18 @@
 
 **When to apply:** when a task has 2+ independent sub-tasks that touch different files / modules and can run concurrently.
 
-When a task can be split into independent pieces, parallelize by spawning multiple agents in isolated git worktrees. This dramatically reduces wall-clock time for multi-part work.
+When a task can be split into independent pieces, parallelize by spawning multiple named teammates. This dramatically reduces wall-clock time for multi-part work. How those teammates coordinate depends on the mode.
+
+## Two modes of parallel work
+
+Parallel work runs in one of two coordination modes (see `CONTEXT.md` for the glossary). Pick by whether the work mutates files.
+
+- **Lane mode** - mutating work (build / implementation). Teammates run in isolated git worktrees, each owning disjoint files, in the background, reporting to the parent via completion notifications, with no peer messaging (star topology). Choose lane mode when teammates write code. `(review-time: mode-selection judgment)`
+- **Panel mode** - read-only work (research, grilling, design). Named teammates coordinate peer-to-peer via SendMessage to challenge each other, then converge (mesh topology). No worktrees needed because the work is read-only. Choose panel mode when teammates investigate or argue but do not write. `(review-time: mode-selection judgment)`
+
+The distinguishing axis is coordination topology (star vs mesh) plus isolation (worktree vs read-only), not whether teammates are named - both modes name their teammates. Background execution (`run_in_background`) is orthogonal; either mode can run in the background. `(review-time: mode classification, not a code pattern)`
+
+The rest of this file - splitting, worktree isolation, merging - governs **lane mode**. Panel mode has its own section below.
 
 ## When to Parallelize
 
@@ -45,19 +56,20 @@ Do NOT spawn parallel agents when:
 
 ## Worktree Isolation
 
-Every parallel agent MUST use worktree isolation:
+Worktree isolation applies to **lane mode** (file-mutating work). Panel mode is read-only and needs no worktrees. Every lane-mode teammate MUST use worktree isolation:
 
-- Set `isolation: "worktree"` on every Agent tool call for parallel work `(review-time: tool-call parameter choice; not currently hook-gated on Agent calls)`
-- Each agent gets its own full copy of the repo via git worktree `(review-time: descriptive of the mechanism)`
-- Each agent works on its own branch - no risk of stepping on other agents' changes `(review-time: descriptive of the mechanism)`
-- NEVER run parallel agents without worktree isolation - concurrent edits to the same working directory will cause corruption `(review-time: tool-call parameter choice; not currently hook-gated)`
+- Set `isolation: "worktree"` on every Agent tool call for lane-mode parallel work `(review-time: tool-call parameter choice; not currently hook-gated on Agent calls)`
+- Each teammate gets its own full copy of the repo via git worktree `(review-time: descriptive of the mechanism)`
+- Each teammate works on its own branch - no risk of stepping on other teammates' changes `(review-time: descriptive of the mechanism)`
+- NEVER run file-mutating parallel teammates without worktree isolation - concurrent edits to the same working directory will cause corruption `(review-time: tool-call parameter choice; not currently hook-gated)`
 
 ## Background Execution
 
-- Spawn agents with `run_in_background: true` so they execute concurrently `(review-time: tool-call parameter)`
-- Launch all independent agents in a single message with multiple Agent tool calls `(review-time: message-shape choice)`
-- After spawning, wait for automatic completion notifications - do NOT poll or check repeatedly `(review-time: behavioral discipline)`
-- Continue with other non-conflicting work while agents run, if possible `(review-time: requires identifying non-conflicting work)`
+- Spawn teammates with `run_in_background: true` so they execute concurrently `(review-time: tool-call parameter)`
+- Launch all independent teammates in a single message with multiple Agent tool calls `(review-time: message-shape choice)`
+- In **lane mode**, after spawning, wait for automatic completion notifications - do NOT poll or check repeatedly `(review-time: behavioral discipline)`
+- In **panel mode**, this rule is inverted: actively coordinate via SendMessage during the cross-challenge round rather than waiting silently for notifications `(review-time: behavioral discipline, mode-dependent)`
+- Continue with other non-conflicting work while teammates run, if possible `(review-time: requires identifying non-conflicting work)`
 
 ## Merging Results
 
@@ -83,6 +95,22 @@ Each agent's prompt MUST be self-contained. The agent cannot see the parent conv
 Bad prompt: "Add validation to the API"
 
 Good prompt: "Add Zod input validation to the POST /api/users endpoint in src/routes/users.ts. Follow the existing validation pattern in src/routes/projects.ts. Create the schema in src/schemas/users.ts. Add tests in src/routes/\_\_tests\_\_/users.test.ts. Run `npm test -- users` to verify. Work on branch parallel/users-validation."
+
+## Panel mode
+
+Panel mode is for read-only parallel work where teammates need to challenge each other: research, grilling a plan, and design exploration. It follows a structured protocol with a stop condition - free-form mesh chatter is forbidden because it has no bound and burns tokens.
+
+- **Independent pass**: each teammate explores its area or forms its position alone `(review-time: protocol step)`
+- **Cross-challenge round**: each teammate sees the others' outputs and sends targeted SendMessage challenges or contradictions - bounded to one pass for research, iterate-to-convergence for grilling and design `(review-time: protocol step, intensity is a judgment call)`
+- **Parent converges**: the main session synthesizes the result (research: the artifact; grill: the next question to the user) - there is no lead teammate, because the parent holds the user relationship and the artifact `(review-time: protocol step)`
+
+Read-only enforcement differs by surface, deliberately:
+
+- **Research panels** spawn as the `Explore` agent type, whose toolset excludes Edit / Write / NotebookEdit - the read-only guarantee is mechanical `(review-time: agent-type selection)`
+- **Grill and design panels** use the domain-expert agent types from `rules/agent-routing.md` for their personas, with an explicit read-only brief - the guarantee is soft (brief-level), backstopped by the parent's review before any later build `(review-time: agent-type selection plus prompt discipline)`
+- NEVER let a panel teammate mutate files - if a task needs writes, it is lane mode, not panel mode `(review-time: mode-selection judgment)`
+
+See ADR 0005 for the rationale and CONTEXT.md for the glossary.
 
 ## Limits
 
