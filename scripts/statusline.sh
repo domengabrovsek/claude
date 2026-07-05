@@ -6,7 +6,12 @@ CYAN='\033[36m'
 YELLOW='\033[33m'
 GREEN='\033[32m'
 RED='\033[31m'
+MAGENTA='\033[35m'
+BLUE='\033[34m'
 DIM='\033[2m'
+
+# Dim delimiter drawn between every section
+SEP=" ${DIM}│${RESET} "
 
 input=$(cat)
 cwd=$(echo "$input" | jq -r '.cwd')
@@ -58,11 +63,11 @@ compact_tokens() {
 printf "${BOLD}${CYAN}%s${RESET}" "$folder"
 
 if [ -n "$branch" ]; then
-  printf " ${DIM}on${RESET} ${git_color}%s%s${RESET}" "$branch" "$git_marker"
+  printf "${SEP}${DIM}on${RESET} ${git_color}%s%s${RESET}" "$branch" "$git_marker"
 fi
 
 if [ -n "$node_version" ]; then
-  printf " ${DIM}node${RESET} ${YELLOW}%s${RESET}" "$node_version"
+  printf "${SEP}${BLUE}node${RESET} ${YELLOW}%s${RESET}" "$node_version"
 fi
 
 # Context block: render from the start, defaulting to 0 before the first API call
@@ -88,5 +93,34 @@ fi
 
 used_label=$(compact_tokens "$used_tokens")
 
-printf " ${DIM}context${RESET} ${pct_color}%s (%d%%)${RESET}" \
+printf "${SEP}${CYAN}context${RESET} ${pct_color}%s (%d%%)${RESET}" \
   "$used_label" "$pct_int"
+
+# Plan usage vs rate limits: only present for Pro/Max after the first API response
+five_h=$(echo "$input" | jq -r '.rate_limits.five_hour.used_percentage // empty')
+seven_d=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty')
+
+# Pick a color for a usage percentage on the same thresholds as context
+usage_color() {
+  if [ "$1" -ge 80 ]; then
+    printf '%s' "$RED"
+  elif [ "$1" -ge 50 ]; then
+    printf '%s' "$YELLOW"
+  else
+    printf '%s' "$GREEN"
+  fi
+}
+
+if [ -n "$five_h" ] || [ -n "$seven_d" ]; then
+  printf "${SEP}${BOLD}${MAGENTA}usage${RESET}"
+  if [ -n "$five_h" ]; then
+    fh_int=$(echo "$five_h" | awk '{printf "%d", $1}')
+    fh_color=$(usage_color "$fh_int")
+    printf " 5h ${BOLD}${fh_color}%d%%${RESET}" "$fh_int"
+  fi
+  if [ -n "$seven_d" ]; then
+    sd_int=$(echo "$seven_d" | awk '{printf "%d", $1}')
+    sd_color=$(usage_color "$sd_int")
+    printf " 7d ${BOLD}${sd_color}%d%%${RESET}" "$sd_int"
+  fi
+fi
