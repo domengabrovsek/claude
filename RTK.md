@@ -1,5 +1,7 @@
 # RTK - Rust Token Killer
 
+> **Applies only when `RTK_ENABLE` is set.** It is unset by default, so RTK is OFF: the `rtk hook claude` PreToolUse hook does not run, no commands are rewritten, and none of the guidance below is in effect. When `RTK_ENABLE` is empty, ignore this entire file and run commands normally.
+
 **Usage**: Token-optimized CLI proxy (60-90% savings on dev operations)
 
 ## Meta Commands (always use rtk directly)
