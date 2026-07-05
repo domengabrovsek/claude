@@ -251,5 +251,6 @@
   "autoUpdatesChannel": "stable",
   "minimumVersion": "2.1.92",
   "skipAutoPermissionPrompt": false,
-  "tui": "fullscreen"
+  "tui": "fullscreen",
+  "askUserQuestionTimeout": "never"
 }
