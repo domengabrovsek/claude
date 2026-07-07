@@ -1,12 +1,12 @@
 ---
-name: ponytail-review
+name: prune
 description: >
   Code review focused exclusively on over-engineering. Finds what to delete:
   reinvented standard library, unneeded dependencies, speculative abstractions,
   dead flexibility. One line per finding: location, what to cut, what replaces
   it. Use when the user says "review for over-engineering",
-  "is this over-engineered", or invokes /ponytail-review. Complements
-  correctness-focused review, this one only hunts complexity.
+  "is this over-engineered", or invokes /prune. Complements correctness-focused
+  review; this one only hunts complexity.
 ---
 
 If no diff is in context, fetch one first: run `git diff HEAD` for uncommitted
@@ -55,7 +55,7 @@ If there is nothing to cut, say `Lean already. Ship.` and stop.
 **why-not-mechanizable:** scope and YAGNI exceptions are subjective complexity judgments; no hook can detect that a finding belongs in a "correctness" pass versus a "complexity" pass.
 
 - Complexity only - correctness bugs, security holes, and performance go to a normal review pass, not this one `(review-time: see section note)`
-- A single smoke test or `assert`-based self-check is the ponytail minimum, not bloat - never flag it for deletion `(review-time: see section note)`
+- A single smoke test or `assert`-based self-check is the minimum, not bloat - never flag it for deletion `(review-time: see section note)`
 - Does not apply the fixes, only lists them `(review-time: see section note)`
 
 ## Attribution
