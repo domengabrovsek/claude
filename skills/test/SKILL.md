@@ -31,6 +31,12 @@ Write tests for: $ARGUMENTS
 
 If you cannot write a failing test, you do not fully understand the bug. Investigate further.
 
+## Seams - where tests go
+
+A **seam** is the public boundary you test at: the interface where you observe behaviour without reaching inside. Tests live at seams, never against internals.
+
+**Test only at pre-agreed seams.** Before writing any test, write down the seams under test and confirm them with the user - no test is written at an unconfirmed seam. `(review-time: seam agreement is a conversational step, not pattern-checkable)` You can't test everything; agreeing the seams up front lands testing effort on the critical paths and complex logic instead of every edge case.
+
 ## Test Level Selection
 
 Pick the lowest level that captures the behavior (see `references/testing-patterns.md`):
@@ -42,6 +48,12 @@ Pick the lowest level that captures the behavior (see `references/testing-patter
 | Database queries, migrations | Integration test | Needs real database behavior |
 | Critical user journeys | E2E test | Tests the full stack |
 | Visual appearance, layout | Visual regression | Screenshot comparison |
+
+## Anti-patterns
+
+- **Implementation-coupled** - mocks internal collaborators, tests private methods, or verifies through a side channel (querying the database instead of using the interface). The tell: the test breaks when you refactor but behaviour hasn't changed. `(review-time: coupling detection requires reading the assertions against the implementation)`
+- **Tautological** - the assertion recomputes the expected value the way the code does (`expect(add(a, b)).toBe(a + b)`, a self-derived snapshot, a constant asserted equal to itself), so it passes by construction and can never disagree with the code. Expected values must come from an independent source of truth - a known-good literal, a worked example, the spec. `(review-time: requires comparing the assertion to how the code computes)`
+- **Horizontal slicing** - writing all tests first, then all implementation. Bulk tests verify _imagined_ behaviour and go insensitive to real changes. Work in vertical slices instead: one test, one implementation, repeat - each test a tracer bullet responding to what the last cycle taught you. `(review-time: workflow-shape judgment)`
 
 ## Test Quality Gates
 
