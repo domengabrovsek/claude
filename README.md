@@ -29,7 +29,7 @@ Re-runs are safe: existing files are backed up to `<path>.bak.<timestamp>` befor
 - **`CLAUDE.md`** - core rules loaded every session (workflow, security, code standards). See [ADR 0001](docs/adr/0001-grill-driven-workflow.md).
 - **`rules/`** - modular instruction files `@`-imported into `CLAUDE.md`.
 - **`agents/`** - expert subagent personas spawned via the Agent tool. Routing in [`rules/agent-routing.md`](rules/agent-routing.md); full list in [`docs/agents.md`](docs/agents.md). See [ADR 0003](docs/adr/0003-agents-via-subagent-spawn.md).
-- **`skills/`** - reusable `/<skill>` workflows (`/grill-with-docs`, `/build`, `/ship`, `/debug`, …). Skills marked `(mattpocock)` are vendored from [mattpocock/skills](https://github.com/mattpocock/skills).
+- **`skills/`** - reusable `/<skill>` workflows (`/grill-with-docs`, `/build`, `/ship`, `/debug`, `/prototype`, `/wayfinder`, …). Skills carrying a `> Source:` line are vendored from [mattpocock/skills](https://github.com/mattpocock/skills) and adapted to this repo's conventions (see ADR 0006).
 - **`commands/`** - thin slash invocations (`/research`, `/verify-done`, `/worktree`, …).
 - **`hooks/`** - shell scripts wired into `settings.json` for `PreToolUse`, `PostToolUse`, `SessionStart`, `SessionEnd` events.
 - **`scripts/`** - utilities used by hooks and skills (`setup-symlinks.sh`, `statusline.sh`, `notify.sh`, `worktree-prune.sh`).
