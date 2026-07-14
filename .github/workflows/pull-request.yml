@@ -19,3 +19,29 @@ jobs:
         uses: DavidAnson/markdownlint-cli2-action@v19
         with:
           globs: "**/*.md"
+
+  # ==============================================
+  # Gate
+  # ==============================================
+  # Single aggregator check every PR must pass. Branch protection requires the
+  # "Gate" status, so required checks stay stable even as the jobs below change.
+  gate:
+    name: Gate
+    if: always()
+    needs:
+      - lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    steps:
+      - name: Check results
+        run: |
+          results=(
+            "${{ needs.lint.result }}"
+          )
+          for r in "${results[@]}"; do
+            if [ "$r" = "failure" ] || [ "$r" = "cancelled" ]; then
+              echo "One or more jobs failed or were cancelled."
+              exit 1
+            fi
+          done
+          echo "All jobs passed or were skipped."
