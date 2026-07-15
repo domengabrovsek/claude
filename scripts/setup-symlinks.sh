@@ -1,6 +1,10 @@
 #!/bin/bash
-# Bootstrap the symlinks from ~/.claude/ to the dotfiles repo.
+# Bootstrap the symlinks from a Claude config dir to the dotfiles repo.
 # Idempotent: safe to run multiple times.
+#
+# Target config dir resolves from $CLAUDE_CONFIG_DIR (default ~/.claude), so the
+# same script seeds a second account's dir, e.g.:
+#   CLAUDE_CONFIG_DIR="$HOME/.claude-personal" bash scripts/setup-symlinks.sh
 #
 # Per entry:
 #   - If already symlinked to the correct target -> skipped.
@@ -27,7 +31,7 @@ MODE="apply"
 case "${1:-}" in
   --check|-n|--dry-run) MODE="check" ;;
   --help|-h)
-    sed -n '2,21p' "$0"
+    sed -n '2,26p' "$0"
     exit 0
     ;;
   "") ;;
@@ -57,7 +61,7 @@ if [ ! -d "$REPO" ]; then
   exit 1
 fi
 
-LIVE_DIR="$HOME/.claude"
+LIVE_DIR="${CLAUDE_CONFIG_DIR:-$HOME/.claude}"
 mkdir -p "$LIVE_DIR"
 
 # name | repo-side target (relative to $REPO)
@@ -70,6 +74,8 @@ ENTRIES=(
   "hooks|hooks"
   "rules|rules"
   "skills|skills"
+  "docs|docs"
+  "references|references"
   "statusline.sh|scripts/statusline.sh"
   "pull_request_template.md|.github/pull_request_template.md"
 )
