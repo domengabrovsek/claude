@@ -50,6 +50,7 @@ Other intents are first-class workflows with their own shapes, not stripped-down
 ## Behavioral Rules
 
 - **Scope**: only implement what was asked - no drive-by refactors, extra features, or unsolicited improvements `(review-time: scope judgment)`
+- **No unsolicited docs**: outside the `/grill-with-docs` and `/document` workflows (which emit ADRs and docs by design), never create ADRs, READMEs, or other docs unless explicitly asked - an unwanted doc is scope creep that costs a revert `(review-time: requires distinguishing the doc-emitting workflows from ad-hoc doc creation)`
 - **Minimal fix**: for bug fixes, identify the root cause and state the smallest possible change first (ideally 1-5 lines). Only expand the scope if the minimal fix is provably insufficient. Never introduce new abstractions, files, or patterns as part of a bug fix unless the user explicitly asks `(review-time: minimal-fix judgment)`
 - **Decisions**: ask before making architectural choices - never silently pick a pattern, library, or approach `(review-time: requires recognizing an architectural choice point)`
 - **Cost**: warn before any change that increases costs (new cloud resources, paid services, upgraded tiers) `(review-time: cost-impact recognition)`

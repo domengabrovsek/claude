@@ -16,6 +16,7 @@
 - NEVER force-push any ref without asking immediately before the push - approval of a plan that includes a force-push is not approval of the push itself. Ask at execution time, every time (applies to agents/subagents too: they must report back for confirmation, not push) `(review-time: requires a fresh user confirmation at execution time; deny rules block bare --force/-f)`
 - NEVER merge PRs automatically - always wait for the user to merge manually `(review-time: depends on user signal, not pattern)`
 - After completing any feature implementation, create a PR unless explicitly told otherwise - do not wait to be asked `(review-time: requires judging "completion")`
+- Always print the full clickable PR/MR URL after opening or referencing a PR - never make the user hunt for it `(review-time: requires recognizing a PR reference in the reply)`
 - Always rebase onto the target branch (`git fetch origin main && git rebase origin/main`) before creating a PR `(hook)`
 - Always run `/verify-done` before pushing any branch - never push without all checks passing `(hook)`
 - PR descriptions: always use bullet points in the summary section, not prose paragraphs `(review-time: formatting of free-form text Claude produces)`
