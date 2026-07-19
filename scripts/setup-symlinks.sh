@@ -67,7 +67,6 @@ mkdir -p "$LIVE_DIR"
 # name | repo-side target (relative to $REPO)
 ENTRIES=(
   "CLAUDE.md|CLAUDE.md"
-  "RTK.md|RTK.md"
   "settings.json|settings.json"
   "agents|agents"
   "commands|commands"

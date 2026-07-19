@@ -1,6 +1,6 @@
 # Rule Authoring Policy
 
-**When to apply:** writing or editing any normative bullet in `rules/*.md`, `CLAUDE.md`, `agents/*.md`, `skills/**/SKILL.md`, or `RTK.md`.
+**When to apply:** writing or editing any normative bullet in `rules/*.md`, `CLAUDE.md`, `agents/*.md`, or `skills/**/SKILL.md`.
 
 ## Why this exists
 
@@ -11,7 +11,7 @@ Rules sitting in text files are loaded into every Claude session, but loading is
 Ranked by reliability (earliest catch wins per the shift-left principle):
 
 | Tag | Where enforced | Cost when violated |
-|---|---|---|
+| --- | --- | --- |
 | `(hook)` | `~/.claude/hooks/*.sh` via `~/.claude/settings.json` | ~1s, fed back to Claude as a tool result |
 | `(lint)` | Repo `biome.json` / `eslint.config.js` / `.markdownlint*` | `npm run check` run |
 | `(CI)` | `.github/workflows/`, pentla-shared reusables | PR cycle |
@@ -50,7 +50,6 @@ Format: backtick-wrapped, single space before, end of line.
 - `CLAUDE.md`
 - `agents/*.md` (only the normative-guardrail sections; persona prose stays untagged)
 - `skills/**/SKILL.md` (only the normative bullets; procedure / steps / examples stay untagged)
-- `RTK.md` (only the normative bullets)
 
 Out of scope: `MEMORY.md`, `keybindings.json`, `settings.json`, `docs/`, `README.md`, generic `scripts/` files.
 

@@ -1,17 +1,14 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "env": {
-    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
-    "RTK_HOOK_AUDIT": "1"
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
   "permissions": {
     "allow": [
       "Read(**/.env.example)",
       "Read(**/.env.sample)",
       "Edit(**/.env.example)",
-      "Edit(**/.env.sample)",
-      "Write(**/.env.example)",
-      "Write(**/.env.sample)"
+      "Edit(**/.env.sample)"
     ],
     "deny": [
       "Read(**/.env)",
@@ -83,27 +80,28 @@
       "Edit(**/*.pem)",
       "Edit(**/*.key)",
       "Edit(**/*-key.json)",
-      "Write(**/.env)",
-      "Write(**/.env.local)",
-      "Write(**/.env.*.local)",
-      "Write(**/.env.development)",
-      "Write(**/.env.production)",
-      "Write(**/.env.staging)",
-      "Write(**/.env.test)",
-      "Write(**/.env.dev)",
-      "Write(**/.env.prod)",
-      "Write(~/.ssh/**)",
-      "Write(~/.gnupg/**)",
-      "Write(~/.aws/**)",
-      "Write(~/.kube/**)",
-      "Write(~/.config/gcloud/**)",
-      "Write(~/.azure/**)",
-      "Write(~/.npmrc)",
-      "Write(~/.netrc)",
-      "Write(~/.gitconfig)",
-      "Write(~/.docker/config.json)",
-      "Write(**/*.pem)",
-      "Write(**/*.key)",
+      "Edit(**/*.p12)",
+      "Edit(**/*.pfx)",
+      "Edit(**/*.jks)",
+      "Edit(**/service-account*.json)",
+      "Edit(**/credentials.json)",
+      "Edit(**/*.kubeconfig)",
+      "Edit(**/.htpasswd)",
+      "Edit(**/.vault-token)",
+      "Edit(**/.terraform.tfstate*)",
+      "Edit(~/.git-credentials)",
+      "Edit(~/.vault-token)",
+      "Edit(~/.config/gh/hosts.yml)",
+      "Edit(~/.pypirc)",
+      "Edit(~/.gradle/gradle.properties)",
+      "Edit(~/.terraform.d/**)",
+      "Edit(~/.terraformrc)",
+      "Edit(~/.config/terraform/**)",
+      "Edit(~/.yarnrc.yml)",
+      "Edit(~/.yarnrc)",
+      "Edit(~/.pnpmrc)",
+      "Edit(~/.config/npm/**)",
+      "Edit(~/.config/gke-gcloud-auth-plugin/**)",
       "Bash(rm -rf *)",
       "Bash(sudo *)",
       "Bash(dd *)",
@@ -122,9 +120,6 @@
       "Edit(**/package-lock.json)",
       "Edit(**/yarn.lock)",
       "Edit(**/pnpm-lock.yaml)",
-      "Write(**/package-lock.json)",
-      "Write(**/yarn.lock)",
-      "Write(**/pnpm-lock.yaml)",
       "Bash(*DROP TABLE*)",
       "Bash(*DROP DATABASE*)",
       "Bash(*TRUNCATE TABLE*)",
@@ -183,10 +178,6 @@
             "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/pre-commit-conventional-gate.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/pre-commit-conventional-gate.sh\"; [ -x \"$HOOK\" ] && exec \"$HOOK\"",
             "if": "Bash(git commit *)",
             "timeout": 10
-          },
-          {
-            "type": "command",
-            "command": "if [ -n \"$RTK_ENABLE\" ] && command -v rtk >/dev/null 2>&1; then rtk hook claude || true; fi"
           }
         ]
       }

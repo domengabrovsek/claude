@@ -78,8 +78,6 @@ Detailed git, testing, and exploration rules are in `rules/` (git-conventions, e
 - Access boundaries: .env files, credentials, and secrets are blocked by deny rules - do not attempt workarounds. For staging databases and external services requiring auth, ask the user for credentials or URLs rather than trying to authenticate `(review-time: backed by permissions.deny; "do not attempt workarounds" is behavioral)`
 - Sentry: read access is available via the `sentry-issue` skill (uses the local `sentry-cli` token, org-agnostic). When given a Sentry issue ID or URL, use that skill - do not ask the user to paste issue contents and never print the token `(review-time: routing to a skill; token non-disclosure is behavioral)`
 
-@RTK.md
-
 ## Imported rules
 
 The files below are loaded into every session via these `@`-imports. Edit the individual rule files in `rules/` - they are the source of truth, not this list.

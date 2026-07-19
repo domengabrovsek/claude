@@ -11,7 +11,6 @@ REPO="${CLAUDE_DOTFILES_REPO:-$HOME/dev/claude}"
 
 EXPECTED=(
   "CLAUDE.md|$REPO/CLAUDE.md"
-  "RTK.md|$REPO/RTK.md"
   "settings.json|$REPO/settings.json"
   "agents|$REPO/agents"
   "commands|$REPO/commands"
