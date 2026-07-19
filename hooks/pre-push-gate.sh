@@ -1,5 +1,5 @@
 #!/bin/bash
-# Pre-push gate: block `git push` if lint/typecheck/test/build fail.
+# Pre-push gate: block `git push` if lint/typecheck/knip/test/build/audit fail.
 # Runs as a PreToolUse hook on Bash(git push *).
 # Exit code 2 blocks the action and sends the error message to Claude.
 # Bypass with SKIP_PUSH_GATE=1 in the environment.
@@ -62,8 +62,12 @@ if [ "$PROJECT_TYPE" = "node" ]; then
   }
   has_script lint && run_step "lint" "CI=true npm run lint --silent"
   has_script typecheck && run_step "typecheck" "CI=true npm run typecheck --silent"
+  has_script knip && run_step "knip" "CI=true npm run knip --silent"
   has_script test && run_step "test" "CI=true npm test --silent"
   has_script build && run_step "build" "CI=true npm run build --silent"
+  # Only critical advisories block: pre-existing high/moderate transitive CVEs are
+  # Dependabot's job, not a push gate's, and would otherwise block unrelated work.
+  command -v npm >/dev/null 2>&1 && run_step "audit" "npm audit --audit-level=critical"
 fi
 
 if [ "$PROJECT_TYPE" = "terraform" ]; then
