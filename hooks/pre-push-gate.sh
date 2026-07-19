@@ -47,11 +47,7 @@ run_step() {
   local label="$1"
   local cmd="$2"
   echo "[pre-push-gate] $label..." >&2
-  if command -v rtk >/dev/null 2>&1; then
-    OUT=$(rtk proxy bash -c "$cmd" 2>&1)
-  else
-    OUT=$(bash -c "$cmd" 2>&1)
-  fi
+  OUT=$(bash -c "$cmd" 2>&1)
   STATUS=$?
   if [ $STATUS -ne 0 ]; then
     echo "[pre-push-gate] $label FAILED. Fix before pushing (or set SKIP_PUSH_GATE=1 to bypass):" >&2

@@ -39,6 +39,5 @@ Re-runs are safe: existing files are backed up to `<path>.bak.<timestamp>` befor
 
 ## More
 
-- **Token optimization** - RTK proxies common commands and strips noise. See [`RTK.md`](RTK.md).
 - **Security boundaries** - deny list, Bash restrictions, and lock-file protection live in [`settings.json`](settings.json).
 - **CI** - markdown linting on push/PR (`.github/workflows/`).
