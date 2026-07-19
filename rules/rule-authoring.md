@@ -11,7 +11,7 @@ Rules sitting in text files are loaded into every Claude session, but loading is
 Ranked by reliability (earliest catch wins per the shift-left principle):
 
 | Tag | Where enforced | Cost when violated |
-|---|---|---|
+| --- | --- | --- |
 | `(hook)` | `~/.claude/hooks/*.sh` via `~/.claude/settings.json` | ~1s, fed back to Claude as a tool result |
 | `(lint)` | Repo `biome.json` / `eslint.config.js` / `.markdownlint*` | `npm run check` run |
 | `(CI)` | `.github/workflows/`, pentla-shared reusables | PR cycle |

@@ -4,3 +4,7 @@
 # history. In domain repos (pentla-api, etc.) the same files are
 # typically committed because plans/specs are shared decisions.
 .claude/state/
+
+# macOS Finder metadata
+.DS_Store
+**/.DS_Store
