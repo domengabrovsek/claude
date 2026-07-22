@@ -16,7 +16,10 @@ esac
 
 [ "$SKIP_COMMIT_BRANCH_GATE" = "1" ] && exit 0
 
-DIR="${CLAUDE_PROJECT_DIR:-$PWD}"
+# Resolve the branch from the tool call's cwd, not CLAUDE_PROJECT_DIR: worktree
+# agents commit from feature-branch worktrees while the shared checkout sits on main.
+CWD=$(echo "$INPUT" | jq -r '.cwd // empty')
+DIR="${CWD:-${CLAUDE_PROJECT_DIR:-$PWD}}"
 BRANCH=$(git -C "$DIR" rev-parse --abbrev-ref HEAD 2>/dev/null)
 
 # Not in a git repo, or detached HEAD - let it through. Caller handles their own state.
