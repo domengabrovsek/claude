@@ -86,11 +86,11 @@ Every ticket is either **HITL** - human in the loop, worked *with* a human who s
 
 ## Fog of war
 
-The map is _deliberately_ incomplete: don't chart what you can't yet see. Beyond the live tickets lies the **fog of war** - the dim view of decisions and investigations you can tell are coming but can't yet pin down, because they hang on questions still open. Resolving a ticket clears the fog ahead of it, graduating whatever's now specifiable into fresh tickets - one at a time, until the way to the destination is clear and no tickets remain.
+The map is *deliberately* incomplete: don't chart what you can't yet see. Beyond the live tickets lies the **fog of war** - the dim view of decisions and investigations you can tell are coming but can't yet pin down, because they hang on questions still open. Resolving a ticket clears the fog ahead of it, graduating whatever's now specifiable into fresh tickets - one at a time, until the way to the destination is clear and no tickets remain.
 
 The map's **Not yet specified** section is where that dim view is written down: the suspected question, the area to revisit later. Write as loosely or as fully as the view allows.
 
-**Fog or ticket?** The test is whether you can state the question precisely now - _not_ whether you can answer it now. `(review-time: fog-vs-ticket judgment; sharpness of the question, not its answerability)`
+**Fog or ticket?** The test is whether you can state the question precisely now - *not* whether you can answer it now. `(review-time: fog-vs-ticket judgment; sharpness of the question, not its answerability)`
 
 - **Ticket when** the question is already sharp - even if it's blocked and you can't act on it yet.
 - **Not yet specified when** you can't yet phrase it that sharply. Don't pre-slice the fog into ticket-sized pieces.
@@ -99,7 +99,7 @@ The map's **Not yet specified** section is where that dim view is written down: 
 
 ## Out of scope
 
-The destination fixes the scope, so work beyond it is **out of scope** - it isn't fog, and it doesn't belong in **Not yet specified**. It gets its own **Out of scope** section: work you've consciously ruled out of _this_ effort. Scope, not sharpness, lands it here. `(review-time: scope-boundary judgment)`
+The destination fixes the scope, so work beyond it is **out of scope** - it isn't fog, and it doesn't belong in **Not yet specified**. It gets its own **Out of scope** section: work you've consciously ruled out of *this* effort. Scope, not sharpness, lands it here. `(review-time: scope-boundary judgment)`
 
 Out-of-scope work never graduates - the frontier stops at the destination - so it returns only if the destination is redrawn, and then as a fresh effort.
 

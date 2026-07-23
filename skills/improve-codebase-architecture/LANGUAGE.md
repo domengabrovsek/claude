@@ -35,7 +35,7 @@ What maintainers get from depth. Change, bugs, knowledge, and verification conce
 
 **Deep module** = small interface + lots of implementation:
 
-```
+```text
 ┌─────────────────────┐
 │   Small Interface   │  ← Few methods, simple params
 ├─────────────────────┤
@@ -47,7 +47,7 @@ What maintainers get from depth. Change, bugs, knowledge, and verification conce
 
 **Shallow module** = large interface + little implementation (avoid):
 
-```
+```text
 ┌─────────────────────────────────┐
 │       Large Interface           │  ← Many methods, complex params
 ├─────────────────────────────────┤

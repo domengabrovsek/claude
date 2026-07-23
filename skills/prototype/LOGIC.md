@@ -64,7 +64,7 @@ If the host project has no task runner, just put the command at the top of the p
 
 ### 6. Hand it over
 
-Give the user the run command. They'll drive it themselves; the interesting moments are when they say "wait, that shouldn't be possible" or "huh, I assumed X would be different" - those are the bugs in the _idea_, which is the whole point. If they want new actions added, add them. Prototypes evolve.
+Give the user the run command. They'll drive it themselves; the interesting moments are when they say "wait, that shouldn't be possible" or "huh, I assumed X would be different" - those are the bugs in the *idea*, which is the whole point. If they want new actions added, add them. Prototypes evolve.
 
 ### 7. Capture the answer and the prototype
 
