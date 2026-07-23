@@ -1,121 +1,88 @@
 ---
 name: write-a-skill
-description: Create new agent skills with proper structure, progressive disclosure, and bundled resources. Use when user wants to create, write, or build a new skill.
+description: Reference and principles for writing and editing skills well - the vocabulary that makes a skill predictable. Use when creating, writing, editing, reviewing, or refactoring an agent skill.
 ---
 
-> Source: [mattpocock/skills — productivity/write-a-skill](https://github.com/mattpocock/skills/tree/main/skills/productivity/write-a-skill)
+> Source: [mattpocock/skills - productivity/writing-great-skills](https://github.com/mattpocock/skills/tree/main/skills/productivity/writing-great-skills). Kept model-invoked here (see ADR 0006); full definitions in [GLOSSARY.md](GLOSSARY.md).
 
-# Writing Skills
+A skill exists to wrangle determinism out of a stochastic system. **Predictability** - the agent taking the same _process_ every run, not producing the same output - is the root virtue; every lever below serves it.
 
-## Process
+**Bold terms** are defined in [`GLOSSARY.md`](GLOSSARY.md); look them up there for the full meaning.
 
-**why-not-mechanizable:** skill workflow guidance; each step requires understanding the surrounding context (repo, task shape, prior state).
+## Invocation
 
-1. **Gather requirements** - ask user about: `(review-time: see section note)`
-   - What task/domain does the skill cover? `(review-time: see section note)`
-   - What specific use cases should it handle? `(review-time: see section note)`
-   - Does it need executable scripts or just instructions? `(review-time: see section note)`
-   - Any reference materials to include? `(review-time: see section note)`
+Two choices, trading different costs:
 
-2. **Draft the skill** - create: `(review-time: see section note)`
-   - SKILL.md with concise instructions `(review-time: see section note)`
-   - Additional reference files if content exceeds 500 lines `(review-time: see section note)`
-   - Utility scripts if deterministic operations needed `(review-time: see section note)`
+- A **model-invoked** skill keeps a **description**, so the agent can fire it autonomously _and_ other skills can reach it (you can still type its name too). It contributes to **context load** - the description sits in the window every turn. Mechanics: omit `disable-model-invocation`, and write a model-facing description with rich trigger phrasing ("Use when the user wants..., mentions...").
+- A **user-invoked** skill strips the description from the agent's reach: only you, typing its name, can invoke it - and no other skill can. Zero context load, but it spends **cognitive load**: _you_ are the index that must remember it exists. Mechanics: set `disable-model-invocation: true`; the `description` becomes human-facing - a one-line summary, trigger lists stripped.
 
-3. **Review with user** - present draft and ask: `(review-time: see section note)`
-   - Does this cover your use cases? `(review-time: see section note)`
-   - Anything missing or unclear? `(review-time: see section note)`
-   - Should any section be more/less detailed? `(review-time: see section note)`
+Pick model-invocation only when the agent must reach the skill on its own, or another skill must. If it only ever fires by hand, make it user-invoked and pay no context load.
 
-## Skill Structure
+When user-invoked skills multiply past what you can remember, that piled-up cognitive load is cured by a **router skill**: one user-invoked skill that names the others and when to reach for each.
 
-```text
-skill-name/
-├── SKILL.md           # Main instructions (required)
-├── REFERENCE.md       # Detailed docs (if needed)
-├── EXAMPLES.md        # Usage examples (if needed)
-└── scripts/           # Utility scripts (if needed)
-    └── helper.js
-```
+## Writing the description
 
-## SKILL.md Template
+A model-invoked **description** does two jobs - state what the skill is, and list the **branches** that should trigger it. Every word increases **context load**, so a description earns even harder pruning than the body:
 
-```md
----
-name: skill-name
-description: Brief description of capability. Use when [specific triggers].
----
+- **Front-load the skill's leading word** - the description is where it does its invocation work. `(review-time: skill-authoring judgment, not pattern-checkable)`
+- **One trigger per branch.** Synonyms that rename a single branch are **duplication** - "build features using TDD ... asks for test-first development" is one branch written twice. Collapse them; keep only genuinely distinct branches. `(review-time: skill-authoring judgment, not pattern-checkable)`
+- **Cut identity that's already in the body.** Keep the description to triggers, plus any "when another skill needs..." reach clause. `(review-time: skill-authoring judgment, not pattern-checkable)`
 
-# Skill Name
+## Information hierarchy
 
-## Quick start
+A skill is built from two content types - **steps** and **reference** - that mix freely: a skill can be all steps, all reference, or both. The core decision is which to use and where each sits on the **information hierarchy**, a ladder ranked by how immediately the agent needs the material:
 
-[Minimal working example]
+1. **In-skill step** - an ordered action in `SKILL.md`, the primary tier: what the agent does, in order. Each step ends on a **completion criterion**, the condition that tells the agent the work is done. Make it _checkable_ (can the agent tell done from not-done?) and, where it matters, _exhaustive_ ("every modified model accounted for", not "produce a change list") - a vague criterion invites **premature completion**.
+2. **In-skill reference** - a definition, rule, or fact in `SKILL.md`, consulted on demand. Often a legitimately flat peer-set (every rule of a review on one rung) - a fine arrangement, not a smell. _This skill is all reference._
+3. **External reference** - reference pushed out of `SKILL.md` into a separate file, reached by a **context pointer**, loaded only when the pointer fires. (Spans _disclosed_ reference - a sibling file like `GLOSSARY.md`, still part of the skill - through fully **external reference** that lives outside the skill system and any skill can point at.)
 
-## Workflows
+A demanding completion criterion drives thorough **legwork** - the digging the agent does within the work - whether the skill has steps or not, since "every rule applied" binds flat reference just as "every step done" binds a sequence.
 
-[Step-by-step processes with checklists for complex tasks]
+Push too little down and the top bloats; push too much and you hide material the agent actually needs. That tension is the whole decision.
 
-## Advanced features
+**Progressive disclosure** is the move down the ladder - out of `SKILL.md` into a linked file - so the top stays legible. Mechanics: a linked `.md` file in the skill folder, named for what it holds (this skill discloses its full definitions to `GLOSSARY.md`). Some skills are used in more than one way, and each distinct way is a **branch** - different runs taking different paths through the skill. Branching is the cleanest disclosure test: inline what every branch needs, and push behind a pointer what only some branches reach. A **context pointer**'s _wording_, not its target, decides when and how reliably the agent reaches the material.
 
-[Link to separate files: See [REFERENCE.md](REFERENCE.md)]
-```
+Where the ladder decides _how far down_ a piece sits, **co-location** decides _what sits beside it_ once there: keep a concept's definition, rules, and caveats under one heading rather than scattered, so reading one part brings its neighbours with it.
 
-## Description Requirements
+## When to split
 
-The description is **the only thing your agent sees** when deciding which skill to load. It's surfaced in the system prompt alongside all other installed skills. Your agent reads these descriptions and picks the relevant skill based on the user's request.
+**Granularity** is how finely you divide skills, and each cut spends one of the two loads, so split only when the cut earns it. Two cuts:
 
-**Goal**: Give your agent just enough info to know:
+- **By invocation** - split off a **model-invoked** skill when you have a distinct **leading word** that should trigger it on its own, or another skill must reach it. You pay **context load** for the new always-loaded **description**, so that independent reach has to be worth it. `(review-time: skill-authoring judgment, not pattern-checkable)`
+- **By sequence** - split a run of **steps** when the steps still ahead (a step's **post-completion steps**) tempt the agent to rush the one in front of it (**premature completion**). Keeping them out of view encourages the agent to do more **legwork** on the current task. `(review-time: skill-authoring judgment, not pattern-checkable)`
 
-1. What capability this skill provides `(review-time: see section note)`
-2. When/why to trigger it (specific keywords, contexts, file types) `(review-time: see section note)`
+## Pruning
 
-**Format**:
+Keep each meaning in a **single source of truth**: one authoritative place, so changing the behaviour is a one-place edit.
 
-- Max 1024 chars `(review-time: see section note)`
-- Write in third person `(review-time: see section note)`
-- First sentence: what it does `(review-time: see section note)`
-- Second sentence: "Use when [specific triggers]" `(review-time: see section note)`
+Check every line for **relevance**: does it still bear on what the skill does?
 
-**Good example**:
+Then hunt **no-ops** sentence by sentence, not just line by line: run the no-op test on each sentence in isolation, and when one fails, delete the whole sentence rather than trim words from it. Be aggressive - most prose that fails should go, not be rewritten.
 
-```text
-Extract text and tables from PDF files, fill forms, merge documents. Use when working with PDF files or when user mentions PDFs, forms, or document extraction.
-```
+## Leading words
 
-**Bad example**:
+A **leading word** is a compact concept already living in the model's pretraining that the agent thinks with while running the skill (e.g. _lesson_, _fog of war_, _tracer bullets_). Repeated throughout the text (though not necessarily - a strong leading word might only be needed once), it accumulates a distributed definition and anchors a whole region of behaviour in the fewest tokens, by recruiting priors the model already holds.
 
-```text
-Helps with documents.
-```
+It serves predictability twice. In the body it anchors _execution_: the agent reaches for the same behaviour every time the word appears. In the description it anchors _invocation_: when the same word lives in your prompts, docs, and code, the agent links that shared language to the skill and fires it more reliably.
 
-The bad example gives your agent no way to distinguish this from other document skills.
+Hunt for opportunities to refactor skills to use leading words. A triad spelled out at three sites (**duplication**), a description spending a sentence to gesture at one idea - each is a passage begging to **collapse** into a single token. Examples include:
 
-## When to Add Scripts
+- "fast, deterministic, low-overhead" -> _tight_ - one quality restated across a phase - into a single pretrained word (a _tight_ loop).
+- "a loop you believe in" -> _red_ - converts a fuzzy gate into a binary observable state (the loop goes _red_ on the bug, or it doesn't).
 
-Add utility scripts when:
+You win twice over: fewer tokens, _and_ a sharper hook for the agent to hang its thinking on. Assume every skill is carrying restatements that leading words retire - go find them.
 
-- Operation is deterministic (validation, formatting) `(review-time: see section note)`
-- Same code would be generated repeatedly `(review-time: see section note)`
-- Errors need explicit handling `(review-time: see section note)`
+## Failure modes
 
-Scripts save tokens and improve reliability vs generated code.
+Use these to diagnose issues the user may be having with the skill.
 
-## When to Split Files
+- **Premature completion** - ending a step before it's genuinely done, attention slipping to _being done_. Defence, in order: sharpen the completion criterion first (cheap, local); only if it is irreducibly fuzzy _and_ you observe the rush, hide the post-completion steps by splitting (the sequence cut).
+- **Duplication** - the same meaning in more than one place. Costs maintenance and tokens, and inflates a meaning's prominence on the ladder past its real rank.
+- **Sediment** - stale layers that settle because adding feels safe and removing feels risky. The default fate of any skill without a pruning discipline.
+- **Sprawl** - a skill simply too long, even when every line is live and unique. Hurts readability and maintainability and wastes tokens. The cure is the ladder: disclose **reference** behind pointers, and split by **branch** or sequence so each path carries only what it needs.
+- **No-op** - a line the model already obeys by default, so you pay load to say nothing. The test: does it change behaviour versus the default? A weak leading word (_be thorough_ when the agent is already thorough-ish) is a no-op; the fix is a stronger word (_relentless_), not a different technique.
+- **Negation** - steering by prohibition backfires: _don't think of an elephant_ names the elephant and makes it more available, not less. Prompt the **positive** - state the target behaviour so the banned one is never spoken; keep a prohibition only as a hard guardrail you can't phrase positively, and even then pair it with what to do instead.
 
-Split into separate files when:
+## Relationship to this repo's rule-authoring policy
 
-- SKILL.md exceeds 100 lines `(review-time: see section note)`
-- Content has distinct domains (finance vs sales schemas) `(review-time: see section note)`
-- Advanced features are rarely needed `(review-time: see section note)`
-
-## Review Checklist
-
-After drafting, verify:
-
-- [ ] Description includes triggers ("Use when...") `(review-time: see section note)`
-- [ ] SKILL.md under 100 lines `(review-time: see section note)`
-- [ ] No time-sensitive info `(review-time: see section note)`
-- [ ] Consistent terminology `(review-time: see section note)`
-- [ ] Concrete examples included `(review-time: see section note)`
-- [ ] References one level deep `(review-time: see section note)`
+`rules/rule-authoring.md` is the enforcement side of the same idea. Its **no-op test** ("why can't a hook, linter, or CI check catch this?") is the no-op verdict above applied to normative rules; its single-source-of-truth dedup is **single source of truth** here. When writing a skill for this repo, tag only its genuinely normative bullets per that policy - the descriptive reference prose (most of a skill like this one) stays untagged.

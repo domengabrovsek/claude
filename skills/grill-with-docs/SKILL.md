@@ -11,7 +11,9 @@ Interview me relentlessly about every aspect of this plan until we reach a share
 
 Ask the questions one at a time, waiting for feedback on each question before continuing.
 
-If a question can be answered by exploring the codebase, explore the codebase instead.
+If a *fact* can be found by exploring the codebase, look it up instead of asking. The *decisions*, though, are mine - put each one to me and wait.
+
+Do not enact the plan until I confirm we have reached a shared understanding.
 
 </what-to-do>
 
@@ -75,7 +77,7 @@ When the user states how something works, check whether the code agrees. If you 
 
 When a term is resolved, update `CONTEXT.md` right there. Don't batch these up - capture them as they happen. Use the format in [CONTEXT-FORMAT.md](./CONTEXT-FORMAT.md).
 
-Don't couple `CONTEXT.md` to implementation details. Only include terms that are meaningful to domain experts.
+Don't couple `CONTEXT.md` to implementation details. Only include terms that are meaningful to domain experts. `CONTEXT.md` is a glossary and nothing else - not a spec, not a scratch pad.
 
 ### Offer ADRs sparingly
 
