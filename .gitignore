@@ -5,6 +5,10 @@
 # typically committed because plans/specs are shared decisions.
 .claude/state/
 
+# Agent worktrees and other session-local runtime dirs under .claude/
+.claude/worktrees/
+.claude/plans/
+
 # macOS Finder metadata
 .DS_Store
 **/.DS_Store
