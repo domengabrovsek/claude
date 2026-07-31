@@ -5,7 +5,7 @@
 # Emits a line to stdout ONLY when status changes.
 # Exits when the pipeline reaches a terminal state.
 set -uo pipefail
-# Note: no -e — gh pr checks uses non-standard exit codes (8 = pending)
+# Note: no -e - gh pr checks uses non-standard exit codes (8 = pending)
 # that would terminate the script under errexit
 
 branch=$(git branch --show-current)
@@ -25,7 +25,7 @@ while true; do
       *) cur="error|exit-$ec" ;;
     esac
   else
-    # Fallback: no PR yet — check ALL runs for the branch, not just one
+    # Fallback: no PR yet - check ALL runs for the branch, not just one
     lines=$(gh run list --branch "$branch" --json status,conclusion \
       --jq '.[] | "\(.status)|\(.conclusion)"' 2>/dev/null) || lines=""
 
