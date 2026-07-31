@@ -1,5 +1,6 @@
 ---
-description: "Clean up a worktree after its branch has been merged. Removes the worktree dir and deletes the local branch."
+name: worktree-merge
+description: "Cleans up a worktree after its branch has been merged: removes the worktree directory and deletes the local branch. Use when the user says '/worktree-merge' or asks to clean up a merged worktree."
 ---
 
 Clean up the current worktree: $ARGUMENTS

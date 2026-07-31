@@ -1,6 +1,6 @@
 ---
 name: diagram
-description: "Create or update a diagram. Picks mermaid vs drawio per rules/diagrams.md, writes the source file, previews via MCP. Use when the user says 'diagram', '/diagram', or asks for a flowchart/architecture/sequence/state diagram."
+description: "Creates or updates a diagram, picking mermaid vs drawio per rules/diagrams.md, writing the source file, and previewing via MCP. Use when the user says 'diagram' or '/diagram', or asks for a flowchart, architecture, sequence, or state diagram."
 ---
 
 Create or update the diagram for: $ARGUMENTS

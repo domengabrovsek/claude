@@ -1,3 +1,8 @@
+---
+name: verify-done
+description: "Runs the comprehensive quality gate before declaring work done: discovers the checks CI actually runs, executes them in order, then reviews git status and the session diff. Use when the user says 'verify done' or '/verify-done', or before pushing any branch."
+---
+
 Comprehensive quality gate before declaring work done.
 
 1. **Discover CI steps**: read `.github/workflows/*.yml` (or `.gitlab-ci.yml`, `Jenkinsfile`, etc.) and `package.json` scripts to find the actual checks CI runs. Only run what CI actually runs - do not guess or add extra steps.

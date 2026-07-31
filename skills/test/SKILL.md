@@ -1,6 +1,6 @@
 ---
 name: test
-description: "Write tests using TDD workflow. Use when the user says 'write tests', 'add tests', 'TDD', or 'prove-it pattern'."
+description: "Writes tests using a TDD workflow. Use when the user says 'write tests', 'add tests', 'TDD', or 'prove-it pattern'."
 ---
 
 Write tests for: $ARGUMENTS

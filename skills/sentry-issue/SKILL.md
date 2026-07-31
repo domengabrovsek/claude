@@ -1,6 +1,6 @@
 ---
 name: sentry-issue
-description: Fetch and digest Sentry issue data (issue summary, tags, stack trace, breadcrumbs, latest event) by short ID, numeric issue ID, or sentry.io URL. Org-agnostic - works for any Sentry org the local token can access. Use when the user mentions a Sentry issue or short ID (e.g. MY-PROJECT-4X2), pastes a sentry.io issue URL, or asks to investigate/debug a Sentry error.
+description: "Fetches and digests Sentry issue data (summary, tags, stack trace, breadcrumbs, latest event) by short ID, numeric issue ID, or sentry.io URL, for any Sentry org the local token can access. Use when the user mentions a Sentry issue or short ID (e.g. MY-PROJECT-4X2), pastes a sentry.io issue URL, or asks to investigate a Sentry error."
 ---
 
 # Sentry Issue Investigation

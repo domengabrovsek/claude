@@ -1,6 +1,6 @@
 ---
 name: spec
-description: "Define requirements before planning. Use when starting a new feature, when requirements are ambiguous, or when the user says 'write a spec' or 'define requirements'."
+description: "Defines requirements before planning. Use when starting a new feature, when requirements are ambiguous, or when the user says 'write a spec' or 'define requirements'."
 ---
 
 Write a specification for: $ARGUMENTS

@@ -1,6 +1,6 @@
 ---
 name: wayfinder
-description: Plan a huge chunk of work - more than one agent session can hold - as a shared map of decision tickets in a local file, and resolve them one at a time until the way to the destination is clear.
+description: "Plans a huge chunk of work - more than one agent session can hold - as a shared map of decision tickets in a local file, and resolves them one at a time until the way to the destination is clear. Use when the user invokes /wayfinder on an effort too big for a single session."
 disable-model-invocation: true
 ---
 

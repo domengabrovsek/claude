@@ -1,3 +1,8 @@
+---
+name: summarize
+description: "Summarizes the current session's work into a diary entry at .claude/state/sessions/ and runs worktree auto-cleanup. Use when the user says 'summarize' or '/summarize', or when closing out a completed work session."
+---
+
 Summarize the current session's work and save it to `.claude/state/sessions/YYYY-MM-DD-<topic>.md` (use today's date and a brief topic slug).
 
 Format the file as:

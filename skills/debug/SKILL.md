@@ -1,6 +1,6 @@
 ---
 name: debug
-description: "Structured production-incident investigation. Forces evidence-first hypothesis ranking before any code change. Use when given an error message, Sentry alert, failing log, or 'investigate <X>' request."
+description: "Runs a structured production-incident investigation that forces evidence-first hypothesis ranking before any code change. Use when given an error message, Sentry alert, failing log, or an 'investigate <X>' request."
 ---
 
 Investigate the issue: $ARGUMENTS

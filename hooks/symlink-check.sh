@@ -13,10 +13,10 @@ EXPECTED=(
   "CLAUDE.md|$REPO/CLAUDE.md"
   "settings.json|$REPO/settings.json"
   "agents|$REPO/agents"
-  "commands|$REPO/commands"
   "hooks|$REPO/hooks"
   "rules|$REPO/rules"
   "skills|$REPO/skills"
+  "scripts|$REPO/scripts"
   "statusline.sh|$REPO/scripts/statusline.sh"
   "pull_request_template.md|$REPO/.github/pull_request_template.md"
 )

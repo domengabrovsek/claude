@@ -1,3 +1,8 @@
+---
+name: research
+description: "Starts Phase 1 (Research) for a topic: reads every relevant file, optionally runs a panel of Explore teammates, and saves a research artifact to .claude/state/research/. Use when the user says 'research <topic>' or '/research', or before planning work in unfamiliar code. Research only - proposes no solutions."
+---
+
 Start Phase 1 (Research) for the following topic: $ARGUMENTS
 
 For non-trivial topics, run **panel mode** (see `rules/parallel-agents.md`): spawn one `Explore` teammate per subsystem, run one bounded cross-check round via SendMessage so teammates flag contradictions across their areas, then synthesize their findings into the artifact yourself. For narrow topics, explore solo. Read all relevant files, check git history for context, and investigate related patterns.

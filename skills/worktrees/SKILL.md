@@ -1,5 +1,6 @@
 ---
-description: "Audit and optionally prune git worktrees. Default: current repo. With --all: cross-repo scan under ~/dev/."
+name: worktrees
+description: "Audits and optionally prunes git worktrees: current repo by default, cross-repo scan under ~/dev/ with --all. Use when the user says '/worktrees', 'audit worktrees', or 'prune worktrees'."
 ---
 
 Run worktree cleanup: $ARGUMENTS

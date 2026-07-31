@@ -1,6 +1,6 @@
 ---
 name: document
-description: "Create or refresh technical engineering docs in the current repo's /docs/ tree. Diataxis layout, mermaid diagrams, ADR support, drift audit. Use when the user says 'write docs', 'document this', 'audit the docs', or '/document'."
+description: "Creates or refreshes technical engineering docs in the current repo's /docs/ tree: Diataxis layout, mermaid diagrams, ADR support, drift audit. Use when the user says 'write docs', 'document this', 'audit the docs', or '/document'."
 ---
 
 Generate or update engineering documentation for: $ARGUMENTS

@@ -1,6 +1,6 @@
 ---
 name: drive-fleet
-description: "Drive a fleet of MRs/PRs to done with a manager loop plus the built-in /goal command. Use for multi-lane / multi-MR work (often spanning sibling repos) where one session plans file-isolated lanes and a fresh manager session sets a /goal, then delegates ALL edit / review / rebase / conflict work to worktree-isolated domain-expert subagents. Use when the user says 'drive fleet' / 'drive the fleet', has 2+ independent lanes to drive in parallel, or wants a hands-off manager that stops only when the whole fleet is green, reviewed, and rebased."
+description: "Drives a fleet of MRs/PRs to done with a manager loop plus the built-in /goal command, delegating all edit, review, rebase, and conflict work to worktree-isolated domain-expert subagents. Use when the user says 'drive fleet' or 'drive the fleet', has 2+ independent lanes to drive in parallel, or wants a hands-off manager that stops only when the whole fleet is green, reviewed, and rebased."
 ---
 
 # Drive Fleet

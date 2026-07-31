@@ -1,12 +1,6 @@
 ---
 name: prune
-description: >
-  Code review focused exclusively on over-engineering. Finds what to delete:
-  reinvented standard library, unneeded dependencies, speculative abstractions,
-  dead flexibility. One line per finding: location, what to cut, what replaces
-  it. Use when the user says "review for over-engineering",
-  "is this over-engineered", or invokes /prune. Complements correctness-focused
-  review; this one only hunts complexity.
+description: "Reviews code exclusively for over-engineering and lists what to delete: reinvented standard library, unneeded dependencies, speculative abstractions, dead flexibility. Use when the user says 'review for over-engineering', 'is this over-engineered', or invokes /prune. Complements correctness-focused review; this one only hunts complexity."
 ---
 
 If no diff is in context, fetch one first: run `git diff HEAD` for uncommitted

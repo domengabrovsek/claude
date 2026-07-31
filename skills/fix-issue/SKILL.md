@@ -1,6 +1,6 @@
 ---
 name: fix-issue
-description: "Investigate and fix a GitHub issue. Use when given an issue number or URL, or when the user says 'fix issue'."
+description: "Investigates and fixes a GitHub issue. Use when given an issue number or URL, or when the user says 'fix issue'."
 ---
 
 Fix the GitHub issue: $ARGUMENTS

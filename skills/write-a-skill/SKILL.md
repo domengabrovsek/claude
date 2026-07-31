@@ -1,6 +1,6 @@
 ---
 name: write-a-skill
-description: Reference and principles for writing and editing skills well - the vocabulary that makes a skill predictable. Use when creating, writing, editing, reviewing, or refactoring an agent skill.
+description: "Provides the reference and principles for writing and editing skills well - the vocabulary that makes a skill predictable. Use when creating, writing, editing, reviewing, or refactoring an agent skill."
 ---
 
 > Source: [mattpocock/skills - productivity/writing-great-skills](https://github.com/mattpocock/skills/tree/main/skills/productivity/writing-great-skills). Kept model-invoked here (see ADR 0006); full definitions in [GLOSSARY.md](GLOSSARY.md).

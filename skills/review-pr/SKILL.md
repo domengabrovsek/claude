@@ -1,6 +1,6 @@
 ---
 name: review-pr
-description: "Review a pull request with structured severity-based feedback. Use when asked to review a PR, code review, or given a PR number/URL."
+description: "Reviews a pull request with structured severity-based feedback. Use when asked to review a PR, asked for a code review, or given a PR number/URL."
 ---
 
 Review the pull request: $ARGUMENTS

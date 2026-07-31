@@ -1,6 +1,6 @@
 ---
 name: build
-description: "Implement code incrementally with quality gates. Use when the user says 'build', 'implement', or when starting the implementation phase of an approved plan."
+description: "Implements code incrementally with quality gates. Use when the user says 'build' or 'implement', or when starting the implementation phase of an approved plan."
 ---
 
 Implement the approved plan incrementally: $ARGUMENTS

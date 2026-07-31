@@ -1,6 +1,6 @@
 ---
 name: ship
-description: "Pre-launch validation and release workflow. Use when the user says 'ship', 'release', 'deploy', or 'ready to merge'."
+description: "Runs pre-launch validation and the release workflow. Use when the user says 'ship', 'release', 'deploy', or 'ready to merge'."
 ---
 
 Validate and ship: $ARGUMENTS

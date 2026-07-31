@@ -1,5 +1,6 @@
 ---
-description: "Create an isolated git worktree for the current task and switch into it. Resolves cross-session collisions before they happen."
+name: worktree
+description: "Creates an isolated git worktree for the current task and switches into it, resolving cross-session collisions before they happen. Use when the user says '/worktree <slug>' or wants an isolated working copy for a new task."
 ---
 
 Create a worktree for: $ARGUMENTS

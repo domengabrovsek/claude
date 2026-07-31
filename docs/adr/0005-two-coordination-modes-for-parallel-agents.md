@@ -33,7 +33,7 @@ The distinguishing axis between the modes is coordination topology (star vs mesh
 
 **Mode-selection lives at the entry points**, not only in the reference, so the right mode is pulled without per-prompt wording:
 
-- `commands/research.md` declares panel mode (Explore teammates).
+- `skills/research/SKILL.md` declares panel mode (Explore teammates).
 - `skills/grill-with-docs/SKILL.md` may convene a panel (domain-expert teammates), while keeping the user-facing one-question-at-a-time cadence.
 - `skills/build/SKILL.md` declares that a multi-lane plan maps to one lane-mode teammate per file-isolated lane.
 
