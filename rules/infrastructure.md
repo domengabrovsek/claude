@@ -1,3 +1,17 @@
+---
+paths:
+  - "**/*.tf"
+  - "**/*.tfvars"
+  - "**/Dockerfile*"
+  - "**/docker-compose*"
+  - "**/.github/workflows/**"
+  - "**/.gitlab-ci.yml"
+  - "**/k8s/**"
+  - "**/kubernetes/**"
+  - "**/helm/**"
+  - "**/manifests/**"
+---
+
 # Infrastructure Conventions
 
 **When to apply:** editing Terraform, Dockerfiles, docker-compose, Kubernetes manifests, or CI/CD workflow files - and when running any infra command that applies, destroys, or grants access (`terraform apply/destroy`, `gcloud`, `gsutil`, `aws`, `kubectl delete`).

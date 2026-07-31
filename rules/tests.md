@@ -1,3 +1,11 @@
+---
+paths:
+  - "**/*.test.*"
+  - "**/*.spec.*"
+  - "**/__tests__/**"
+  - "**/e2e/**"
+---
+
 # Testing Standards
 
 **When to apply:** editing test files (`*.test.ts`, `*.spec.ts`, `*.test.tsx`, `*.spec.tsx`).

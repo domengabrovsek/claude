@@ -1,3 +1,16 @@
+---
+paths:
+  - "**/*.sql"
+  - "**/migrations/**"
+  - "**/*.prisma"
+  - "**/prisma/**"
+  - "**/drizzle/**"
+  - "**/models/**"
+  - "**/repositories/**"
+  - "**/db/**"
+  - "**/database/**"
+---
+
 # Database Conventions
 
 **When to apply:** editing migrations, SQL files, or any database schema / query code (Prisma, Drizzle, Knex, raw SQL).

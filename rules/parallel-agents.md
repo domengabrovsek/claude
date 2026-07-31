@@ -11,9 +11,7 @@ Parallel work runs in one of two coordination modes (see `CONTEXT.md` for the gl
 - **Lane mode** - mutating work (build / implementation). Teammates run in isolated git worktrees, each owning disjoint files, in the background, reporting to the parent via completion notifications, with no peer messaging (star topology). Choose lane mode when teammates write code. `(review-time: mode-selection judgment)`
 - **Panel mode** - read-only work (research, grilling, design). Named teammates coordinate peer-to-peer via SendMessage to challenge each other, then converge (mesh topology). No worktrees needed because the work is read-only. Choose panel mode when teammates investigate or argue but do not write. `(review-time: mode-selection judgment)`
 
-The distinguishing axis is coordination topology (star vs mesh) plus isolation (worktree vs read-only), not whether teammates are named - both modes name their teammates. Background execution (`run_in_background`) is orthogonal; either mode can run in the background. `(review-time: mode classification, not a code pattern)`
-
-The rest of this file - splitting, worktree isolation, merging - governs **lane mode**. Panel mode has its own section below.
+The distinguishing axis is coordination topology (star vs mesh) plus isolation (worktree vs read-only) - see CONTEXT.md for the full glossary. The rest of this file - splitting, worktree isolation, merging - governs **lane mode**. Panel mode has its own section below. `(review-time: mode classification, not a code pattern)`
 
 ## When to Parallelize
 
@@ -121,10 +119,4 @@ See ADR 0005 for the rationale and CONTEXT.md for the glossary.
 - If a task splits into more than 5 pieces, batch them into rounds rather than spawning more concurrently. `(review-time: batching strategy)`
 - Always prefer 3 well-scoped agents over 6 narrowly-scoped ones. `(review-time: scope-vs-count trade-off)`
 
-Why these numbers:
-
-- **Merge conflict surface** scales as n*(n-1)/2. 4 agents = 6 pair combinations, 5 = 10, 8 = 28. The jump from 4 to 5 is acceptable; past 5 it gets painful fast.
-- **Review bandwidth**: reviewing 4 separate diffs in one sitting is the upper edge of what a human can do without quality dropping into rubber-stamping.
-- **API rate limits**: parent + 4 children = 5 concurrent token streams, which leaves headroom on standard tiers. 8+ regularly hits throttling and silently serializes the "parallel" work.
-- **Local resources**: each worktree is a full repo copy plus tool processes. 4 is comfortable on a typical Mac; 8+ starts to matter for large monorepos.
-- **Diminishing wall-clock returns**: the slowest agent dictates total time. With 4 agents you already capture ~80% of the theoretical speedup; more mostly buys coordination overhead, not speed.
+Rationale for these numbers (conflict surface, review bandwidth, rate limits, local resources, diminishing returns): see `docs/agents.md`, "Parallelism limits".

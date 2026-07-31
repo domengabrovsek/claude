@@ -54,6 +54,7 @@ Other intents are first-class workflows with their own shapes, not stripped-down
 - **Minimal fix**: for bug fixes, identify the root cause and state the smallest possible change first (ideally 1-5 lines). Only expand the scope if the minimal fix is provably insufficient. Never introduce new abstractions, files, or patterns as part of a bug fix unless the user explicitly asks `(review-time: minimal-fix judgment)`
 - **Decisions**: ask before making architectural choices - never silently pick a pattern, library, or approach `(review-time: requires recognizing an architectural choice point)`
 - **Cost**: warn before any change that increases costs (new cloud resources, paid services, upgraded tiers) `(review-time: cost-impact recognition)`
+- **Destructive infra ops**: before destroying or deleting any shared or stateful cloud resource, enumerate its consumers and confirm with the user; verify IAM roles are assignable at the target scope before granting - full policy in `rules/infrastructure.md` (path-scoped, may not be loaded in command-only sessions) `(review-time: blast-radius knowledge is external to the command text)`
 - **Testing**: always write tests when implementing a new feature or fixing a bug - no exceptions `(review-time: per-PR judgment about test coverage of the change)`
 - **Conciseness**: be direct and terse during implementation - save explanations for when asked `(review-time: phrasing-length judgment)`
 - **Deliverable length**: match written documents, reports, and summaries to what the task needs - no filler sections, no redundant summaries, no boilerplate padding. Claude 5 models default to longer output; counteract deliberately `(review-time: length judgment on free-form output)`
@@ -89,13 +90,12 @@ The files below are loaded into every session via these `@`-imports. Edit the in
 @rules/communication.md
 @rules/context7.md
 @rules/rule-authoring.md
-@rules/database.md
-@rules/diagrams.md
 @rules/engineering-principles.md
 @rules/git-conventions.md
-@rules/infrastructure.md
 @rules/jira.md
 @rules/parallel-agents.md
 @rules/state-persistence.md
-@rules/tests.md
-@rules/typescript.md
+
+## Path-scoped rules
+
+Five rule files are NOT imported above - they carry `paths:` frontmatter and load on demand when a matching file is touched (`rules/typescript.md`, `rules/tests.md`, `rules/database.md`, `rules/infrastructure.md`, `rules/diagrams.md`). Do not re-add them to the import list: an `@`-import loads a file unconditionally and defeats the scoping. `(review-time: import-list discipline)`

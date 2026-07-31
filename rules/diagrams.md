@@ -1,3 +1,10 @@
+---
+paths:
+  - "**/docs/**"
+  - "**/*.drawio"
+  - "**/*.mmd"
+---
+
 # Diagram Policy
 
 **When to apply:** creating or updating any diagram in `docs/` (flowchart, sequence, architecture, state machine, etc.).
