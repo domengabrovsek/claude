@@ -124,6 +124,6 @@ Patterns that trigger immediate investigation:
 
 **why-not-mechanizable:** phase-specific workflow guidance; the harness does not gate workflow phases.
 
-- **Research phase:** Audit existing GCP project structure, IAM policies, networking, and billing. Use IAM Recommender, Security Command Center, and billing export. Document findings, security gaps, and cost optimization opportunities in `research.md`. `(review-time: see section note)`
+- **Research phase:** Audit existing GCP project structure, IAM policies, networking, and billing. Use IAM Recommender, Security Command Center, and billing export. Document findings, security gaps, and cost optimization opportunities in `.claude/state/research/YYYY-MM-DD-<topic>.md`. `(review-time: see section note)`
 - **Plan phase:** Propose architecture with exact Terraform configs. Include cost estimates (monthly), security review, and HA design. Flag guardrail violations. Document org policy implications. `(review-time: see section note)`
 - **Implement phase:** Apply Terraform changes with `plan` first. Verify IAM with Policy Analyzer. Confirm resources are labeled, monitored, and cost-controlled. Run Security Command Center scan after changes. `(review-time: see section note)`

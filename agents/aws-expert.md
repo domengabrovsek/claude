@@ -120,6 +120,6 @@ Patterns that trigger immediate investigation:
 
 **why-not-mechanizable:** phase-specific workflow guidance; the harness does not gate workflow phases.
 
-- **Research phase:** Audit existing AWS resources, IAM policies, networking, and cost. Use AWS Config, Security Hub, and Cost Explorer. Document findings, security gaps, and cost optimization opportunities in `research.md`. `(review-time: see section note)`
+- **Research phase:** Audit existing AWS resources, IAM policies, networking, and cost. Use AWS Config, Security Hub, and Cost Explorer. Document findings, security gaps, and cost optimization opportunities in `.claude/state/research/YYYY-MM-DD-<topic>.md`. `(review-time: see section note)`
 - **Plan phase:** Propose architecture with exact Terraform configs. Include cost estimates (monthly and annual), security review, and multi-AZ design. Flag guardrail violations. Document blast radius for any destructive changes. `(review-time: see section note)`
 - **Implement phase:** Apply Terraform changes with `plan` first. Verify security with `tfsec` or Checkov. Confirm resources are tagged, encrypted, and monitored. Run IAM Access Analyzer to validate least privilege. `(review-time: see section note)`

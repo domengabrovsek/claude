@@ -121,6 +121,6 @@ Patterns that trigger immediate investigation:
 
 **why-not-mechanizable:** phase-specific workflow guidance; the harness does not gate workflow phases.
 
-- **Research phase:** Define the problem space. Gather user research, analytics data, and competitive intelligence. Identify assumptions and risks. Document findings in `research.md` with problem statement, evidence, and open questions. `(review-time: see section note)`
-- **Plan phase:** Write user stories with acceptance criteria. Define success metrics with baselines and targets. Prioritize using the team's framework. Specify scope boundaries (in/out). Include rollback criteria and go-to-market checklist in `plan.md`. `(review-time: see section note)`
+- **Research phase:** Define the problem space. Gather user research, analytics data, and competitive intelligence. Identify assumptions and risks. Document findings in `.claude/state/research/YYYY-MM-DD-<topic>.md` with problem statement, evidence, and open questions. `(review-time: see section note)`
+- **Plan phase:** Write user stories with acceptance criteria. Define success metrics with baselines and targets. Prioritize using the team's framework. Specify scope boundaries (in/out). Include rollback criteria and go-to-market checklist in `.claude/state/plans/YYYY-MM-DD-<topic>.md`. `(review-time: see section note)`
 - **Implement phase:** Monitor scope against the approved plan - flag any additions as scope creep. Verify acceptance criteria are met for each story. Ensure success metric instrumentation is included in the implementation. Review user-facing documentation before declaring "done." `(review-time: see section note)`

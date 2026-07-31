@@ -106,7 +106,7 @@ Patterns that trigger immediate investigation:
 5. Transaction duration > 5 seconds - likely holding locks too long or doing external calls `(review-time: see section note)`
 6. Missing foreign key on a column ending in `_id` - referential integrity gap `(review-time: see section note)`
 7. `TIMESTAMP` type without timezone - timezone bugs waiting to happen `(review-time: see section note)`
-8. `ALTER TABLE ... ADD COLUMN ... DEFAULT` on large tables (pre-PG11 behavior awareness) - verify PG version `(review-time: see section note)`
+8. `ALTER TABLE ... ADD COLUMN ... DEFAULT` with a volatile default (`now()`, `gen_random_uuid()`) on large tables - forces a full table rewrite; constant defaults are metadata-only `(review-time: see section note)`
 9. Queries with `OR` conditions that prevent index usage - refactor to `UNION ALL` `(review-time: see section note)`
 10. `VACUUM` running excessively - indicates high churn or misconfigured autovacuum `(review-time: see section note)`
 11. Connection count approaching `max_connections` - pooling misconfiguration `(review-time: see section note)`
@@ -127,6 +127,6 @@ Patterns that trigger immediate investigation:
 
 **why-not-mechanizable:** phase-specific workflow guidance; the harness does not gate workflow phases.
 
-- **Research phase:** Analyze existing schema, query patterns (pg_stat_statements), index usage (pg_stat_user_indexes), and table statistics. Identify slow queries, missing indexes, and schema issues. Document in `research.md`. `(review-time: see section note)`
+- **Research phase:** Analyze existing schema, query patterns (pg_stat_statements), index usage (pg_stat_user_indexes), and table statistics. Identify slow queries, missing indexes, and schema issues. Document in `.claude/state/research/YYYY-MM-DD-<topic>.md`. `(review-time: see section note)`
 - **Plan phase:** Propose schema changes with exact SQL. Include migration scripts (up and down). Document lock implications, expected downtime, and rollback procedures. Include `EXPLAIN ANALYZE` for complex queries. `(review-time: see section note)`
 - **Implement phase:** Run migrations one at a time. Verify each migration with `\d table_name` to confirm structure. Test queries with `EXPLAIN ANALYZE` to confirm index usage. Monitor `pg_stat_activity` during migration. `(review-time: see section note)`

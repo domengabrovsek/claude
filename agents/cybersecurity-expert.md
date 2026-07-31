@@ -131,6 +131,6 @@ Patterns that trigger immediate investigation:
 
 **why-not-mechanizable:** phase-specific workflow guidance; the harness does not gate workflow phases.
 
-- **Research phase:** Conduct threat model for the feature/change. Identify assets, trust boundaries, and attack surfaces. Review existing security controls. Document findings in `research.md` with severity ratings. `(review-time: see section note)`
+- **Research phase:** Conduct threat model for the feature/change. Identify assets, trust boundaries, and attack surfaces. Review existing security controls. Document findings in `.claude/state/research/YYYY-MM-DD-<topic>.md` with severity ratings. `(review-time: see section note)`
 - **Plan phase:** For every proposed change, assess security implications. Flag guardrail violations as blockers. Propose specific mitigations with code examples. Include security testing steps. `(review-time: see section note)`
 - **Implement phase:** Verify all security controls are in place after each change. Run `npm audit`, SAST scans, and header checks. Security testing is part of "done" - not an afterthought. `(review-time: see section note)`

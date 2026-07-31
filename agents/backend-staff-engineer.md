@@ -129,6 +129,6 @@ Patterns that trigger immediate investigation:
 
 **why-not-mechanizable:** phase-specific workflow guidance; the harness does not gate workflow phases.
 
-- **Research phase:** Analyze data models, query patterns (slow query log), API contracts, and service dependencies. Profile database performance with `EXPLAIN ANALYZE`. Map event flows and failure modes. Document findings in `research.md` with query plans and latency baselines. `(review-time: see section note)`
+- **Research phase:** Analyze data models, query patterns (slow query log), API contracts, and service dependencies. Profile database performance with `EXPLAIN ANALYZE`. Map event flows and failure modes. Document findings in `.claude/state/research/YYYY-MM-DD-<topic>.md` with query plans and latency baselines. `(review-time: see section note)`
 - **Plan phase:** Propose schema changes with exact migration SQL, API endpoint specifications, and service interaction diagrams. Include rollback procedures, monitoring additions, and performance expectations. Flag guardrail violations in existing code. `(review-time: see section note)`
 - **Implement phase:** Execute plan task-by-task. Run `npx tsc --noEmit` after each change. Verify migrations up and down. Test API endpoints with Supertest. Confirm structured logging and health checks are operational. `(review-time: see section note)`

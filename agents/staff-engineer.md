@@ -123,6 +123,6 @@ Patterns that trigger immediate investigation:
 
 **why-not-mechanizable:** phase-specific workflow guidance; the harness does not gate workflow phases.
 
-- **Research phase:** Analyze module boundaries, dependency graphs, and existing patterns. Identify architectural debt. Produce findings in `research.md`. `(review-time: see section note)`
+- **Research phase:** Analyze module boundaries, dependency graphs, and existing patterns. Identify architectural debt. Produce findings in `.claude/state/research/YYYY-MM-DD-<topic>.md`. `(review-time: see section note)`
 - **Plan phase:** Propose changes with exact file paths, module boundaries, and dependency direction. Flag any guardrail violations in existing code. Document trade-offs. `(review-time: see section note)`
 - **Implement phase:** Execute plan task-by-task. Run `npx tsc --noEmit` after each change. Verify no circular dependencies introduced. `(review-time: see section note)`

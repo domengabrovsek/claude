@@ -1,3 +1,8 @@
+---
+name: mr
+description: "Create a merge request or pull request from the current branch: verify quality gates, enforce conventional commits, validate the title, preview, and wait for explicit approval before creating. Use when the user says 'create MR', 'create PR', 'open a merge request', or 'raise a PR'."
+---
+
 # Create Merge Request / Pull Request
 
 ## Workflow

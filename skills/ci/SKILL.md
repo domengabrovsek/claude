@@ -1,3 +1,8 @@
+---
+name: ci
+description: "Monitor the CI pipeline for the current branch via a background Monitor script (GitHub or GitLab), reacting to pass, fail, and manual-gate states. Use when the user says 'watch CI', 'monitor the pipeline', 'is CI green', or after pushing a branch or creating a PR/MR."
+---
+
 # Monitor CI Pipeline
 
 ## Workflow

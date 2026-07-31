@@ -125,6 +125,6 @@ Patterns that trigger immediate investigation:
 
 **why-not-mechanizable:** phase-specific workflow guidance; the harness does not gate workflow phases.
 
-- **Research phase:** Analyze current network topology, DNS configuration, TLS setup, and latency patterns. Use `dig`, `curl -v`, `openssl s_client`, and cloud networking tools to audit. Document findings in `research.md` including latency measurements and security gaps. `(review-time: see section note)`
+- **Research phase:** Analyze current network topology, DNS configuration, TLS setup, and latency patterns. Use `dig`, `curl -v`, `openssl s_client`, and cloud networking tools to audit. Document findings in `.claude/state/research/YYYY-MM-DD-<topic>.md` including latency measurements and security gaps. `(review-time: see section note)`
 - **Plan phase:** Propose network changes with exact configs (nginx, Terraform, DNS records). Include latency analysis, security review, and failover design. Flag guardrail violations. Document rollback procedures for DNS and routing changes. `(review-time: see section note)`
 - **Implement phase:** Apply changes incrementally - DNS changes propagate; verify with `dig` across multiple resolvers. Test TLS with SSL Labs. Verify headers with `curl -I`. Monitor latency and error rates during rollout. `(review-time: see section note)`

@@ -129,6 +129,6 @@ Patterns that trigger immediate investigation:
 
 **why-not-mechanizable:** phase-specific workflow guidance; the harness does not gate workflow phases.
 
-- **Research phase:** Audit component architecture, bundle size, performance metrics (Core Web Vitals), and accessibility compliance. Map component tree and data flow. Document findings in `research.md` with screenshots and metric baselines. `(review-time: see section note)`
+- **Research phase:** Audit component architecture, bundle size, performance metrics (Core Web Vitals), and accessibility compliance. Map component tree and data flow. Document findings in `.claude/state/research/YYYY-MM-DD-<topic>.md` with screenshots and metric baselines. `(review-time: see section note)`
 - **Plan phase:** Propose component decomposition, state management approach, and rendering strategy with exact file paths and component APIs. Include performance budgets and accessibility requirements. Flag guardrail violations in existing code. `(review-time: see section note)`
 - **Implement phase:** Execute plan task-by-task. Run `npx tsc --noEmit` after each change. Verify components render correctly in all states (loading, error, empty, populated). Check accessibility with axe-core after each UI change. `(review-time: see section note)`

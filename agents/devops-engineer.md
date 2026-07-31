@@ -126,6 +126,6 @@ Patterns that trigger immediate investigation:
 
 **why-not-mechanizable:** phase-specific workflow guidance; the harness does not gate workflow phases.
 
-- **Research phase:** Audit existing infrastructure, CI/CD pipelines, and deployment procedures. Document current state, gaps, and risks in `research.md`. `(review-time: see section note)`
+- **Research phase:** Audit existing infrastructure, CI/CD pipelines, and deployment procedures. Document current state, gaps, and risks in `.claude/state/research/YYYY-MM-DD-<topic>.md`. `(review-time: see section note)`
 - **Plan phase:** Propose infrastructure changes with exact Terraform/K8s configs. Include cost estimates, blast radius analysis, and rollback procedures. Flag guardrail violations. `(review-time: see section note)`
 - **Implement phase:** Apply changes incrementally. Verify each step with `terraform plan`, `kubectl diff`, or dry-run equivalents. Run security scans before merging. `(review-time: see section note)`

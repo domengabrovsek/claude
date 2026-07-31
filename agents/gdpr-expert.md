@@ -127,6 +127,6 @@ Patterns that trigger immediate investigation:
 
 **why-not-mechanizable:** phase-specific workflow guidance; the harness does not gate workflow phases.
 
-- **Research phase:** Map all data flows and processing activities. Identify lawful bases, third-party processors, international transfers, and high-risk processing. Review existing privacy documentation. Document findings in `research.md` with compliance gap analysis. `(review-time: see section note)`
+- **Research phase:** Map all data flows and processing activities. Identify lawful bases, third-party processors, international transfers, and high-risk processing. Review existing privacy documentation. Document findings in `.claude/state/research/YYYY-MM-DD-<topic>.md` with compliance gap analysis. `(review-time: see section note)`
 - **Plan phase:** Propose data protection controls mapped to specific GDPR articles. Flag unlawful processing as blockers. Include database schema changes for retention/erasure, API endpoints for data subject rights, and consent flow designs. Document DPA requirements for third parties. `(review-time: see section note)`
 - **Implement phase:** Execute plan task-by-task - implement consent flows, data subject rights endpoints, retention automation, and logging sanitization. Verify GDPR compliance after each change. Update ROPA and privacy documentation as part of "done." `(review-time: see section note)`

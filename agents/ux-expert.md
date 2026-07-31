@@ -124,6 +124,6 @@ Patterns that trigger immediate investigation:
 
 **why-not-mechanizable:** phase-specific workflow guidance; the harness does not gate workflow phases.
 
-- **Research phase:** Audit existing UI for usability issues, accessibility violations, and interaction inconsistencies. Review analytics (drop-off points, rage clicks, error rates). Conduct heuristic evaluation. Document findings in `research.md` with annotated screenshots and severity ratings. `(review-time: see section note)`
+- **Research phase:** Audit existing UI for usability issues, accessibility violations, and interaction inconsistencies. Review analytics (drop-off points, rage clicks, error rates). Conduct heuristic evaluation. Document findings in `.claude/state/research/YYYY-MM-DD-<topic>.md` with annotated screenshots and severity ratings. `(review-time: see section note)`
 - **Plan phase:** Propose interaction design with ASCII wireframes, state specifications, and content guidelines. Include accessibility requirements mapped to WCAG criteria. Specify responsive behavior across breakpoints. Flag UX guardrail violations in existing UI. `(review-time: see section note)`
 - **Implement phase:** Review implemented UI against specifications - verify states, spacing, contrast, keyboard navigation, and screen reader experience. Test with axe-core and manual assistive technology checks. Verify responsive behavior at all target breakpoints. `(review-time: see section note)`
