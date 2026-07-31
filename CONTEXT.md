@@ -18,6 +18,14 @@ _Avoid_: "fan-out mode", "worktree mode".
 Named read-only teammates that coordinate peer-to-peer via SendMessage to challenge each other, then converge into one synthesis for the parent.
 _Avoid_: "round-table", "team mode".
 
+**Advisory persona**:
+A persona whose frontmatter `tools` list excludes Edit/Write/NotebookEdit, making the panel-mode read-only guarantee mechanical rather than brief-level (PR Reviewer, Cybersecurity Expert, GDPR Expert, Product Manager, UX Expert).
+_Avoid_: "read-only agent", "reviewer agent".
+
+**Writer persona**:
+A full-tool persona that can mutate files and therefore serve as a lane-mode teammate.
+_Avoid_: "builder agent", "implementer agent".
+
 ### Skill model
 
 **Model-invoked skill**:
@@ -55,6 +63,7 @@ _Avoid_: "spike task", "POC".
 - A **Reusable discipline** is always **Model-invoked**; an **Orchestrator** may invoke disciplines.
 - `wayfinder` resolves **Decision tickets** one per session until the fog clears, then hands to the spec stage.
 - **Lane mode** is for mutating work (build/implementation); **Panel mode** is for read-only work (research, grilling, design).
+- An **Advisory persona** can join **Panel mode** only; a **Lane mode** teammate must be a **Writer persona**.
 - The distinguishing axis is coordination topology: **Lane mode** is a star (teammates report only to the parent), **Panel mode** is a mesh (teammates also message each other). Worktree isolation follows from this: lanes mutate files so they need worktrees, panels are read-only so they do not.
 - Background execution (`run_in_background`) is orthogonal to mode - either mode can run in the background.
 
