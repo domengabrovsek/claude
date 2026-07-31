@@ -53,6 +53,14 @@ Format: backtick-wrapped, single space before, end of line.
 
 Out of scope: `MEMORY.md`, `keybindings.json`, `settings.json`, `docs/`, `README.md`, generic `scripts/` files.
 
+## Claude 5 authoring defaults
+
+Claude 5 family models (Fable/Opus 5+) changed which instructions help and which hurt. When authoring or editing any rule, persona, or skill, apply these defaults (source: platform.claude.com prompting guide for Opus 5):
+
+- Do not add attention-level verification instructions ("verify your work", "double-check", "re-verify before finishing") - the model self-verifies unprompted, and explicit verification instructions cause over-verification and token waste. Encode verification as mechanical gates (hooks, `/verify-done`, CI) instead. `(review-time: distinguishing attention-level nagging from concrete gate commands requires reading intent)`
+- Do not add conservative-filter review instructions ("only report high-severity", "be conservative with findings") - they suppress real findings. Ask for everything and filter in a later pass. `(review-time: semantic classification of review instructions)`
+- Prefer one clear directive over multi-sentence safety rails - the model is more instruction-sensitive than earlier generations; verbose rails cause over-compliance and scope distortion. When migrating older prompt text, cut rails rather than adding them. `(review-time: phrasing judgment)`
+
 ## Lifecycle - moving a rule between layers
 
 - Adding a new rule: pick the layer at authoring time, mark it. If `(review-time)`, write the justification.

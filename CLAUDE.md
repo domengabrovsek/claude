@@ -56,6 +56,7 @@ Other intents are first-class workflows with their own shapes, not stripped-down
 - **Cost**: warn before any change that increases costs (new cloud resources, paid services, upgraded tiers) `(review-time: cost-impact recognition)`
 - **Testing**: always write tests when implementing a new feature or fixing a bug - no exceptions `(review-time: per-PR judgment about test coverage of the change)`
 - **Conciseness**: be direct and terse during implementation - save explanations for when asked `(review-time: phrasing-length judgment)`
+- **Deliverable length**: match written documents, reports, and summaries to what the task needs - no filler sections, no redundant summaries, no boilerplate padding. Claude 5 models default to longer output; counteract deliberately `(review-time: length judgment on free-form output)`
 - **Existing patterns**: follow the conventions already in the codebase - consistency over personal preference `(review-time: pattern-recognition in surrounding code)`
 - **Context first**: before choosing an approach, check how similar problems are already solved in the codebase - grep for existing patterns, read neighboring files, and follow established conventions rather than guessing `(review-time: workflow discipline)`
 - **Verification**: always run `/verify-done` before pushing - never push without all checks passing `(hook)`

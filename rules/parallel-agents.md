@@ -45,6 +45,8 @@ Do NOT spawn parallel agents when:
 - The task is trivial enough to finish in under 2 minutes sequentially `(review-time: time-estimate)`
 - Changes will inevitably conflict (e.g., multiple agents editing the same file) `(review-time: conflict prediction)`
 - There are only cosmetic or config changes `(review-time: task-shape judgment)`
+- The work fits in a handful of tool calls done inline - Claude 5 models delegate more eagerly than earlier models, and spawn overhead exceeds the win on small tasks `(review-time: task-shape judgment)`
+- The purpose is verifying or double-checking your own completed work - Claude 5 models self-verify; verification subagents add cost without quality gain `(review-time: purpose classification)`
 
 ## How to Split Work
 
