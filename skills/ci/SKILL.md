@@ -7,7 +7,7 @@ description: "Monitor the CI pipeline for the current branch via a background Mo
 
 ## Workflow
 
-**why-not-mechanizable:** skill workflow guidance; each step requires understanding the surrounding context (repo, task shape, prior state).
+**why-no-hook:** skill workflow guidance; each step requires understanding the surrounding context (repo, task shape, prior state).
 
 1. **Detect VCS platform**: `.gitlab-ci.yml` -> glab, `.github/` -> gh `(review-time: see section note)`
 2. **Start a Monitor** with the matching script: `(review-time: see section note)`

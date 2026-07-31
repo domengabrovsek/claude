@@ -1,6 +1,6 @@
 # Rule Authoring Policy
 
-**When to apply:** writing or editing any normative bullet in `rules/*.md`, `CLAUDE.md`, `agents/*.md`, or `skills/**/SKILL.md`.
+**When to apply:** writing or editing any rule bullet in `rules/*.md`, `CLAUDE.md`, `agents/*.md`, or `skills/**/SKILL.md`.
 
 ## Why this exists
 
@@ -20,9 +20,11 @@ Ranked by reliability (earliest catch wins per the shift-left principle):
 
 ## The marker requirement
 
-Every **normative** bullet in an in-scope file ends with a tag. A normative bullet asserts a "do X" or "don't Y" - the rule itself. Prose paragraphs (motivation, examples, prerequisites) carry no tag.
+Every **rule** bullet in an in-scope file ends with a tag. A rule bullet says "do X" or "don't Y" - the rule itself. Prose paragraphs (motivation, examples, prerequisites) carry no tag.
 
 Format: backtick-wrapped, single space before, end of line.
+
+Rule text itself follows the plain-language policy in `rules/communication.md` - a rule the reader has to parse twice does not get followed. `(hook)`
 
 ```markdown
 - No `var` in JS/TS - use `const` or `let` `(hook)`
@@ -36,8 +38,8 @@ Format: backtick-wrapped, single space before, end of line.
 
 - Every `(review-time)` tag MUST include a colon-prefixed justification: `(review-time: <one-line why>)`.
 - The justification answers: *why can't a hook, linter, or CI check catch this?*
-- If many bullets in a single section share the same justification, write the justification once as a `**why-not-mechanizable:**` paragraph immediately under the section heading, then use `(review-time: see section note)` on each bullet.
-- If you can't write a one-line justification, the rule is probably either mechanizable (write the hook instead) or not worth keeping.
+- If many bullets in a single section share the same justification, write the justification once as a `**why-no-hook:**` paragraph immediately under the section heading, then use `(review-time: see section note)` on each bullet.
+- If you can't write a one-line justification, the rule can probably be checked by a hook (write it instead) or is not worth keeping.
 
 ## Multi-layer conventions
 
@@ -48,8 +50,8 @@ Format: backtick-wrapped, single space before, end of line.
 
 - `rules/*.md`
 - `CLAUDE.md`
-- `agents/*.md` (only the normative-guardrail sections; persona prose stays untagged)
-- `skills/**/SKILL.md` (only the normative bullets; procedure / steps / examples stay untagged)
+- `agents/*.md` (only the Guardrails sections; persona prose stays untagged)
+- `skills/**/SKILL.md` (only the rule bullets; procedure / steps / examples stay untagged)
 
 Out of scope: `MEMORY.md`, `keybindings.json`, `settings.json`, `docs/`, `README.md`, generic `scripts/` files.
 
@@ -64,6 +66,6 @@ Claude 5 family models (Fable/Opus 5+) changed which instructions help and which
 ## Lifecycle - moving a rule between layers
 
 - Adding a new rule: pick the layer at authoring time, mark it. If `(review-time)`, write the justification.
-- Mechanising an existing rule (moving up the table): change the tag and add the hook / lint config / CI check in the same PR. PR description notes the layer change in one line.
+- Moving a rule up the table (adding a hook / lint config / CI check for it): change the tag and add the check in the same PR. PR description notes the layer change in one line.
 - Demoting a rule (moving down): rare but valid (e.g., a hook becomes unmaintainable). PR description notes the demotion.
 - Removing a rule: just delete it. No tombstone.

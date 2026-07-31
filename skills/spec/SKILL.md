@@ -42,7 +42,7 @@ Follow this workflow:
 - <Explicitly excluded from this work>
 
 ## Open Questions
-**why-not-mechanizable:** skill workflow guidance; each step requires understanding the surrounding context (repo, task shape, prior state).
+**why-no-hook:** skill workflow guidance; each step requires understanding the surrounding context (repo, task shape, prior state).
 
 - <Anything unresolved that needs a decision>
 ```

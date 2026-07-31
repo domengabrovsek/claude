@@ -15,7 +15,7 @@ Parallel teammates in isolated git worktrees, each owning disjoint files, runnin
 _Avoid_: "fan-out mode", "worktree mode".
 
 **Panel mode**:
-Named read-only teammates that coordinate peer-to-peer via SendMessage to challenge each other, then converge into one synthesis for the parent.
+Named read-only teammates that coordinate peer-to-peer via SendMessage to challenge each other, then settle on one combined answer for the parent.
 _Avoid_: "round-table", "team mode".
 
 **Advisory persona**:
@@ -65,7 +65,7 @@ _Avoid_: "spike task", "POC".
 - **Lane mode** is for mutating work (build/implementation); **Panel mode** is for read-only work (research, grilling, design).
 - An **Advisory persona** can join **Panel mode** only; a **Lane mode** teammate must be a **Writer persona**.
 - The distinguishing axis is coordination topology: **Lane mode** is a star (teammates report only to the parent), **Panel mode** is a mesh (teammates also message each other). Worktree isolation follows from this: lanes mutate files so they need worktrees, panels are read-only so they do not.
-- Background execution (`run_in_background`) is orthogonal to mode - either mode can run in the background.
+- Background execution (`run_in_background`) is independent of mode - either mode can run in the background.
 
 ## Example dialogue
 
@@ -75,5 +75,5 @@ _Avoid_: "spike task", "POC".
 ## Flagged ambiguities
 
 - "subagent" was used for both the generic spawn mechanism and a named agent - resolved: a named agent is a **Teammate**; "subagent" refers only to the generic Agent-tool spawn.
-- "in the background" was conflated with "spawned as a team" - resolved: background execution is orthogonal to coordination mode.
+- "in the background" was conflated with "spawned as a team" - resolved: background execution is independent of coordination mode.
 - "skill" was used for both sequencing workflows and single practices - resolved: a sequencing skill is an **Orchestrator**, a single-practice skill is a **Reusable discipline**.

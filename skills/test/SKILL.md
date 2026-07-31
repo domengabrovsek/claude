@@ -9,7 +9,7 @@ Write tests for: $ARGUMENTS
 
 ### For New Features: RED-GREEN-REFACTOR
 
-**why-not-mechanizable:** skill workflow guidance; each step requires understanding the surrounding context (repo, task shape, prior state).
+**why-no-hook:** skill workflow guidance; each step requires understanding the surrounding context (repo, task shape, prior state).
 
 1. **RED**: write a failing test that describes the expected behavior `(review-time: see section note)`
    - Test name reads like a specification: "returns empty array when no users match" `(review-time: see section note)`

@@ -15,7 +15,7 @@ The distinguishing axis is coordination topology (star vs mesh) plus isolation (
 
 ## When to Parallelize
 
-**why-not-mechanizable:** every condition below requires understanding the task shape ("independent", "meaningful effort", "would take significantly longer"). The harness can't see what the task is until I describe it.
+**why-no-hook:** every condition below requires understanding the task shape ("independent", "meaningful effort", "would take significantly longer"). The harness can't see what the task is until I describe it.
 
 Spawn parallel agents when ALL of these are true:
 
@@ -102,7 +102,7 @@ Panel mode is for read-only parallel work where teammates need to challenge each
 
 - **Independent pass**: each teammate explores its area or forms its position alone `(review-time: protocol step)`
 - **Cross-challenge round**: each teammate sees the others' outputs and sends targeted SendMessage challenges or contradictions - bounded to one pass for research, iterate-to-convergence for grilling and design `(review-time: protocol step, intensity is a judgment call)`
-- **Parent converges**: the main session synthesizes the result (research: the artifact; grill: the next question to the user) - there is no lead teammate, because the parent holds the user relationship and the artifact `(review-time: protocol step)`
+- **Parent decides**: the main session pulls the results together (research: the artifact; grill: the next question to the user) - there is no lead teammate, because the parent holds the user relationship and the artifact `(review-time: protocol step)`
 
 Read-only enforcement differs by surface, deliberately:
 

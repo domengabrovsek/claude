@@ -7,7 +7,7 @@ Review the pull request: $ARGUMENTS
 
 Follow this process:
 
-**why-not-mechanizable:** review workflow guidance; each step requires reading the PR and judging code quality / intent.
+**why-no-hook:** review workflow guidance; each step requires reading the PR and judging code quality / intent.
 
 1. **Fetch PR details**: run `gh pr view $ARGUMENTS --json title,body,files,commits,additions,deletions,baseRefName,headRefName` `(review-time: see section note)`
 2. **Read the diff**: run `gh pr diff $ARGUMENTS` to see all changes `(review-time: see section note)`

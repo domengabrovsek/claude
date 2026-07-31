@@ -20,7 +20,7 @@ Every ticket has a **name** - its heading. In everything the human reads - narra
 
 ## The Map
 
-The map is a single markdown file at `.claude/state/wayfinder/<effort-slug>.md` - the canonical artifact. Its tickets live inside it under `## Tickets`.
+The map is a single markdown file at `.claude/state/wayfinder/<effort-slug>.md` - the single source of truth. Its tickets live inside it under `## Tickets`.
 
 The map is an **index**, not a store. Its Decisions-so-far lists the decisions made; a decision lives in exactly one place - its ticket's `Answer` - so the map never restates it, only gists it. `(review-time: single-source-of-truth discipline)`
 

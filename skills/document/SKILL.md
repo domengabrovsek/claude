@@ -9,7 +9,7 @@ This skill writes docs that are dual-audience: engineers reading on GitHub AND C
 
 ## Subcommands
 
-**why-not-mechanizable:** skill workflow guidance; each step requires understanding the surrounding context (repo, task shape, prior state).
+**why-no-hook:** skill workflow guidance; each step requires understanding the surrounding context (repo, task shape, prior state).
 
 Parse the first word of `$ARGUMENTS` as the subcommand:
 

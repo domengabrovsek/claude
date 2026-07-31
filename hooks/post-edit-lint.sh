@@ -1,5 +1,6 @@
 #!/bin/bash
-# Post-edit lint hook backing rules/comments.md. Bypass: SKIP_POST_EDIT_LINT=1.
+# Post-edit lint hook backing rules/comments.md and the plain-language
+# policy in rules/communication.md. Bypass: SKIP_POST_EDIT_LINT=1.
 
 INPUT=$(cat)
 FILE=$(echo "$INPUT" | jq -r '.tool_input.file_path // empty')
@@ -22,6 +23,26 @@ esac
 if LC_ALL=C grep -q $'\xe2\x80\x94' "$FILE" 2>/dev/null; then
   sed -i '' $'s/\xe2\x80\x94/-/g' "$FILE"
 fi
+
+# --- 1b. Fancy words in markdown (rules/communication.md: plain language) ---
+case "$FILE" in
+  */rules/communication.md) ;; # defines the word list; its examples would trip the check
+  *.md|*.markdown)
+    MD_DIR=$(dirname "$FILE")
+    if git -C "$MD_DIR" rev-parse --git-dir >/dev/null 2>&1 && git -C "$MD_DIR" ls-files --error-unmatch "$FILE" >/dev/null 2>&1; then
+      MD_ADDED=$(git -C "$MD_DIR" diff --unified=0 HEAD -- "$FILE" 2>/dev/null | grep -E '^\+[^+]' | sed 's/^\+//')
+    else
+      MD_ADDED=$(cat "$FILE")
+    fi
+    FANCY=$(echo "$MD_ADDED" | grep -inE '\b(utili[sz]e[sd]?|homogeni[sz]e[sd]?|crystalli[sz]e[sd]?|synthesi[sz]e[sd]?|orthogonal|holistic|paradigm|synerg[a-z]*|salient)\b' 2>/dev/null || true)
+    if [ -n "$FANCY" ]; then
+      echo "[post-edit-lint] $FILE" >&2
+      echo "Fancy word in newly added markdown. rules/communication.md (Plain language): say it with the plain word instead (use, combine, unrelated, consistent, important...):" >&2
+      echo "$FANCY" >&2
+      exit 2
+    fi
+    ;;
+esac
 
 # --- Skip docs/text: prose comment markers cause false positives ---
 case "$FILE" in

@@ -7,7 +7,7 @@ description: "Create a merge request or pull request from the current branch: ve
 
 ## Workflow
 
-**why-not-mechanizable:** skill workflow guidance; each step requires understanding the surrounding context (repo, task shape, prior state).
+**why-no-hook:** skill workflow guidance; each step requires understanding the surrounding context (repo, task shape, prior state).
 
 1. **Run `/verify-done` first**: hard-fail on any failure. Do not proceed to push, title generation, or PR ceremony if lint, typecheck, test, or build is broken. This pre-empts the most common CI failures (lint, format, typecheck) before they cost a CI run. `(review-time: see section note)`
 2. **Detect VCS platform**: check for `.gitlab-ci.yml` (-> glab) or `.github/` (-> gh) `(review-time: see section note)`

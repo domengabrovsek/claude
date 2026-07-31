@@ -5,7 +5,7 @@ description: "Starts Phase 1 (Research) for a topic: reads every relevant file, 
 
 Start Phase 1 (Research) for the following topic: $ARGUMENTS
 
-For non-trivial topics, run **panel mode** (see `rules/parallel-agents.md`): spawn one `Explore` teammate per subsystem, run one bounded cross-check round via SendMessage so teammates flag contradictions across their areas, then synthesize their findings into the artifact yourself. For narrow topics, explore solo. Read all relevant files, check git history for context, and investigate related patterns.
+For bigger topics, run **panel mode** (see `rules/parallel-agents.md`): spawn one `Explore` teammate per subsystem, run one bounded cross-check round via SendMessage so teammates flag contradictions across their areas, then pull their findings together into the artifact yourself. For narrow topics, explore solo. Read all relevant files, check git history for context, and investigate related patterns.
 
 Save the research artifact to `.claude/state/research/YYYY-MM-DD-research-<topic>.md` (use today's date) containing:
 

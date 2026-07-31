@@ -99,6 +99,7 @@ This policy applies to all code, including code written by subagents spawned via
 - Consecutive `--` SQL comment lines (SQL files) - use `/* */` for multi-line
 - New `var` declarations (JS / TS files) - `rules/typescript.md` requires `const` / `let`
 - New `TODO` / `FIXME` / `XXX` / `HACK` markers in any code file
+- Fancy words in newly added markdown (see `rules/communication.md`, Plain language)
 
 Exit 2 surfaces the offending lines back to Claude as a follow-up message; the model must remove the violations before proceeding. Bypass for genuine exceptions: `SKIP_POST_EDIT_LINT=1` in the env. Use sparingly and document why in the PR description.
 

@@ -9,7 +9,7 @@ Hard rule: do NOT write any fix until Phase 3 is reached and the user (or the ev
 
 ## Phase 1 - Evidence
 
-**why-not-mechanizable:** skill workflow guidance; each step requires understanding the surrounding context (repo, task shape, prior state).
+**why-no-hook:** skill workflow guidance; each step requires understanding the surrounding context (repo, task shape, prior state).
 
 Gather, do not theorize. Save findings to `.claude/state/research/YYYY-MM-DD-debug-<short-slug>.md`.
 

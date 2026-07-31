@@ -7,7 +7,7 @@ Fix the GitHub issue: $ARGUMENTS
 
 Follow this workflow:
 
-**why-not-mechanizable:** skill workflow guidance; each step requires understanding the issue, the codebase, and the prior state of the work.
+**why-no-hook:** skill workflow guidance; each step requires understanding the issue, the codebase, and the prior state of the work.
 
 1. **Fetch**: run `gh issue view $ARGUMENTS --json title,body,labels,assignees,comments` to get full issue details `(review-time: see section note)`
 2. **Load agents**: based on the issue domain, load the relevant expert agents from `~/.claude/agents/` (see `rules/agent-routing.md`). Their guardrails apply throughout the fix. `(review-time: see section note)`

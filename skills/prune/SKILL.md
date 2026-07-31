@@ -46,7 +46,7 @@ If there is nothing to cut, say `Lean already. Ship.` and stop.
 
 ## Boundaries
 
-**why-not-mechanizable:** scope and YAGNI exceptions are subjective complexity judgments; no hook can detect that a finding belongs in a "correctness" pass versus a "complexity" pass.
+**why-no-hook:** scope and YAGNI exceptions are subjective complexity judgments; no hook can detect that a finding belongs in a "correctness" pass versus a "complexity" pass.
 
 - Complexity only - correctness bugs, security holes, and performance go to a normal review pass, not this one `(review-time: see section note)`
 - A single smoke test or `assert`-based self-check is the minimum, not bloat - never flag it for deletion `(review-time: see section note)`

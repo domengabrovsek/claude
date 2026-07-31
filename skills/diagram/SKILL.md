@@ -7,7 +7,7 @@ Create or update the diagram for: $ARGUMENTS
 
 ## Step 1 - Pick the format
 
-**why-not-mechanizable:** skill workflow guidance; each step requires understanding the surrounding context (repo, task shape, prior state).
+**why-no-hook:** skill workflow guidance; each step requires understanding the surrounding context (repo, task shape, prior state).
 
 Read `rules/diagrams.md` if uncertain. Default to **mermaid** unless one of these triggers fires - then use **drawio**:
 

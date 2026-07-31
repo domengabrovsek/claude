@@ -11,7 +11,7 @@ Surface architectural friction and propose **deepening opportunities** - refacto
 
 ## Glossary
 
-**why-not-mechanizable:** skill workflow guidance; each step requires understanding the surrounding context (repo, task shape, prior state).
+**why-no-hook:** skill workflow guidance; each step requires understanding the surrounding context (repo, task shape, prior state).
 
 Use these terms exactly in every suggestion. Consistent language is the point - don't drift into "component," "service," "API," or "boundary." Full definitions in [LANGUAGE.md](LANGUAGE.md).
 
@@ -67,7 +67,7 @@ Do NOT propose interfaces yet. Ask the user: "Which of these would you like to e
 
 Once the user picks a candidate, drop into a grilling conversation. Walk the design tree with them - constraints, dependencies, the shape of the deepened module, what sits behind the seam, what tests survive.
 
-Side effects happen inline as decisions crystallize:
+Side effects happen inline as decisions are made:
 
 - **Naming a deepened module after a concept not in `CONTEXT.md`?** Add the term to `CONTEXT.md` - same discipline as `/grill-with-docs` (see [CONTEXT-FORMAT.md](../grill-with-docs/CONTEXT-FORMAT.md)). Create the file lazily if it doesn't exist. `(review-time: see section note)`
 - **Sharpening a fuzzy term during the conversation?** Update `CONTEXT.md` right there. `(review-time: see section note)`

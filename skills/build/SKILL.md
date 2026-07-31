@@ -9,7 +9,7 @@ Follow these disciplines:
 
 ## Before Starting
 
-**why-not-mechanizable:** skill workflow guidance; each step requires understanding the surrounding context (repo, task shape, prior state).
+**why-no-hook:** skill workflow guidance; each step requires understanding the surrounding context (repo, task shape, prior state).
 
 - Verify an approved plan exists (in `.claude/state/plans/` or the current conversation) `(review-time: see section note)`
 - If no plan exists, stop and ask the user to run /plan first `(review-time: see section note)`

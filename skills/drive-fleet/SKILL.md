@@ -9,7 +9,7 @@ A two-phase workflow for driving a fleet of MRs/PRs to done in parallel with a m
 
 ## When to use
 
-**why-not-mechanizable:** skill workflow guidance; each step requires understanding the surrounding context (repo, task shape, prior state).
+**why-no-hook:** skill workflow guidance; each step requires understanding the surrounding context (repo, task shape, prior state).
 
 - 2+ independent lanes / multiple MRs, often across sibling repos `(review-time: see section note)`
 - You want a hands-off MANAGER that delegates every edit and only stops when the whole fleet is done `(review-time: see section note)`

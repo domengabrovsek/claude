@@ -1,6 +1,6 @@
 ---
 name: grill-with-docs
-description: "Runs a grilling session that challenges a plan against the existing domain model, sharpens terminology, and updates documentation (CONTEXT.md, ADRs) inline as decisions crystallise. Use when the user wants to stress-test a plan against their project's language and documented decisions."
+description: "Runs a grilling session that challenges a plan against the existing domain model, sharpens terminology, and updates documentation (CONTEXT.md, ADRs) inline as decisions are made. Use when the user wants to stress-test a plan against their project's language and documented decisions."
 ---
 
 > Source: [mattpocock/skills - engineering/grill-with-docs](https://github.com/mattpocock/skills/tree/main/skills/engineering/grill-with-docs)
@@ -63,7 +63,7 @@ When the user uses a term that conflicts with the existing language in `CONTEXT.
 
 ### Sharpen fuzzy language
 
-When the user uses vague or overloaded terms, propose a precise canonical term. "You're saying 'account' - do you mean the Customer or the User? Those are different things."
+When the user uses vague or overloaded terms, propose one precise term to use everywhere. "You're saying 'account' - do you mean the Customer or the User? Those are different things."
 
 ### Discuss concrete scenarios
 
@@ -81,7 +81,7 @@ Don't couple `CONTEXT.md` to implementation details. Only include terms that are
 
 ### Offer ADRs sparingly
 
-**why-not-mechanizable:** skill workflow guidance; each step requires understanding the surrounding context (repo, task shape, prior state).
+**why-no-hook:** skill workflow guidance; each step requires understanding the surrounding context (repo, task shape, prior state).
 
 Only offer to create an ADR when all three are true:
 
@@ -97,7 +97,7 @@ For a plan with genuine cross-domain tension or competing approaches, convene a 
 
 - Spawn domain-expert teammates via the Agent tool (route per `rules/agent-routing.md`), each with a read-only brief and a distinct stance to argue `(review-time: panel-vs-solo judgment)`
 - Have them debate the plan among themselves via SendMessage - the cross-talk between teammates surfaces contradictions and trade-offs you would miss solo `(review-time: protocol guidance)`
-- Distill their disagreement into the next question and put it to the user - keep the user-facing cadence to one question at a time per `rules/communication.md`; the panel never messages the user directly `(review-time: cadence discipline)`
+- Turn their disagreement into the next question and put it to the user - keep the user-facing cadence to one question at a time per `rules/communication.md`; the panel never messages the user directly `(review-time: cadence discipline)`
 - Skip the panel for single-domain plans - solo grilling is cheaper and a panel adds nothing when there is nothing to contend `(review-time: panel-vs-solo judgment)`
 
 </supporting-info>

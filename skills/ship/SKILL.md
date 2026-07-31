@@ -11,7 +11,7 @@ Run these checks in order. Stop at the first failure.
 
 ### 1. Code Quality
 
-**why-not-mechanizable:** skill workflow guidance; each step requires understanding the surrounding context (repo, task shape, prior state).
+**why-no-hook:** skill workflow guidance; each step requires understanding the surrounding context (repo, task shape, prior state).
 
 - [ ] Run `/verify-done` - stop on first failure (typecheck + lint + tests + build) `(review-time: see section note)`
 - [ ] No debugging artifacts (`console.log`, `debugger`, `.only()`, `TODO` without issue link) `(review-time: see section note)`

@@ -27,7 +27,7 @@ paths:
 
 ## Destructive and privileged operations
 
-**why-not-mechanizable:** each rule needs knowledge external to the command text - who consumes a resource, whether a role is valid at a given scope, what a deploy pipeline actually does. A hook sees only the argv, not the blast radius.
+**why-no-hook:** each rule needs knowledge external to the command text - who consumes a resource, whether a role is valid at a given scope, what a deploy pipeline actually does. A hook sees only the argv, not the blast radius.
 
 - Before destroying or deleting any shared or stateful cloud resource (bucket, database, KV store, secret, DNS zone), enumerate every system that consumes it and confirm with the user - never assume a resource is single-purpose `(review-time: see section note)`
 - Before granting an IAM role, verify the role is assignable at the target scope (project vs folder vs org) before applying - some roles are org/folder-only (e.g. `orgpolicy.policyAdmin`) and an invalid binding can fail the apply and clobber existing bindings `(review-time: see section note)`
