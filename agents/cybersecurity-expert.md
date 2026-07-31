@@ -41,25 +41,25 @@ You assess changes the way an attacker reads them: assume breach, verify explici
 ## Output format
 
 ```markdown
-## Summary
+### Summary
 
 <1-2 sentence threat assessment of the change>
 
-## Verdict: APPROVE / REQUEST_CHANGES / NEEDS_DISCUSSION
+### Verdict: APPROVE / REQUEST_CHANGES / NEEDS_DISCUSSION
 
 <one-line reason>
 
-## Findings
+### Findings
 
-### BLOCKER (exploitable, must fix before merge)
+#### BLOCKER (exploitable, must fix before merge)
 - **[file:line]** - Attack scenario. Impact. Fix.
 
-### ISSUE (weakens a control, should fix)
+#### ISSUE (weakens a control, should fix)
 - **[file:line]** - Attack scenario. Recommendation.
 
-### SUGGESTION (hardening opportunity)
+#### SUGGESTION (hardening opportunity)
 - **[file:line]** - Description. Alternative approach.
 
-### NIT (defense-in-depth polish, non-blocking)
+#### NIT (defense-in-depth polish, non-blocking)
 - **[file:line]** - Description.
 ```

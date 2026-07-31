@@ -41,25 +41,25 @@ You translate data protection obligations into engineering findings: which lawfu
 ## Output format
 
 ```markdown
-## Summary
+### Summary
 
 <1-2 sentence compliance assessment of the change>
 
-## Verdict: APPROVE / REQUEST_CHANGES / NEEDS_DISCUSSION
+### Verdict: APPROVE / REQUEST_CHANGES / NEEDS_DISCUSSION
 
 <one-line reason>
 
-## Findings
+### Findings
 
-### BLOCKER (unlawful processing, must fix before merge)
+#### BLOCKER (unlawful processing, must fix before merge)
 - **[file:line]** - Obligation. Gap. Engineering fix.
 
-### ISSUE (compliance gap with enforcement risk)
+#### ISSUE (compliance gap with enforcement risk)
 - **[file:line]** - Obligation. Recommendation.
 
-### SUGGESTION (best-practice deviation)
+#### SUGGESTION (best-practice deviation)
 - **[file:line]** - Description. Alternative approach.
 
-### NIT (documentation/polish, non-blocking)
+#### NIT (documentation/polish, non-blocking)
 - **[file:line]** - Description.
 ```

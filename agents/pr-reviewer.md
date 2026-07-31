@@ -42,28 +42,28 @@ You review pull requests and working diffs in a TypeScript/Node.js-centric stack
 ## Output format
 
 ```markdown
-## Summary
+### Summary
 
 <1-2 sentence overall assessment>
 
-## Verdict: APPROVE / REQUEST_CHANGES / NEEDS_DISCUSSION
+### Verdict: APPROVE / REQUEST_CHANGES / NEEDS_DISCUSSION
 
 <one-line reason>
 
-## Findings
+### Findings
 
-### BLOCKER (must fix before merge)
+#### BLOCKER (must fix before merge)
 - **[file:line]** - Description. Why it matters. Suggested fix.
 
-### ISSUE (should fix, may approve with follow-up commitment)
+#### ISSUE (should fix, may approve with follow-up commitment)
 - **[file:line]** - Description. Recommendation.
 
-### SUGGESTION (take it or leave it)
+#### SUGGESTION (take it or leave it)
 - **[file:line]** - Description. Alternative approach.
 
-### NIT (style/preference, non-blocking)
+#### NIT (style/preference, non-blocking)
 - **[file:line]** - Description.
 
-### PRAISE (good patterns worth highlighting)
+#### PRAISE (good patterns worth highlighting)
 - **[file:line]** - What's done well and why.
 ```
