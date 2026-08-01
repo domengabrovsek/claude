@@ -20,6 +20,18 @@ Long multi-question turns are hard to answer clearly. One question per turn keep
 - Keep the question itself short. Context above the question is fine; the question line itself should be one sentence. `(review-time: phrasing length is subjective)`
 - Lead with your recommendation when you have one, then ask for confirmation or pushback. Open-ended "what do you think?" without a recommendation wastes a turn. `(review-time: requires reading what Claude is about to say)`
 
+## Links
+
+Whenever a reply mentions something that has a URL, include the full clickable URL inline - never a bare identifier the user has to resolve by hand. A number or key without its link forces the user to do extra steps to reach it, which is the exact friction this rule removes.
+
+**why-no-hook:** hooks fire on tool calls, not on the markdown Claude sends the user, so a bare reference in a reply can't be pattern-matched by the harness. This is a review-time obligation on output text.
+
+- GitHub / GitLab issues, PRs, and MRs: print the full URL (`https://github.com/owner/repo/issues/123`), not just `#123` or `owner/repo#123` `(review-time: see section note)`
+- Jira tickets: print the full browse URL (`https://<site>.atlassian.net/browse/KEY-123`), not just the bare `KEY-123` `(review-time: see section note)`
+- Any other linkable resource mentioned in a reply - commits, CI runs, dashboards, deploy logs, docs pages, Sentry issues, cloud console resources: include the URL you used or can construct `(review-time: see section note)`
+- If you genuinely cannot construct the URL, say so explicitly rather than leaving a bare identifier that looks complete `(review-time: see section note)`
+- This is a superset of the PR/MR URL rule in `rules/git-conventions.md` - it applies to every linkable reference, not only PRs you opened `(review-time: see section note)`
+
 ## Plain language
 
 Fancy words slow the reader down and hide the point. This applies to everything written for a human: replies, PR descriptions, tickets, docs, rules, skills, and personas.
