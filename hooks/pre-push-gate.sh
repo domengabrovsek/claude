@@ -1,8 +1,8 @@
 #!/bin/bash
 # Pre-push gate: block `git push` if lint/typecheck/knip/test/build/audit fail.
-# Runs as a PreToolUse hook on Bash(git push *).
+# Runs as a PreToolUse hook on Bash(git push *) and Bash(git -C *).
 # Exit code 2 blocks the action and sends the error message to Claude.
-# Bypass with SKIP_PUSH_GATE=1 in the environment.
+# Bypass with SKIP_PUSH_GATE=1, in the environment or inline in the command.
 
 INPUT=$(cat)
 COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // empty')
@@ -10,18 +10,59 @@ COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // empty')
 # Only gate on `git push` (and not `git push --help`, etc.)
 case "$COMMAND" in
   *"git push --help"*|*"git push -h"*) exit 0 ;;
-  *"git push"*) ;;
+  *"git push"*|*"git -C "*) ;;
   *) exit 0 ;;
 esac
 
-# Honor escape hatch
+# Honor escape hatch. PreToolUse hooks inherit the Claude Code process env,
+# not the tool command's, so an inline SKIP_PUSH_GATE=1 prefix is only
+# visible in the command string.
+case "$COMMAND" in
+  *"SKIP_PUSH_GATE=1"*)
+    echo "SKIP_PUSH_GATE=1 - bypassing pre-push gate." >&2
+    exit 0 ;;
+esac
 if [ "$SKIP_PUSH_GATE" = "1" ]; then
   echo "SKIP_PUSH_GATE=1 - bypassing pre-push gate." >&2
   exit 0
 fi
 
+# `git -C <path> push` never contains the literal "git push", so the repo
+# must come from the -C argument. Best-effort parse: unquoted path with the
+# push subcommand directly after it. A garbled extraction fails open below,
+# because the project-root walk on a bogus path finds nothing.
+C_PATH=$(printf '%s\n' "$COMMAND" | sed -n 's/.*git -C  *\([^ ]*\)  *push.*/\1/p' | head -1)
+
+case "$COMMAND" in
+  *"git push"*) ;;
+  *) [ -z "$C_PATH" ] && exit 0 ;;
+esac
+
+# A leading `cd <path> && git push` moves the push's repo away from the
+# recorded tool cwd, which reflects the shell's directory before the cd runs.
+CD_PATH=""
+case "$COMMAND" in
+  "cd "*)
+    CD_PATH=${COMMAND#cd }
+    CD_PATH=${CD_PATH%%"&&"*}
+    CD_PATH=${CD_PATH%%";"*}
+    CD_PATH=$(printf '%s\n' "$CD_PATH" | sed "s/^[[:space:]]*//;s/[[:space:]]*\$//;s/^[\"']//;s/[\"']\$//")
+    ;;
+esac
+
+# Resolve where the push actually runs: `git -C` target, then a leading cd
+# prefix, then the tool call's cwd (worktree pushes run from the worktree
+# while CLAUDE_PROJECT_DIR stays on the main checkout), then CLAUDE_PROJECT_DIR.
+CWD=$(echo "$INPUT" | jq -r '.cwd // empty')
+DIR="${C_PATH:-${CD_PATH:-${CWD:-${CLAUDE_PROJECT_DIR:-$PWD}}}}"
+
+# Relative -C / cd paths are relative to the tool call's cwd, not the hook's.
+case "$DIR" in
+  /*) ;;
+  *) DIR="${CWD:-$PWD}/$DIR" ;;
+esac
+
 # Find project root: walk up looking for package.json or *.tf
-DIR="${CLAUDE_PROJECT_DIR:-$PWD}"
 PROJECT_ROOT=""
 PROJECT_TYPE=""
 while [ "$DIR" != "/" ] && [ -n "$DIR" ]; do
@@ -57,6 +98,12 @@ run_step() {
 }
 
 if [ "$PROJECT_TYPE" = "node" ]; then
+  # A fresh worktree has no node_modules; the checks below would fail with
+  # noise unrelated to the branch. Fail with the actionable step instead.
+  if [ ! -d "$PROJECT_ROOT/node_modules" ]; then
+    echo "[pre-push-gate] $PROJECT_ROOT has no node_modules - run 'npm ci' there first (or bypass with SKIP_PUSH_GATE=1)." >&2
+    exit 2
+  fi
   has_script() {
     node -e "const p=require('./package.json'); process.exit(p.scripts?.['$1'] ? 0 : 1)" 2>/dev/null
   }
