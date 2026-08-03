@@ -10,11 +10,19 @@ paths:
   - "**/kubernetes/**"
   - "**/helm/**"
   - "**/manifests/**"
+  - "**/ansible/**"
+  - "**/ansible.cfg"
+  - "**/playbooks/**"
+  - "**/roles/**/tasks/**"
+  - "**/roles/**/handlers/**"
+  - "**/group_vars/**"
+  - "**/host_vars/**"
+  - "**/site.yml"
 ---
 
 # Infrastructure Conventions
 
-**When to apply:** editing Terraform, Dockerfiles, docker-compose, Kubernetes manifests, or CI/CD workflow files - and when running any infra command that applies, destroys, or grants access (`terraform apply/destroy`, `gcloud`, `gsutil`, `aws`, `kubectl delete`).
+**When to apply:** editing Terraform, Dockerfiles, docker-compose, Kubernetes manifests, Ansible playbooks or roles, or CI/CD workflow files - and when running any infra command that applies, destroys, or grants access (`terraform apply/destroy`, `ansible-playbook`, `gcloud`, `gsutil`, `aws`, `kubectl delete`).
 
 - Infrastructure as Code only - no manual changes to cloud resources `(review-time: process, not detectable in code)`
 - No `latest` tags for Docker images - always use specific version tags `(hook)`
