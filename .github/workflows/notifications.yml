@@ -32,7 +32,7 @@ permissions:
 
 jobs:
   notify:
-    uses: domengabrovsek/github-actions/.github/workflows/notify.yml@master
+    uses: domengabrovsek/github-actions/.github/workflows/notify.yml@main
     with:
       api_url: ${{ vars.TELEGRAM_API_URL }}
       chat_id: ${{ vars.TELEGRAM_CHAT_ID }}
