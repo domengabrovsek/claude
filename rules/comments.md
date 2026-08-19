@@ -32,6 +32,7 @@ This rule is mechanically enforced by `hooks/post-edit-lint.sh`.
 ## Forbidden
 
 - **WHAT-restating comments** - anything that paraphrases the next line of code (`// Increment counter` above `counter++`). `(review-time: requires semantic comparison of comment text and the next statement)`
+- **Historical narrative** - how the code came to be this way: what the previous tool or approach did, who applied something, what used to fail, what was tried first. A comment states why the code is the way it is *now*. History belongs in the commit message and PR description, where `git blame` leads a reader who actually wants it. `(review-time: requires judging whether a clause states a present constraint or recounts past events)`
 - **Ticket / PR / issue / ADR references in any comment**: `JIRA-123`, `#456`, `Fixes owner/repo#789`, `ADR-0042`, `Per ADR 0030`, etc. These belong in PR descriptions, ADR files, and `git blame`. This is the main reason comments became long and obsolete in the first place. `(hook)`
 - **Em dashes** anywhere - use a regular hyphen. `(hook)`
 - **TODOs, FIXMEs, XXX markers** without an open tracker entry - open the ticket, fix the code now, or accept it isn't getting fixed. `(hook)`
@@ -103,4 +104,4 @@ This policy applies to all code, including code written by subagents spawned via
 
 Exit 2 surfaces the offending lines back to Claude as a follow-up message; the model must remove the violations before proceeding. Bypass for genuine exceptions: `SKIP_POST_EDIT_LINT=1` in the env. Use sparingly and document why in the PR description.
 
-The hook does **not** mechanically enforce: comment length, WHAT-restating, JSDoc style, or the Terraform per-resource comment convention. Those are review-time judgments.
+The hook does **not** mechanically enforce: comment length, WHAT-restating, historical narrative, JSDoc style, or the Terraform per-resource comment convention. Those are review-time judgments.
