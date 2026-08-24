@@ -29,3 +29,12 @@ If the branch is not safe to remove, stop and explain what's still pending (unpu
 ## After cleanup
 
 If the user has more work, suggest `/worktree <new-slug>` for the next task rather than mutating the main checkout.
+
+## Merging parallel lanes
+
+When several lane-mode teammates finish, merge their branches into the integration branch one at a time:
+
+1. Review each teammate's diff for correctness.
+2. Merge one branch. Resolve any conflict by hand before merging the next - never spawn an agent for conflict resolution.
+3. After the last merge, run the full test suite, typecheck, and lint.
+4. Prune the worktrees: `~/.claude/scripts/worktree-prune.sh --apply`. It removes only worktrees whose branch is upstream-gone or merged into the default, which is the post-merge state. Anything still active survives.
