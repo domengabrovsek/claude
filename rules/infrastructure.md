@@ -40,3 +40,48 @@ paths:
 - Before destroying or deleting any shared or stateful cloud resource (bucket, database, KV store, secret, DNS zone), enumerate every system that consumes it and confirm with the user - never assume a resource is single-purpose `(review-time: see section note)`
 - Before granting an IAM role, verify the role is assignable at the target scope (project vs folder vs org) before applying - some roles are org/folder-only (e.g. `orgpolicy.policyAdmin`) and an invalid binding can fail the apply and clobber existing bindings `(review-time: see section note)`
 - Read the actual CI/CD workflow and deployment config files before explaining or modifying how a deploy works - never guess at deploy mechanics from naming or convention `(review-time: see section note)`
+
+## Terraform comments
+
+Terraform spreads state across many stacks and files. A reader looking at one block in isolation should be able to tell its role and lifecycle without grepping the whole repo, so Terraform gets a per-block comment convention that the rest of the codebase does not.
+
+- Every `resource` and `data` block gets a brief comment above it: what it is for, plus context not obvious from the type and label. Multi-line uses `/* */` `(review-time: requires judging whether context is already obvious)`
+- `variable`, `output`, and `module` blocks use their built-in `description` attribute. No comment on top of those `(review-time: block-type recognition)`
+- No tracker refs (`SER-123`, `#456`, `ADR-0042`) and no em dashes inside any `description = "..."`. These surface in terraform-docs output and module-consumer READMEs, where a tracker ref is more visible than in a buried comment. Multi-line and WHAT-style descriptions are fine `(hook)`
+
+Good:
+
+```hcl
+# Per-env random password for the platform admin's first login.
+# Consumed by the app-bootstrap Cloud Run Job; rotated by bumping keepers.rotation_id.
+resource "random_password" "platform_admin_initial" {
+  ...
+}
+```
+
+Bad, restates the resource type and adds nothing:
+
+```hcl
+# A random password resource.
+resource "random_password" "platform_admin_initial" {
+  ...
+}
+```
+
+Good description:
+
+```hcl
+variable "platform_admin_email" {
+  description = "Email address for the platform admin account. Used by the app-bootstrap job to seed the initial user."
+  type        = string
+}
+```
+
+Bad description, carries tracker refs:
+
+```hcl
+variable "platform_admin_email" {
+  description = "Per ADR 0031: email for the platform admin. See pentla-api PR #1397."
+  type        = string
+}
+```
