@@ -13,7 +13,7 @@ jobs:
     runs-on: "${{ vars.CI_RUNNER && fromJSON(vars.CI_RUNNER) || 'ubuntu-latest' }}"
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: domengabrovsek/github-actions/.github/actions/checkout@main
 
       - name: Lint Markdown
         uses: DavidAnson/markdownlint-cli2-action@v19
@@ -25,7 +25,7 @@ jobs:
     runs-on: "${{ vars.CI_RUNNER && fromJSON(vars.CI_RUNNER) || 'ubuntu-latest' }}"
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: domengabrovsek/github-actions/.github/actions/checkout@main
 
       - name: Check always-loaded rule budget
         run: ./scripts/config-budget.sh
