@@ -1,25 +1,22 @@
 # Expert Agent Routing
 
-**When to apply:** when a task touches a specialized domain (architecture, frontend, backend, security, infra, etc.). Skip for trivial changes (typos, one-liners, config tweaks).
+**When to apply:** a task touches a specialized domain. Skip for typos, one-liners, and config tweaks.
 
-Specialized agent personas live in `~/.claude/agents/`. Each captures domain expertise plus guardrails and red flags.
+Spawn a teammate via the Agent tool with the matching `subagent_type`. It loads the persona in its own context and returns a summary.
 
-## Loading model
+- Never read `agents/*.md` into the main conversation. That pollutes context and bleeds the persona's bias into unrelated work later in the session `(review-time: file-access decision, not a code pattern)`
+- Act on the teammate's summary, not on the persona file `(review-time: about how the reply gets used)`
+- Teammates may disagree. Surface the conflict to the user rather than silently picking a side `(review-time: requires reading several teammate outputs)`
+- A task crossing domains spawns its teammates in parallel, in one message `(review-time: requires recognizing the cross-domain shape)`
 
-When a task touches a specialized domain, **spawn a subagent** via the Agent tool with the matching `subagent_type`. The subagent loads the agent file in its own context, runs the work, and returns a summary to the parent. `(review-time: domain-classification of the task)`
-
-Do NOT read agent files into the main conversation. That pollutes context and bleeds biases across unrelated work later in the session. The agent file is for the subagent; you act on the subagent's summary. `(review-time: file-access decision, not a code pattern)`
-
-Skip subagent spawning for trivial changes (typos, one-liner fixes, config tweaks). `(review-time: judging triviality)`
-
-## Agents
+## Personas
 
 | `subagent_type` | Spawn when the task touches... |
 | --- | --- |
 | `Staff Engineer` | Architecture, DDD, module boundaries, system-level design |
-| `Backend Staff Engineer` | Node.js APIs, server logic, data pipelines, caching, rate limiting, error handling |
+| `Backend Staff Engineer` | Node.js APIs, server logic, data pipelines, caching, rate limiting |
 | `Frontend Staff Engineer` | React, components, CSS, browser, client-side performance |
-| `DevOps Engineer` | CI/CD, Docker, Kubernetes, Terraform, observability, GitOps, monitoring |
+| `DevOps Engineer` | CI/CD, Docker, Kubernetes, Terraform, observability, GitOps |
 | `QA Expert` | Test strategy, test architecture, flaky tests, E2E, coverage |
 | `PR Reviewer` | Pull request review, code review |
 | `Cybersecurity Expert` | Security review, OWASP, auth flows, vulnerability assessment |
@@ -33,19 +30,4 @@ Skip subagent spawning for trivial changes (typos, one-liner fixes, config tweak
 | `Product Manager` | Feature planning, user stories, success criteria, roadmap |
 | `UX Expert` | Usability, accessibility, WCAG, interaction design |
 
-## Cross-domain combinations
-
-- **UI work** -> `Frontend Staff Engineer` + `UX Expert` + `QA Expert` (accessibility) `(review-time: cross-domain routing decision)`
-- **Feature planning** -> `Product Manager` + the relevant technical agents `(review-time: cross-domain routing decision)`
-- **Performance work** -> `Backend Staff Engineer` + `Frontend Staff Engineer` `(review-time: cross-domain routing decision)`
-- **Rate limiting / throttling / DDoS** -> `Backend Staff Engineer` + `Networking Expert` `(review-time: cross-domain routing decision)`
-- **Data handling for EU subjects** -> include `GDPR Expert` `(review-time: cross-domain routing decision)`
-- **PR with security implications** -> `PR Reviewer` + `Cybersecurity Expert` `(review-time: cross-domain routing decision)`
-
-When a task crosses domains, spawn multiple subagents in **parallel** - send a single message with multiple Agent tool calls so they run concurrently. `(review-time: requires recognizing cross-domain shape)`
-
-## Rules
-
-- Subagent guardrails apply within their context. Act on the subagent's summary, not the agent file `(review-time: about Claude's use of the agent's reply)`
-- Multiple subagents may produce conflicting recommendations - surface conflicts to the user, do not silently pick a side `(review-time: requires reading multiple subagent outputs)`
-- Brief subagents with self-contained prompts (goal, file paths, constraints, verification command) `(review-time: prompt-quality judgment)`
+Pair them where the work crosses a seam: UI work takes Frontend plus UX, EU data handling adds GDPR, a security-sensitive PR takes PR Reviewer plus Cybersecurity.
