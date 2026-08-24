@@ -1,3 +1,11 @@
+---
+paths:
+  - "**/rules/*.md"
+  - "**/CLAUDE.md"
+  - "**/agents/*.md"
+  - "**/skills/**/SKILL.md"
+---
+
 # Rule Authoring Policy
 
 **When to apply:** writing or editing any rule bullet in `rules/*.md`, `CLAUDE.md`, `agents/*.md`, or `skills/**/SKILL.md`.
