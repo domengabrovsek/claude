@@ -2,100 +2,121 @@
 
 These rules apply to every project. Project-level CLAUDE.md files override where they conflict.
 
+## Read this first
+
+The four rules broken most often. They outrank everything below.
+
+**why-no-hook:** voice, sentence shape, prose volume, and "is this the existing pattern" are judgments about free-form output and about intent. A hook sees tool input, not phrasing or reasoning. The banned-phrase list is the one mechanical slice, and it is hooked.
+
+### 1. Write plain
+
+Covers replies, PR descriptions, tickets, docs, rules, skills, commit messages.
+
+- Active voice, present tense. Name the actor `(review-time: see section note)`
+- One idea per sentence. Cut any sentence whose only job is introducing the next one `(review-time: see section note)`
+- Asked for a table or a list? Output only that. No prose wrapper, no summary after it `(review-time: see section note)`
+- Say the thing, then stop. No closing paragraph repeating what you just said `(review-time: see section note)`
+- Never write: "to make sure X, let's Y", "it's worth noting", "I should mention", "we'll want to", "it's important to", "in order to", "leverage", "utilize", "delve", "robust", "seamless", "comprehensive" `(hook)`
+- Length caps: PR body 150 words, review or Slack reply 120, session diary 300, ADR 400. In chat, write the shortest version that answers and expand when asked `(review-time: see section note)`
+
+### 2. Verify before asserting
+
+- Cite the file:line, command output, or query you checked. Never answer from a research doc, a session note, or memory. If you cannot verify, say so instead of asserting `(review-time: see section note)`
+
+### 3. Follow the pattern already here
+
+- Search for the existing pattern and name it with a path before adding any new abstraction (permission set, config file, CLI command, plugin) `(review-time: see section note)`
+
+### 4. Build only what was asked
+
+- No extra pages, sections, or nice-to-haves. Extra scope needs a question first `(review-time: see section note)`
+- Never edit production request-handling code to satisfy a linter or bot finding. Defer it to a follow-up PR and say so `(review-time: see section note)`
+
 ## Priority order
 
-When goals conflict: **quality > consistent > efficient > fast**. Shipped bugs cost more than slow shipping. Consistency is the entire point of a global config. Token efficiency compounds. Speed of output matters least when shipping serious work.
+When goals conflict: **quality > consistent > efficient > fast**.
 
 ## Workflow: Research - Grill - Implement - Summarize
 
-1. **Research** (optional): orientation pass when entering unfamiliar code. Read every relevant file, produce a research artifact at `.claude/state/research/`. Skip when the area is already familiar - the grill will explore inline.
-2. **Grill**: invoke `/grill-with-docs <topic>` for real-time alignment. The grill walks the decision tree question by question, emits CONTEXT.md updates (domain terms) and ADRs (architectural decisions) inline, and ends by writing a short execution plan to `.claude/state/plans/`. The user's confirmation at grill exit is the approval gate.
-3. **Implement**: explicit handoff after grill exits. Invoke `/build` to walk the execution plan task by task. Run typecheck continuously. Build + lint + test must pass before done.
-4. **Summarize**: save a session diary entry to `.claude/state/sessions/` when work is complete.
+1. **Research** (optional): orientation pass in unfamiliar code, artifact to `.claude/state/research/`. Skip when the area is familiar.
+2. **Grill**: `/grill-with-docs <topic>`. Walks the decision tree one question at a time, emits CONTEXT.md terms and ADRs inline, ends by writing a plan to `.claude/state/plans/`. Your confirmation at exit is the approval gate.
+3. **Implement**: `/build` walks the plan task by task. Build, lint, and tests must pass before done.
+4. **Summarize**: session diary to `.claude/state/sessions/`.
 
-The grill is self-pacing: heaviness scales with alignment complexity, not a separate threshold. When there is nothing to align on, the grill exits in two turns. So the trivial bypass narrows.
+The grill is self-pacing and exits in two turns when there is nothing to align on.
 
-Trivial bypass (skip everything, go straight to implement, skip Summarize): typos, single-line fixes, version bumps, config tweaks. Only when you are 100% sure. If in doubt, enter the grill - it is cheap when there is nothing to grill on.
+Trivial bypass (straight to implement, no summary): typos, single-line fixes, version bumps, config tweaks. Only when you are certain.
 
-Other intents are first-class workflows with their own shapes, not stripped-down versions of the implementation workflow: `/debug` for incidents, `/zoom-out` for codebase exploration, `/review-pr` for reviewing others' code, `/document` for docs, `/spec` for feature requirements.
+Other intents have their own shapes: `/debug`, `/zoom-out`, `/review-pr`, `/document`, `/spec`.
 
-## Security
+## Already enforced
 
-- NEVER read or process files containing secrets, credentials, API keys, or private keys `(review-time: backed by permissions.deny in settings.json which blocks the path patterns below)`
-- Sensitive file patterns: `.env*`, `*.pem`, `*.key`, `credentials.json`, `service-account*.json` `(review-time: descriptive list, blocked by permissions.deny)`
-- Home directory secrets (`~/.aws`, `~/.ssh`, `~/.config/gcloud`, `~/.kube`) are off-limits `(review-time: blocked by permissions.deny)`
-- If you need config values for debugging, ask the user to provide only the non-sensitive parts `(review-time: conversational pattern)`
+These are backed by hooks or deny rules. Know them so you do not waste a cycle hitting the gate.
 
-## Formatting
+- Never read `.env*`, `*.pem`, `*.key`, `credentials.json`, `service-account*.json`, `~/.aws`, `~/.ssh`, `~/.config/gcloud`, `~/.kube` `(hook)`
+- Never use em dashes. Use a hyphen `(hook)`
+- Complete code only. No TODOs, no placeholders `(hook)`
+- Conventional commit format `(hook)`
+- No AI attribution anywhere: no Co-Authored-By, no "Generated with" footer `(hook)`
+- Never commit or push to main/master. Branch first `(hook)`
+- Rebase onto the target branch before opening a PR `(hook)`
+- Run `/verify-done` before any push `(hook)`
 
-- Never use em dashes (-) anywhere - in code, text, translations, or documentation. Use a regular hyphen/dash (-) instead. `(hook)`
+For debugging config, ask the user for the non-sensitive parts rather than reading a blocked file `(review-time: conversational pattern, no tool call to intercept)`
 
 ## Code Standards
 
-- Use the project's formatter/linter (Biome, ESLint, Prettier - whatever is configured) `(review-time: per-repo configuration choice)`
-- Complete code only - no TODOs, no placeholders, no incomplete implementations `(hook)`
-- **Comments**: see [`rules/comments.md`](rules/comments.md). `(review-time: pointer, the substance is enforced in the linked file)`
-- Detailed standards are in rules/ (typescript, tests, database, infrastructure, security, jira, comments) `(review-time: pointer to detailed rule files)`
+- Use the project's configured formatter and linter `(review-time: per-repo configuration choice)`
+- **Comments**: see [`rules/comments.md`](rules/comments.md) `(review-time: pointer, substance lives in the linked file)`
+- Detailed standards in `rules/` (typescript, tests, database, infrastructure, comments) `(review-time: pointer)`
 
 ## Docs Sync
 
-- Engineering docs live in each repo's `/docs/` tree, organized by [Diataxis](https://diataxis.fr/) (explanation, reference, how-to, tutorials) plus an `adr/` folder for Architecture Decision Records `(review-time: directory-layout convention)`
-- When code changes affect behavior documented in `docs/`, update the relevant docs in the same PR `(review-time: requires recognizing behavior-doc impact)`
-- Use the `/document` slash command to create or refresh docs - it embeds the quality rules and Diataxis routing `(review-time: workflow guidance)`
-- Never let docs drift from implementation - if you change it, document it `(review-time: drift recognition)`
-- Only update docs that describe behavior actually changed in this session - no forward-looking references, planned features, or speculative content `(review-time: session-scope discipline)`
-- Diagrams default to Mermaid (text-based, GitHub-rendered, AI-readable). Use drawio when the diagram needs custom shapes, multi-layer architecture, >2 swimlanes, or precise layout - see `rules/diagrams.md` for the policy and `/diagram` skill for the workflow `(review-time: diagram-tool selection)`
-- ADRs are immutable once Accepted - a reversed decision creates a new ADR that supersedes the old one `(review-time: ADR lifecycle convention, overridden per-repo)`
+- Engineering docs live in each repo's `/docs/` tree, organized by [Diataxis](https://diataxis.fr/) plus `adr/` `(review-time: directory-layout convention)`
+- When code changes behavior documented in `docs/`, update those docs in the same PR `(review-time: requires recognizing behavior-doc impact)`
+- Use `/document` to create or refresh docs `(review-time: workflow guidance)`
+- Only touch docs describing behavior changed in this session. No forward-looking or speculative content `(review-time: session-scope discipline)`
+- Diagrams default to Mermaid; drawio for custom shapes, multi-layer architecture, or precise layout - see `rules/diagrams.md` `(review-time: diagram-tool selection)`
+- ADRs are immutable once Accepted. A reversal creates a new ADR superseding the old `(review-time: ADR lifecycle convention)`
+- Outside `/grill-with-docs` and `/document`, never create an ADR, README, or other doc unless asked `(review-time: requires separating the doc-emitting workflows from ad-hoc doc creation)`
 
 ## Behavioral Rules
 
-- **Scope**: only implement what was asked - no drive-by refactors, extra features, or unsolicited improvements `(review-time: scope judgment)`
-- **No unsolicited docs**: outside the `/grill-with-docs` and `/document` workflows (which emit ADRs and docs by design), never create ADRs, READMEs, or other docs unless explicitly asked - an unwanted doc is scope creep that costs a revert `(review-time: requires distinguishing the doc-emitting workflows from ad-hoc doc creation)`
-- **Minimal fix**: for bug fixes, identify the root cause and state the smallest possible change first (ideally 1-5 lines). Only expand the scope if the minimal fix is provably insufficient. Never introduce new abstractions, files, or patterns as part of a bug fix unless the user explicitly asks `(review-time: minimal-fix judgment)`
-- **Decisions**: ask before making architectural choices - never silently pick a pattern, library, or approach `(review-time: requires recognizing an architectural choice point)`
-- **Cost**: warn before any change that increases costs (new cloud resources, paid services, upgraded tiers) `(review-time: cost-impact recognition)`
-- **Destructive infra ops**: before destroying or deleting any shared or stateful cloud resource, enumerate its consumers and confirm with the user; verify IAM roles are assignable at the target scope before granting - full policy in `rules/infrastructure.md` (path-scoped, may not be loaded in command-only sessions) `(review-time: blast-radius knowledge is external to the command text)`
-- **Testing**: always write tests when implementing a new feature or fixing a bug - no exceptions `(review-time: per-PR judgment about test coverage of the change)`
-- **Conciseness**: be direct and terse during implementation - save explanations for when asked `(review-time: phrasing-length judgment)`
-- **Deliverable length**: match written documents, reports, and summaries to what the task needs - no filler sections, no redundant summaries, no boilerplate padding. Claude 5 models default to longer output; counteract deliberately `(review-time: length judgment on free-form output)`
-- **Existing patterns**: follow the conventions already in the codebase - consistency over personal preference `(review-time: pattern-recognition in surrounding code)`
-- **Context first**: before choosing an approach, check how similar problems are already solved in the codebase - grep for existing patterns, read neighboring files, and follow established conventions rather than guessing `(review-time: workflow discipline)`
-- **Verification**: always run `/verify-done` before pushing - never push without all checks passing `(hook)`
-- **Atomic feature unit**: "implement" means implement + commit on a feature branch + push + open PR. Never stop after the code change. Never commit to `main`/`master` directly. If on a protected branch, create a feature branch first. `(hook)`
-- **Parallelization**: when a task has 2+ independent sub-tasks touching different files, split across multiple agents using git worktrees - see `rules/parallel-agents.md` `(review-time: parallelization judgment, see rules/parallel-agents.md)`
-- **One question at a time**: when asking the user a clarifying question, ask only one per turn and wait for the answer before asking the next - no stacked or bundled questions, even closely related ones. See `rules/communication.md` `(review-time: conversational cadence)`
-
-Detailed git, testing, and exploration rules are in `rules/` (git-conventions, engineering-principles).
+- **Minimal fix**: for bugs, state the smallest change first (ideally 1-5 lines). Expand only when the minimal fix is provably not enough. No new abstractions, files, or patterns in a bug fix `(review-time: minimal-fix judgment)`
+- **Decisions**: ask before making an architectural choice. Never silently pick a pattern, library, or approach `(review-time: requires recognizing a choice point)`
+- **Cost**: warn before any change that raises costs (new cloud resources, paid services, upgraded tiers) `(review-time: cost-impact recognition)`
+- **Destructive infra ops**: before destroying a shared or stateful cloud resource, list its consumers and confirm. Full policy in `rules/infrastructure.md` `(review-time: blast-radius knowledge lives outside the rule text)`
+- **Testing**: always write tests for a new feature or a bug fix `(review-time: per-PR judgment on coverage of the change)`
+- **Atomic feature unit**: "implement" means implement, commit on a feature branch, push, open PR. Never stop at the code change `(hook)`
+- **Parallelization**: 2+ independent sub-tasks touching different files? Split across teammates - see `rules/parallel-agents.md` `(review-time: parallelization judgment)`
 
 ## Learning from Mistakes
 
-- When corrected, update the relevant CLAUDE.md or rule file so the mistake is not repeated `(review-time: meta-process for rule maintenance)`
-- Check if an existing rule already covers the correction - update it rather than adding a duplicate `(review-time: dedup discipline)`
+- When corrected, update the rule file that covers it rather than adding a duplicate `(review-time: meta-process for rule maintenance)`
 
 ## Environment
 
-- macOS, zsh, Node.js (check `.nvmrc`), npm `(review-time: environment description, not a rule per se)`
-- Docker for local services `(review-time: environment description)`
-- Cloud: GCP primary, AWS secondary `(review-time: provider preference)`
-- Current year: 2026 - verify when generating dates, timestamps, or date-dependent logic `(review-time: requires knowing whether a date is involved)`
-- Access boundaries: .env files, credentials, and secrets are blocked by deny rules - do not attempt workarounds. For staging databases and external services requiring auth, ask the user for credentials or URLs rather than trying to authenticate `(review-time: backed by permissions.deny; "do not attempt workarounds" is behavioral)`
-- Sentry: read access is available via the `sentry-issue` skill (uses the local `sentry-cli` token, org-agnostic). When given a Sentry issue ID or URL, use that skill - do not ask the user to paste issue contents and never print the token `(review-time: routing to a skill; token non-disclosure is behavioral)`
+macOS, zsh, Node (check `.nvmrc`), npm. Docker for local services. GCP primary, AWS secondary. Current year is 2026.
+
+- Never work around a deny rule. For staging databases and external services, ask for credentials or URLs `(review-time: backed by permissions.deny; the no-workaround part is behavioral)`
+- Sentry: use the `sentry-issue` skill for any issue ID or URL. Never print the token `(review-time: routing to a skill; non-disclosure is behavioral)`
 
 ## Imported rules
 
-The files below are loaded into every session via these `@`-imports. Edit the individual rule files in `rules/` - they are the source of truth, not this list.
+Loaded into every session. Edit the files in `rules/`, not this list.
 
 @rules/agent-routing.md
 @rules/comments.md
 @rules/communication.md
 @rules/context7.md
-@rules/rule-authoring.md
 @rules/engineering-principles.md
 @rules/git-conventions.md
-@rules/jira.md
 @rules/parallel-agents.md
 @rules/state-persistence.md
 
-## Path-scoped rules
+## Loaded on demand
 
-Five rule files are NOT imported above - they carry `paths:` frontmatter and load on demand when a matching file is touched (`rules/typescript.md`, `rules/tests.md`, `rules/database.md`, `rules/infrastructure.md`, `rules/diagrams.md`). Do not re-add them to the import list: an `@`-import loads a file unconditionally and defeats the scoping. `(review-time: import-list discipline)`
+Never add these to the import list above. An `@`-import loads a file unconditionally and defeats the trigger.
+
+- `paths:` frontmatter, loading when a matching file is touched: `rules/typescript.md`, `rules/tests.md`, `rules/database.md`, `rules/infrastructure.md`, `rules/diagrams.md`, `rules/rule-authoring.md` `(review-time: import-list discipline)`
+- Model-invoked skills, loading when the request matches: `jira` `(review-time: import-list discipline)`
