@@ -56,6 +56,16 @@ _Avoid_: "task", "story".
 A throwaway spike taken to de-risk one decision, after which the code is discarded and only the learning kept.
 _Avoid_: "spike task", "POC".
 
+### Config surface
+
+**Always-loaded rule**:
+A rule in `CLAUDE.md` or an `@`-imported file under `rules/`, present in the context of every session regardless of the task.
+_Avoid_: "global rule", "base rule".
+
+**On-demand rule**:
+A rule that enters context only when its trigger fires: `paths:` frontmatter matching a touched file, or a model-invoked skill matching the request. Costs nothing in sessions that never touch its trigger.
+_Avoid_: "lazy rule", "scoped rule".
+
 ## Relationships
 
 - A **Teammate** runs in either **Lane mode** or **Panel mode**.
@@ -64,6 +74,7 @@ _Avoid_: "spike task", "POC".
 - `wayfinder` resolves **Decision tickets** one per session until the fog clears, then hands to the spec stage.
 - **Lane mode** is for mutating work (build/implementation); **Panel mode** is for read-only work (research, grilling, design).
 - An **Advisory persona** can join **Panel mode** only; a **Lane mode** teammate must be a **Writer persona**.
+- An **Always-loaded rule** competes for attention in every session; an **On-demand rule** does not. A rule with a mechanical trigger (file path or unambiguous phrase) belongs on demand.
 - The distinguishing axis is coordination topology: **Lane mode** is a star (teammates report only to the parent), **Panel mode** is a mesh (teammates also message each other). Worktree isolation follows from this: lanes mutate files so they need worktrees, panels are read-only so they do not.
 
 ## Example dialogue
