@@ -20,6 +20,16 @@ jobs:
         with:
           globs: "**/*.md"
 
+  budget:
+    name: Config Budget
+    runs-on: "${{ vars.CI_RUNNER && fromJSON(vars.CI_RUNNER) || 'ubuntu-latest' }}"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check always-loaded rule budget
+        run: ./scripts/config-budget.sh
+
   # ==============================================
   # Gate
   # ==============================================
@@ -30,6 +40,7 @@ jobs:
     if: always()
     needs:
       - lint
+      - budget
     runs-on: "${{ vars.CI_RUNNER && fromJSON(vars.CI_RUNNER) || 'ubuntu-latest' }}"
     timeout-minutes: 1
     steps:
@@ -37,6 +48,7 @@ jobs:
         run: |
           results=(
             "${{ needs.lint.result }}"
+            "${{ needs.budget.result }}"
           )
           for r in "${results[@]}"; do
             if [ "$r" = "failure" ] || [ "$r" = "cancelled" ]; then
