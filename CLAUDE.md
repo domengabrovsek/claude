@@ -6,7 +6,7 @@ These rules apply to every project. Project-level CLAUDE.md files override where
 
 The four rules broken most often. They outrank everything below.
 
-**why-no-hook:** voice, sentence shape, prose volume, and "is this the existing pattern" are judgments about free-form output and about intent. A hook sees tool input, not phrasing or reasoning. The banned-phrase list is the one mechanical slice, and it is hooked.
+**why-no-hook:** voice, sentence shape, prose volume, and "is this the existing pattern" are judgments about intent. `hooks/prose-gate.sh` catches the mechanical slice (word list, filler, chatbot phrasing) on markdown writes, commit messages and PR bodies. It cannot see a chat reply, and the judgment tier lives in the `write-plain` skill.
 
 ### 1. Write plain
 
@@ -16,7 +16,8 @@ Covers replies, PR descriptions, tickets, docs, rules, skills, commit messages.
 - One idea per sentence. Cut any sentence whose only job is introducing the next one `(review-time: see section note)`
 - Asked for a table or a list? Output only that. No prose wrapper, no summary after it `(review-time: see section note)`
 - Say the thing, then stop. No closing paragraph repeating what you just said `(review-time: see section note)`
-- Never write: "to make sure X, let's Y", "it's worth noting", "I should mention", "we'll want to", "it's important to", "in order to", "leverage", "utilize", "delve", "robust", "seamless", "comprehensive" `(hook)`
+- Never write: "to make sure X, let's Y", "it's worth noting", "I should mention", "we'll want to", "it's important to", "in order to", "leverage", "utilize", "delve", "robust", "seamless", "comprehensive", "crucial", "pivotal", "showcase", "facilitate", "numerous", "serves as" `(hook)`
+- Revising a doc, ADR, spec or PR body? Use the `write-plain` skill for the patterns no regex catches `(review-time: see section note)`
 - Length caps: PR body 150 words, review or Slack reply 120, session diary 300, ADR 400. In chat, write the shortest version that answers and expand when asked `(review-time: see section note)`
 
 ### 2. Verify before asserting

@@ -66,6 +66,14 @@ _Avoid_: "global rule", "base rule".
 A rule that enters context only when its trigger fires: `paths:` frontmatter matching a touched file, or a model-invoked skill matching the request. Costs nothing in sessions that never touch its trigger.
 _Avoid_: "lazy rule", "scoped rule".
 
+**Prose gate**:
+The mechanical tier of the writing policy: the word lists, filler phrases and punctuation checks in `hooks/prose-gate.sh`, applied to markdown writes, commit messages and PR bodies. Distinct from the code-structure checks in `hooks/post-edit-lint.sh`, which fire on comment shape and language rules rather than word choice.
+_Avoid_: "the lint hook", "the style check".
+
+**Judgment tier**:
+The half of the writing policy no regex can check: forced triads, synonym cycling, sentences naming a feeling instead of a mechanism. Lives in the `write-plain` skill, so it triggers on prose work rather than loading every session.
+_Avoid_: "soft rules", "style guide".
+
 ## Relationships
 
 - A **Teammate** runs in either **Lane mode** or **Panel mode**.
@@ -75,6 +83,7 @@ _Avoid_: "lazy rule", "scoped rule".
 - **Lane mode** is for mutating work (build/implementation); **Panel mode** is for read-only work (research, grilling, design).
 - An **Advisory persona** can join **Panel mode** only; a **Lane mode** teammate must be a **Writer persona**.
 - An **Always-loaded rule** competes for attention in every session; an **On-demand rule** does not. A rule with a mechanical trigger (file path or unambiguous phrase) belongs on demand.
+- The **Prose gate** and the **Judgment tier** split one policy by what a regex can see. A pattern that fires on correct usage belongs in the **Judgment tier**, not the gate.
 - The distinguishing axis is coordination topology: **Lane mode** is a star (teammates report only to the parent), **Panel mode** is a mesh (teammates also message each other). Worktree isolation follows from this: lanes mutate files so they need worktrees, panels are read-only so they do not.
 
 ## Example dialogue

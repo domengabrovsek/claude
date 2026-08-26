@@ -1,6 +1,12 @@
 #!/bin/bash
-# Post-edit lint hook backing rules/comments.md and the writing-style
-# policy in CLAUDE.md. Bypass: SKIP_POST_EDIT_LINT=1.
+# Post-edit lint hook backing rules/comments.md, rules/typescript.md,
+# rules/database.md and rules/infrastructure.md: code-structure checks on
+# newly added lines, plus a whole-file em-dash autofix.
+#
+# Prose checks (word lists, scaffolding phrases) live in hooks/prose-gate.sh,
+# which also covers commit messages and PR bodies.
+#
+# Bypass: SKIP_POST_EDIT_LINT=1.
 
 INPUT=$(cat)
 FILE=$(echo "$INPUT" | jq -r '.tool_input.file_path // empty')
@@ -23,43 +29,6 @@ esac
 if LC_ALL=C grep -q $'\xe2\x80\x94' "$FILE" 2>/dev/null; then
   sed -i '' $'s/\xe2\x80\x94/-/g' "$FILE"
 fi
-
-# --- 1b. Plain-language check in markdown (CLAUDE.md: Read this first) ---
-# Two tiers: BLOCK words that never earn their place, WARN on words that have
-# a defensible technical use. CLAUDE.md and communication.md carry the lists
-# themselves, so checking them would flag their own definitions.
-case "$FILE" in
-  */rules/communication.md|*/CLAUDE.md|*/.claude/state/*) ;;
-  *.md|*.markdown)
-    MD_DIR=$(dirname "$FILE")
-    if git -C "$MD_DIR" rev-parse --git-dir >/dev/null 2>&1 && git -C "$MD_DIR" ls-files --error-unmatch "$FILE" >/dev/null 2>&1; then
-      MD_ADDED=$(git -C "$MD_DIR" diff --unified=0 HEAD -- "$FILE" 2>/dev/null | grep -E '^\+[^+]' | sed 's/^\+//')
-    else
-      MD_ADDED=$(cat "$FILE")
-    fi
-
-    # Tier 2: advisory. A plainer word is usually available, but not always.
-    SOFT=$(echo "$MD_ADDED" | grep -inE "\b(robust|comprehensive|leverag(e|es|ed|ing)|in order to)\b" 2>/dev/null || true)
-    if [ -n "$SOFT" ]; then
-      echo "[post-edit-lint] $FILE (advisory)" >&2
-      echo "Plainer word probably available (sturdy, full, use, to):" >&2
-      echo "$SOFT" >&2
-    fi
-
-    # Tier 1: blocking. Fancy words plus the scaffolding phrases that read as
-    # filler in every context they appear in.
-    FANCY=$(echo "$MD_ADDED" | grep -inE "\b(utili[sz]e[sd]?|homogeni[sz]e[sd]?|crystalli[sz]e[sd]?|synthesi[sz]e[sd]?|orthogonal|holistic|paradigm|synerg[a-z]*|salient|delv(e|es|ed|ing)|seamless(ly)?)\b" 2>/dev/null || true)
-    SCAFFOLD=$(echo "$MD_ADDED" | grep -inE "(it['’]?s worth noting|it is worth noting|it['’]?s important to|it is important to|we['’]?ll want to|we will want to|i should mention|to make sure .* let['’]?s)" 2>/dev/null || true)
-
-    if [ -n "$FANCY" ] || [ -n "$SCAFFOLD" ]; then
-      echo "[post-edit-lint] $FILE" >&2
-      echo "CLAUDE.md (Writing style): plain word, active voice, no scaffolding. Say the thing and stop." >&2
-      [ -n "$FANCY" ] && echo "$FANCY" >&2
-      [ -n "$SCAFFOLD" ] && echo "$SCAFFOLD" >&2
-      exit 2
-    fi
-    ;;
-esac
 
 # --- Skip docs/text: prose comment markers cause false positives ---
 case "$FILE" in

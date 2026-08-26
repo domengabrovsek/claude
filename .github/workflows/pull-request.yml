@@ -30,6 +30,16 @@ jobs:
       - name: Check always-loaded rule budget
         run: ./scripts/config-budget.sh
 
+  prose:
+    name: Prose Gate
+    runs-on: "${{ vars.CI_RUNNER && fromJSON(vars.CI_RUNNER) || 'ubuntu-latest' }}"
+    steps:
+      - name: Checkout
+        uses: domengabrovsek/github-actions/.github/actions/checkout@main
+
+      - name: Test the prose gate and scan the markdown corpus
+        run: bash hooks/prose-gate.test.sh
+
   # ==============================================
   # Gate
   # ==============================================
@@ -41,6 +51,7 @@ jobs:
     needs:
       - lint
       - budget
+      - prose
     runs-on: "${{ vars.CI_RUNNER && fromJSON(vars.CI_RUNNER) || 'ubuntu-latest' }}"
     timeout-minutes: 1
     steps:
@@ -49,6 +60,7 @@ jobs:
           results=(
             "${{ needs.lint.result }}"
             "${{ needs.budget.result }}"
+            "${{ needs.prose.result }}"
           )
           for r in "${results[@]}"; do
             if [ "$r" = "failure" ] || [ "$r" = "cancelled" ]; then

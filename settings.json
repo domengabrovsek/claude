@@ -4,7 +4,6 @@
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
   "permissions": {
-    "defaultMode": "auto",
     "allow": [
       "Read(**/.env.example)",
       "Read(**/.env.sample)",
@@ -125,8 +124,10 @@
       "Bash(*DROP DATABASE*)",
       "Bash(*TRUNCATE TABLE*)",
       "mcp__claude_ai_Atlassian__*"
-    ]
+    ],
+    "defaultMode": "auto"
   },
+  "model": "opus[1m]",
   "hooks": {
     "PreToolUse": [
       {
@@ -191,6 +192,18 @@
             "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/pre-commit-conventional-gate.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/pre-commit-conventional-gate.sh\"; [ -x \"$HOOK\" ] && exec \"$HOOK\"",
             "if": "Bash(git commit *)",
             "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/prose-gate.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/prose-gate.sh\"; [ -x \"$HOOK\" ] && exec \"$HOOK\" commit",
+            "if": "Bash(git commit *)",
+            "timeout": 15
+          },
+          {
+            "type": "command",
+            "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/prose-gate.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/prose-gate.sh\"; [ -x \"$HOOK\" ] && exec \"$HOOK\" pr",
+            "if": "Bash(gh pr create *)",
+            "timeout": 15
           }
         ]
       }
@@ -212,6 +225,11 @@
           {
             "type": "command",
             "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/post-edit-lint.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/post-edit-lint.sh\"; if [ -x \"$HOOK\" ]; then \"$HOOK\"; fi",
+            "timeout": 15
+          },
+          {
+            "type": "command",
+            "command": "HOOK=\"$CLAUDE_PROJECT_DIR/hooks/prose-gate.sh\"; [ -x \"$HOOK\" ] || HOOK=\"$HOME/.claude/hooks/prose-gate.sh\"; if [ -x \"$HOOK\" ]; then \"$HOOK\" file; fi",
             "timeout": 15
           }
         ]
@@ -290,10 +308,10 @@
   "enabledPlugins": {
     "frontend-design@claude-plugins-official": true
   },
-  "effortLevel": "high",
+  "effortLevel": "xhigh",
+  "askUserQuestionTimeout": "never",
   "autoUpdatesChannel": "stable",
   "minimumVersion": "2.1.92",
-  "skipAutoPermissionPrompt": false,
   "tui": "fullscreen",
-  "askUserQuestionTimeout": "never"
+  "skipAutoPermissionPrompt": false
 }
