@@ -10,6 +10,11 @@
 # Two tiers. BLOCK words have no defensible use in this repo and exit 2.
 # ADVISORY words have a real but rare use, so they print and pass.
 #
+# Sentence shape follows ASD-STE100 and rides the advisory tier. A sentence
+# over the cap and a causal "since" are the two STE rules a line-oriented
+# check can judge. Noun clusters need part-of-speech tagging, and paragraph
+# length needs boundaries a unified=0 diff throws away.
+#
 # Deliberately unchecked: surface, features, vector, harness. All four are
 # terms of art here, so a check would fire on correct usage. Sentence-case
 # headings and mid-sentence colons are unchecked for the same reason: the
@@ -290,6 +295,47 @@ def scan(rules, sink, word_boundary=True):
 scan(BLOCK, blocks)
 scan(BLOCK_PHRASE, blocks, word_boundary=False)
 scan(ADVISE, advisories)
+
+# ASD-STE100 sentence cap. 20 words for a step, 25 for description; the check
+# uses the looser number because a line carries no step-versus-description
+# marker. Headings, tables, blockquotes and fenced code carry no sentences.
+SENTENCE_CAP = 25
+STRUCTURE = re.compile(r"^\s*(#|\||>)")
+SENTENCE_END = re.compile(r"[.!?]+(?:\s+|$)")
+
+def sentences(line):
+    line = re.sub(r"`[^`]*`", "code", line)
+    line = re.sub(r"\[[^\]]*\]\([^)]*\)", "link", line)
+    line = re.sub(r"https?://\S+", "url", line)
+    return [s for s in SENTENCE_END.split(line) if re.search(r"[A-Za-z]", s)]
+
+long_hits = []
+fenced = False
+for n, line in enumerate(lines, 1):
+    if line.lstrip().startswith("```"):
+        fenced = not fenced
+        continue
+    if fenced or STRUCTURE.match(line):
+        continue
+    for sentence in sentences(line):
+        count = len(sentence.split())
+        if count > SENTENCE_CAP:
+            long_hits.append((n, f"{count}-word sentence",
+                              "split it; the cap is 20 for a step, 25 for description"))
+
+# One report per sentence would take ten rounds on a long file, so show a
+# batch. Five is enough to see the pattern without burying the word list.
+advisories.extend(long_hits[:5])
+
+CAUSAL_SINCE = re.compile(
+    r"\bsince\s+(?:the|it|it\x27s|its|we|you|this|that|they|there|an?)\b",
+    re.IGNORECASE)
+for n, line in enumerate(lines, 1):
+    m = CAUSAL_SINCE.search(line)
+    if m:
+        advisories.append((n, m.group(0),
+                           "write \"because\" for cause; \"since\" marks time"))
+        break
 
 for n, line in enumerate(lines, 1):
     hit = [c for c in CURLY if c in line]

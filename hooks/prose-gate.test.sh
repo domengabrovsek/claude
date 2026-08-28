@@ -121,6 +121,46 @@ for t in "${ADVISORY[@]}"; do
 done
 
 # ---------------------------------------------------------------------------
+# Sentence shape - advisory, never blocks
+# ---------------------------------------------------------------------------
+echo "== sentence shape =="
+STE_DIR=$(mktemp -d -t prose-gate-ste)
+STE_FIXTURE="$STE_DIR/fixture.md"
+
+cat > "$STE_FIXTURE" <<'STE'
+# A heading long enough to trip the cap if headings were ever counted at all by the check
+
+The post-edit lint hook reads the added lines from the diff and then walks every check in turn before it decides whether to block the write or only warn.
+
+We skipped the retry since the queue was already drained.
+
+```
+this fenced line is long enough to trip the cap if fenced code were ever counted by the sentence check at all
+```
+
+| a column header long enough to trip the cap if tables were counted | b |
+| --- | --- |
+
+Short line. This one passes.
+STE
+
+STE_OUT=$("$GATE" corpus "$STE_FIXTURE" 2>&1)
+STE_STATUS=$?
+rm -rf "$STE_DIR"
+
+if [ "$STE_STATUS" = "0" ]; then ok; else fail "sentence shape must not block, got exit $STE_STATUS"; fi
+
+if echo "$STE_OUT" | grep -q "line 3: .*-word sentence"; then ok; else fail "expected a long-sentence advisory on line 3"; fi
+
+if echo "$STE_OUT" | grep -q "line 5: .since the."; then ok; else fail "expected a causal \"since\" advisory on line 5"; fi
+
+if echo "$STE_OUT" | grep -qE "line (1|7|8|11): "; then
+  fail "headings, fenced code and tables must be exempt from the cap"
+else
+  ok
+fi
+
+# ---------------------------------------------------------------------------
 # Bypass and mode plumbing
 # ---------------------------------------------------------------------------
 echo "== plumbing =="

@@ -6,14 +6,20 @@ These rules apply to every project. Project-level CLAUDE.md files override where
 
 The four rules broken most often. They outrank everything below.
 
-**why-no-hook:** voice, sentence shape, prose volume, and "is this the existing pattern" are judgments about intent. `hooks/prose-gate.sh` catches the mechanical slice (word list, filler, chatbot phrasing) on markdown writes, commit messages and PR bodies. It cannot see a chat reply, and the judgment tier lives in the `write-plain` skill.
+**why-no-hook:** voice, prose volume, and "is this the existing pattern" are judgments about intent. `hooks/prose-gate.sh` catches the mechanical slice (word list, filler, chatbot phrasing, sentence length) on markdown writes, commit messages and PR bodies. It cannot see a chat reply, and the judgment tier lives in the `write-plain` skill.
 
 ### 1. Write plain
 
 Covers replies, PR descriptions, tickets, docs, rules, skills, commit messages.
+Sentence shape follows ASD-STE100 Simplified Technical English (Issue 9), without its approved-word dictionary.
 
 - Active voice, present tense. Name the actor `(review-time: see section note)`
 - One idea per sentence. Cut any sentence whose only job is introducing the next one `(review-time: see section note)`
+- Sentences: 20 words maximum for a step or an instruction, 25 for description. Split anything longer `(hook)`
+- One instruction per sentence. Two actions means two steps `(review-time: needs the step's intent, not its shape)`
+- Noun clusters: three words maximum. "post-edit lint hook" passes, "post-edit lint hook config loader" does not `(review-time: needs part-of-speech tagging a grep cannot do)`
+- Write "because" for cause. Keep "since" for time only `(hook)`
+- Paragraphs: six sentences maximum `(review-time: diff-added lines carry no paragraph boundaries)`
 - Asked for a table or a list? Output only that. No prose wrapper, no summary after it `(review-time: see section note)`
 - Say the thing, then stop. No closing paragraph repeating what you just said `(review-time: see section note)`
 - Never write: "to make sure X, let's Y", "it's worth noting", "I should mention", "we'll want to", "it's important to", "in order to", "leverage", "utilize", "delve", "robust", "seamless", "comprehensive", "crucial", "pivotal", "showcase", "facilitate", "numerous", "serves as" `(hook)`
