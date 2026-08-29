@@ -1,6 +1,6 @@
 ---
 name: grill-with-docs
-description: "Runs a grilling session that challenges a plan against the existing domain model, sharpens terminology, and updates documentation (CONTEXT.md, ADRs) inline as decisions are made. Use when the user wants to stress-test a plan against their project's language and documented decisions."
+description: "Runs a grilling session that challenges a plan against the existing domain model, sharpens terminology, and updates the CONTEXT.md glossary inline as decisions are made. Use when the user wants to stress-test a plan against their project's language and documented decisions."
 ---
 
 > Source: [mattpocock/skills - engineering/grill-with-docs](https://github.com/mattpocock/skills/tree/main/skills/engineering/grill-with-docs)
@@ -30,10 +30,6 @@ Most repos have a single context:
 ```text
 /
 ├── CONTEXT.md
-├── docs/
-│   └── adr/
-│       ├── 0001-event-sourced-orders.md
-│       └── 0002-postgres-for-write-model.md
 └── src/
 ```
 
@@ -42,18 +38,14 @@ If a `CONTEXT-MAP.md` exists at the root, the repo has multiple contexts. The ma
 ```text
 /
 ├── CONTEXT-MAP.md
-├── docs/
-│   └── adr/                          ← system-wide decisions
 ├── src/
 │   ├── ordering/
-│   │   ├── CONTEXT.md
-│   │   └── docs/adr/                 ← context-specific decisions
+│   │   └── CONTEXT.md
 │   └── billing/
-│       ├── CONTEXT.md
-│       └── docs/adr/
+│       └── CONTEXT.md
 ```
 
-Create files lazily - only when you have something to write. If no `CONTEXT.md` exists, create one when the first term is resolved. If no `docs/adr/` exists, create it when the first ADR is needed.
+Create files lazily - only when you have something to write. If no `CONTEXT.md` exists, create one when the first term is resolved.
 
 ## During the session
 
@@ -79,17 +71,9 @@ When a term is resolved, update `CONTEXT.md` right there. Don't batch these up -
 
 Don't couple `CONTEXT.md` to implementation details. Only include terms that are meaningful to domain experts. `CONTEXT.md` is a glossary and nothing else - not a spec, not a scratch pad.
 
-### Offer ADRs sparingly
+### No ADRs from the grill
 
-**why-no-hook:** skill workflow guidance; each step requires understanding the surrounding context (repo, task shape, prior state).
-
-Only offer to create an ADR when all three are true:
-
-1. **Hard to reverse** - the cost of changing your mind later is meaningful `(review-time: see section note)`
-2. **Surprising without context** - a future reader will wonder "why did they do it this way?" `(review-time: see section note)`
-3. **The result of a real trade-off** - there were genuine alternatives and you picked one for specific reasons `(review-time: see section note)`
-
-If any of the three is missing, skip the ADR. Use the format in [ADR-FORMAT.md](./ADR-FORMAT.md).
+ADR creation is explicit-ask only, via `/document adr "<title>"`. The grill records decisions in the exit plan, never in an ADR `(review-time: a proposal is free-form text no hook can see)`
 
 ## Panel grilling (optional)
 

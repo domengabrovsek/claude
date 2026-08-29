@@ -57,7 +57,7 @@ Lightweight helpers; structure is minimal:
 ```text
 [/research]       optional orientation
         ↓
-/grill-with-docs  alignment - emits CONTEXT.md + ADRs + execution plan
+/grill-with-docs  alignment - emits CONTEXT.md terms + execution plan
         ↓
 /build            walk the execution plan
         ↓

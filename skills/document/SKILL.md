@@ -89,12 +89,16 @@ Use the `/diagram` skill (or `mcp__drawio__*` tools directly) to author drawio d
 
 ## ADR procedure
 
+This subcommand is the only path that creates an ADR. No other workflow proposes one.
+
 When `adr "<title>"`:
 
-1. Scan `docs/adr/` for highest existing number. New file = `NNNN-<kebab-title>.md`, zero-padded to 4 digits. `(review-time: see section note)`
-2. Use `~/.claude/templates/adr.md` as the body. Fill `<Title>`, today's date, status `Proposed`. `(review-time: see section note)`
-3. Append a row to `docs/adr/README.md` table. `(review-time: see section note)`
-4. Ask the user for Context, Decision, Consequences before finalizing - never invent a decision. `(review-time: see section note)`
+1. Gate check: the decision must be hard to reverse, surprising without context, and a real trade-off. If a criterion fails, name it in one sentence, then write only after the user confirms. `(review-time: see section note)`
+2. Convention scan: look for an existing ADR scheme (directory, numbering, headings). An existing scheme wins; steps 3-5 apply only when none exists. `(review-time: see section note)`
+3. Scan `docs/adr/` for highest existing number. New file = `NNNN-<kebab-title>.md`, zero-padded to 4 digits. `(review-time: see section note)`
+4. Use `~/.claude/templates/adr.md` as the body. Fill `<Title>`, today's date, status `Proposed`. `(review-time: see section note)`
+5. Append a row to `docs/adr/README.md` table. `(review-time: see section note)`
+6. Ask the user for Context, Decision, Consequences before finalizing - never invent a decision. `(review-time: see section note)`
 
 ## Audit procedure
 

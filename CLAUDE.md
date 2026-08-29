@@ -46,7 +46,7 @@ When goals conflict: **quality > consistent > efficient > fast**.
 ## Workflow: Research - Grill - Implement - Summarize
 
 1. **Research** (optional): orientation pass in unfamiliar code, artifact to `.claude/state/research/`. Skip when the area is familiar.
-2. **Grill**: `/grill-with-docs <topic>`. Walks the decision tree one question at a time, emits CONTEXT.md terms and ADRs inline, ends by writing a plan to `.claude/state/plans/`. Your confirmation at exit is the approval gate.
+2. **Grill**: `/grill-with-docs <topic>`. Walks the decision tree one question at a time, emits CONTEXT.md terms inline, ends by writing a plan to `.claude/state/plans/`. Your confirmation at exit is the approval gate.
 3. **Implement**: `/build` walks the plan task by task. Build, lint, and tests must pass before done.
 4. **Summarize**: session diary to `.claude/state/sessions/`.
 
@@ -85,7 +85,8 @@ For debugging config, ask the user for the non-sensitive parts rather than readi
 - Only touch docs describing behavior changed in this session. No forward-looking or speculative content `(review-time: session-scope discipline)`
 - Diagrams default to Mermaid; drawio for custom shapes, multi-layer architecture, or precise layout - see `rules/diagrams.md` `(review-time: diagram-tool selection)`
 - ADRs are immutable once Accepted. A reversal creates a new ADR superseding the old `(review-time: ADR lifecycle convention)`
-- Outside `/grill-with-docs` and `/document`, never create an ADR, README, or other doc unless asked `(review-time: requires separating the doc-emitting workflows from ad-hoc doc creation)`
+- Never create an ADR unless asked. `/document adr` is the only creation path `(review-time: an explicit ask is a conversational signal no hook can see)`
+- Outside `/document`, never create a README or other doc unless asked `(review-time: requires separating the doc-emitting workflows from ad-hoc doc creation)`
 
 ## Behavioral Rules
 
