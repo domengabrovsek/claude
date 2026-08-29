@@ -44,7 +44,6 @@ Run these checks in order. Stop at the first failure.
 
 - [ ] README updated if public API or setup steps changed `(review-time: see section note)`
 - [ ] Changelog or release notes drafted if applicable `(review-time: see section note)`
-- [ ] Architecture Decision Record written if a significant technical decision was made `(review-time: see section note)`
 
 ### 6. Version (if applicable)
 
@@ -67,3 +66,25 @@ If any check fails:
 
 1. List failures with specific details `(review-time: see section note)`
 2. Stop - do NOT create the PR until all checks pass `(review-time: see section note)`
+
+## Rollout and rollback (deploys)
+
+For a staged rollout, decide per stage from thresholds, never from feel:
+
+| Metric | Advance | Hold and investigate | Roll back |
+| --- | --- | --- | --- |
+| Error rate | Within 10% of baseline | 10-100% above baseline | More than 2x baseline |
+| p95 latency | Within 20% of baseline | 20-50% above baseline | More than 50% above |
+| Client JS errors | No new error types | New errors under 0.1% of sessions | New errors over 0.1% of sessions |
+| Business metrics | Neutral or positive | Decline under 5% (may be noise) | Decline over 5% |
+
+Write the rollback plan before the deploy, never during the incident:
+
+```text
+Trigger conditions: error rate > 2x baseline, p95 > <X>ms, or reports of <specific issue>.
+Steps: disable the feature flag, or deploy the previous version. Verify via
+health check and error monitoring. Notify the team.
+Database: name the migration rollback command; state whether data written by
+the new feature is preserved or cleaned up.
+Time to rollback: flag under 1 minute, redeploy under 5, database under 15.
+```

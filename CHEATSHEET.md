@@ -78,6 +78,11 @@ These run independently of the implementation workflow:
 - `/review-pr` for reviewing others' code
 - `/document` for engineering docs
 - `/diagram` for architecture or sequence diagrams
+- `/resolve-conflicts` for an in-progress merge or rebase conflict
+- `/wizard` for human-only setup steps (credentials, CI secrets, dashboards)
+- `/wait-what` when the last reply did not land
+- `/observability` for instrumenting a feature before the incident
+- `/constraints` for a per-repo quality bar with ratchets
 - `/zoom-out` (deleted, just describe what you want in plain English)
 
 ## Agents

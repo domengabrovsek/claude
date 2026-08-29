@@ -39,7 +39,7 @@ Follow this workflow:
 - <Stack, infrastructure, API compatibility requirements>
 
 ## Out of Scope
-- <Explicitly excluded from this work>
+- <Explicitly excluded from this work, each item with the reason it is out>
 
 ## Open Questions
 **why-no-hook:** skill workflow guidance; each step requires understanding the surrounding context (repo, task shape, prior state).
