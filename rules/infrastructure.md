@@ -81,7 +81,7 @@ Bad description, carries tracker refs:
 
 ```hcl
 variable "platform_admin_email" {
-  description = "Per ADR 0031: email for the platform admin. See pentla-api PR #1397."
+  description = "Per ADR 0031: email for the platform admin. See api-service PR #1397."
   type        = string
 }
 ```
