@@ -15,7 +15,7 @@ MAX_REVIEW_TIME=100
 FILES=(CLAUDE.md)
 while IFS= read -r line; do
   [ -n "$line" ] && FILES+=("$line")
-done < <(grep -oE '^@rules/[A-Za-z0-9._-]+\.md' CLAUDE.md | sed 's/^@//')
+done < <(grep -oE '^@(AGENTS\.md|rules/[A-Za-z0-9._-]+\.md)' CLAUDE.md | sed 's/^@//')
 
 missing=0
 for f in "${FILES[@]}"; do

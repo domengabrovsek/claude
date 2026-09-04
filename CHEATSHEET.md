@@ -1,6 +1,6 @@
 # Cheatsheet
 
-Intent → slash command. Skim when you wonder *"is there a slash for X?"*.
+Intent → skill. Claude Code accepts the `/name` notation shown below. In Codex or Pi, invoke the same shared skill by name; host-specific notation in a skill maps to the equivalent available capability.
 
 For full descriptions of each tool see the [README](README.md).
 
@@ -87,4 +87,4 @@ These run independently of the implementation workflow:
 
 ## Agents
 
-Agents auto-spawn via `rules/agent-routing.md` when a task touches a specialized domain (Postgres, GCP, security, etc.). You don't invoke them directly. See [ADR 0003](docs/adr/0003-agents-via-subagent-spawn.md) for the loading model.
+Claude Code agents auto-spawn via `rules/agent-routing.md` when a task touches a specialized domain. Codex maps `Agent` and `SendMessage` references to its teammate mechanisms when available, and follows the workflow locally otherwise. Pi follows the workflow locally because its teammate mechanics are deferred. See [ADR 0008](docs/adr/0008-share-agent-config-across-hosts.md) for the shared boundary.

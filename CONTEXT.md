@@ -1,8 +1,66 @@
-# Claude Config
+# Agent Config
 
-The domain language for this repo's agent-orchestration model (how the main session delegates parallel work to spawned agents, and the two coordination shapes that delegation can take) and its skill model (how skills are invoked and layered).
+The domain language for this repo's multi-host configuration, agent-orchestration model (how the main session delegates parallel work to spawned agents, and the two coordination shapes that delegation can take), and skill model (how skills are invoked and layered).
 
 ## Language
+
+### Multi-host configuration
+
+**Agent host**:
+A coding-agent runtime that consumes this repo's shared instructions and skills, currently Claude Code, Codex, and Pi. Called a **harness** in repo naming and prose; the two words are synonyms.
+_Avoid_: "agent" when referring to the runtime - reserve agent for a model-driven worker or session.
+
+**Shared instruction source**:
+The concise root `AGENTS.md`, which holds only always-needed host-neutral guidance loaded by every supported agent host.
+_Avoid_: "Codex instructions", "Claude rules" when the guidance applies across hosts.
+
+**Shared skill library**:
+The repo's `skills/` tree, exposed to Claude Code through `~/.claude/skills` and to Codex and Pi through the repo-owned `~/.agents/skills` symlink.
+_Avoid_: "Claude skills", "Codex skills" when the skill follows the shared Agent Skills format.
+
+**Compatibility notation**:
+Legacy Claude-oriented names in shared skills that each agent host interprets through its equivalent capability, including `/name`, `$ARGUMENTS`, `Agent`, and `SendMessage`.
+_Avoid_: host-specific skill copies created only to rename an equivalent invocation or tool.
+
+**Rulebook**:
+The shared router skill that loads applicable detailed standards from the existing `rules/` tree for hosts that do not discover those files directly.
+_Avoid_: copied or host-specific rule trees.
+
+**Host adapter**:
+Host-specific configuration that connects an agent host to the shared instruction source and translates only behavior that has no portable representation.
+_Avoid_: "copy", "fork" - adapters must not duplicate shared guidance.
+
+**Host bootstrap**:
+The multi-host installer that checks or creates the filesystem links connecting supported agent hosts to this repo.
+_Avoid_: "Codex setup script", "Claude setup script" for the shared installer.
+
+**Behavioral parity**:
+Equivalent host-neutral guidance and skills across supported agent hosts, even when invocation syntax differs.
+_Avoid_: "full parity" - hooks, permissions, and subagent mechanics are outside this boundary.
+
+**Mechanical parity**:
+Equivalent enforcement through host-specific hooks, permissions, notifications, and subagent configuration.
+_Avoid_: "behavioral rules" - this parity is enforced by the host rather than model attention.
+
+**Deny list**:
+The machine-readable deny rules in the root `settings.json`, canonical enforcement input that each host's mechanical layer translates (allow rules are inert under deny-wins precedence).
+_Avoid_: "Claude permissions" (hosts other than Claude consume it), "blocklist".
+
+**Permission gate**:
+pi's mechanical enforcement of the Deny list by intercepting model tool calls before execution.
+_Avoid_: "sandbox", "security boundary" - an in-process gate is friction, not isolation.
+
+**Derived policy**:
+A permission config a host mechanism consumes, generated from the Deny list rather than hand-edited; staleness is Drift.
+_Avoid_: "synced permissions", hand-edited copies of Deny-list rules.
+
+**Drift**:
+A host's links diverging from the checkout; the Host bootstrap detects it with `--check` and repairs it with `--apply`.
+_Avoid_: "config drift", "stale links", "out-of-sync".
+
+**Workflow state**:
+Cross-session research, plans, specs, and diaries shared by every agent host under the historical `.claude/state/` project path.
+_Avoid_: "Claude state" - the path is retained for compatibility, but ownership is multi-host.
 
 ### Agent orchestration
 
@@ -17,6 +75,10 @@ _Avoid_: "fan-out mode", "worktree mode".
 **Panel mode**:
 Named read-only teammates that coordinate peer-to-peer via SendMessage to challenge each other, then settle on one combined answer for the parent.
 _Avoid_: "round-table", "team mode".
+
+**Peer session**:
+Another pi session on this machine, addressable directly for coordination; exists outside the spawn relationship, unlike a Teammate.
+_Avoid_: "subagent", "teammate" for cross-session peers.
 
 **Advisory persona**:
 A persona whose frontmatter `tools` list excludes Edit/Write/NotebookEdit, making the panel-mode read-only guarantee mechanical rather than brief-level (PR Reviewer, Cybersecurity Expert, GDPR Expert, Product Manager, UX Expert).
@@ -76,7 +138,23 @@ _Avoid_: "soft rules", "style guide".
 
 ## Relationships
 
+- Each **Agent host** loads the **Shared instruction source** through its **Host adapter**.
+- Each **Agent host** discovers the same **Shared skill library** through its native user-level path.
+- Each **Agent host** maps **Compatibility notation** to its native skill and teammate mechanisms.
+- The **Host bootstrap** installs every **Host adapter** while the legacy Claude setup command remains a compatibility entrypoint.
+- The **Host bootstrap** leaves provider, model, and credential choices to each **Agent host** user.
+- A **Host adapter** may add host-specific behavior but must not redefine shared guidance.
+- **Behavioral parity** is the first multi-host milestone; **Mechanical parity** is translated and verified separately for each host.
+- A **Permission gate** enforces the **Deny list** on one Agent host; rules without a translation for that host are surfaced, not silently dropped.
+- All hosts translate one canonical **Deny list**; a host may enforce a superset, never a subset.
+- A host's permission mechanism derives its rules from the **Deny list**; a generated or synced copy is acceptable, a second hand-maintained policy file is not.
+- **Drift** between the checkout and a host is surfaced at that host's session start.
+- **Behavioral parity** covers interactive and non-interactive modes supported by each **Agent host**.
+- Every **Agent host** reads and writes the same **Workflow state** so work can move between hosts without conversion.
+- Detailed standards live in **Reusable disciplines** and load on demand rather than expanding the **Shared instruction source**.
+- The **Rulebook** exposes detailed `rules/` standards as one **Reusable discipline** without changing their source location.
 - A **Teammate** runs in either **Lane mode** or **Panel mode**.
+- A **Peer session** is another session on this machine reachable through the intercom broker; only Teammates are spawned, and only Peer sessions exist before and after one conversation.
 - Our repo keeps **Orchestrators** at the **Model-invoked** layer (grill and build auto-fire as workflow phases); only `wayfinder` is a **User-invoked** orchestrator.
 - A **Reusable discipline** is always **Model-invoked**; an **Orchestrator** may invoke disciplines.
 - `wayfinder` resolves **Decision tickets** one per session until the fog clears, then hands to the spec stage.
@@ -93,5 +171,10 @@ _Avoid_: "soft rules", "style guide".
 
 ## Flagged ambiguities
 
+- "harness" and "host" named the same runtime - resolved: synonyms; prose and the repo name say **harness**, while inherited script names, flags, and upstream-shared files keep "host" so merges stay conflict-free.
+- "Agent" was used for both the coding runtime and a model-driven worker - resolved: the runtime is an **Agent host**; a named worker is a **Teammate**.
+- Pi was described as a design target - resolved: Pi is a supported **Agent host** within the **Behavioral parity** boundary.
+- "Full Pi support" was ambiguous - resolved: Pi loads shared behavior in every native mode; **Teammate** spawning (including background runs and panel-style steering) carries mechanical parity through the `pi-subagents` package.
 - "subagent" was used for both the generic spawn mechanism and a named agent - resolved: a named agent is a **Teammate**; "subagent" refers only to the generic Agent-tool spawn.
 - "skill" was used for both sequencing workflows and single practices - resolved: a sequencing skill is an **Orchestrator**, a single-practice skill is a **Reusable discipline**.
+- "full permission parity for pi" was ambiguous - resolved: the pi **Permission gate** enforces a **superset** of the **Deny list** on file tools (Edit rules also bind writes; bash matching covers command segments), so any parity claim names its direction.
