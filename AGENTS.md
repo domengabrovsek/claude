@@ -102,6 +102,7 @@ Load `rulebook` whenever the task needs detailed language, test, database, infra
 - Run the repository's complete quality gate before pushing.
 - Rebase onto the current target branch before opening a pull request.
 - Never force-push or merge a pull request without fresh, explicit user approval.
+- Reply within the relevant review thread. `(review-time: thread context)`
 - Keep commits focused and reviewable. Split unrelated work and very large changes.
 - Feature implementation normally ends with a commit, push, and pull request.
 - Stop earlier only when the user or parent workflow explicitly scopes the handoff.
