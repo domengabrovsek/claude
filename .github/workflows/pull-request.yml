@@ -40,6 +40,21 @@ jobs:
       - name: Test the prose gate and scan the markdown corpus
         run: bash hooks/prose-gate.test.sh
 
+  tests:
+    name: Extension Tests
+    runs-on: "${{ vars.CI_RUNNER && fromJSON(vars.CI_RUNNER) || 'ubuntu-latest' }}"
+    steps:
+      - name: Checkout
+        uses: domengabrovsek/github-actions/.github/actions/checkout@main
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Run pi extension tests
+        run: npm test
+
   # ==============================================
   # Gate
   # ==============================================
@@ -52,6 +67,7 @@ jobs:
       - lint
       - budget
       - prose
+      - tests
     runs-on: "${{ vars.CI_RUNNER && fromJSON(vars.CI_RUNNER) || 'ubuntu-latest' }}"
     timeout-minutes: 1
     steps:
@@ -61,6 +77,7 @@ jobs:
             "${{ needs.lint.result }}"
             "${{ needs.budget.result }}"
             "${{ needs.prose.result }}"
+            "${{ needs.tests.result }}"
           )
           for r in "${results[@]}"; do
             if [ "$r" = "failure" ] || [ "$r" = "cancelled" ]; then

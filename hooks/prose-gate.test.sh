@@ -124,7 +124,7 @@ done
 # Sentence shape - advisory, never blocks
 # ---------------------------------------------------------------------------
 echo "== sentence shape =="
-STE_DIR=$(mktemp -d -t prose-gate-ste)
+STE_DIR=$(mktemp -d "${TMPDIR:-/tmp}/prose-gate-ste.XXXXXX")
 STE_FIXTURE="$STE_DIR/fixture.md"
 
 cat > "$STE_FIXTURE" <<'STE'
