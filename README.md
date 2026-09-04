@@ -23,7 +23,7 @@ bash scripts/setup-hosts.sh --apply
 bash scripts/setup-hosts.sh --apply --adopt
 
 # Strip ephemeral state Claude Code and Pi write to settings.json at runtime
-git config filter.strip-ephemeral-state.clean 'jq "del(.feedbackSurveyState, .lastChangelogVersion)" 2>/dev/null || cat'
+git config filter.strip-ephemeral-state.clean 'jq "del(.feedbackSurveyState, .lastChangelogVersion, .autoMode)" 2>/dev/null || cat'
 git config filter.strip-ephemeral-state.smudge cat
 ```
 
