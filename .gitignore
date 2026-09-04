@@ -1,8 +1,8 @@
 # Per-session work artifacts (plans, research, specs, session diaries).
 # Per rules/state-persistence.md these live in .claude/state/; in this
 # meta-config repo they are personal notes and do not belong in git
-# history. In domain repos (pentla-api, etc.) the same files are
-# typically committed because plans/specs are shared decisions.
+# history. In domain repos (an API or frontend service) the same files
+# are typically committed because plans/specs are shared decisions.
 .claude/state/
 
 # Agent worktrees and other session-local runtime dirs under .claude/
