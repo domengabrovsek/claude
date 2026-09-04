@@ -1,6 +1,6 @@
 /**
  * statusline - pi footer styled after the Claude Code statusline
- * (~/.claude/statusline.sh, from the domengabrovsek/claude config repo).
+ * (~/.claude/statusline.sh, from the domengabrovsek/agent-config config repo).
  *
  * Replaces the built-in footer with one priority-ordered line:
  *

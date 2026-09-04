@@ -10,8 +10,8 @@ Claude Code uses selective links under `~/.claude/` plus a second account dir (d
 
 ```bash
 # Clone the repo - the setup script auto-detects its own location
-git clone git@github.com:domengabrovsek/claude.git
-cd claude
+git clone git@github.com:domengabrovsek/agent-config.git
+cd agent-config
 
 # Report drift without changing anything
 bash scripts/setup-hosts.sh --check
@@ -42,8 +42,6 @@ A machine that does not use every default dir records its own scope in `~/.agent
 `HARNESS_SKIP_HOSTS` applies only under `--host all`; an explicit `--host codex` always runs. `AGENT_HOSTS_ENV` relocates the file.
 
 Without this, an argument-free `--check` re-derives the two-dir defaults and reports permanent drift on dirs the machine never adopted. That matters because the `drift-check` extension calls the script with no arguments and no environment, so the scope has to be a recorded fact rather than a shell prefix someone remembers to type.
-
-This repo is a fork of [`domengabrovsek/claude`](https://github.com/domengabrovsek/claude) carrying the multi-harness direction. `main` is the live personal config; the `upstream-main` branch mirrors upstream, upstream-bound PR branches cut from it, and upstream work merges into `main` periodically. See [ADR 0010](docs/adr/0010-fork-lineage-with-personal-main-and-upstream-mirror.md).
 
 For Codex, the bootstrap adds the shared-instruction fallback and a built-in TUI status line only when each setting is absent. It preserves an existing custom status line.
 
